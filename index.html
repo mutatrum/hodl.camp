@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-149677150-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag("js", new Date());
+  gtag("config", "UA-149677150-1");
+</script>
+
+<meta charset="UTF-8" />
+<title>hodl.camp</title>
+<link rel="stylesheet" type="text/css" href="hodl.css">
+<script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"></script>
+<script>WebFont.load({google: {families: ["Droid Sans Mono"]}});</script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="hodl.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=10, minimum-scale=0, user-scalable=yes">
+</head>
+<body onload="onLoad()">
+  <div id="wrapper">
+    <div id="border">
+      <canvas id="hodl" width="150" height="150" onmousemove="onMouseMove(event)" onmouseleave="onMouseLeave(event)"></canvas>
+    </div>
+    <div id="years"></div>
+    <div id="index">
+      <canvas id="gradient" width="25" height="401"></canvas>
+      <canvas id="marker" width="25" height="1"></canvas>
+    </div>
+    <div id="legend">
+      <div class="entry">-100%</div>
+      <div class="entry">-90%</div>
+      <div class="entry">-80%</div>
+      <div class="entry">-70%</div>
+      <div class="entry">-60%</div>
+      <div class="entry">-50%</div>
+      <div class="entry">-40%</div>
+      <div class="entry">-30%</div>
+      <div class="entry">-20%</div>
+      <div class="entry">-10%</div>
+      <div class="entry">0%</div>
+      <div class="entry">10%</div>
+      <div class="entry">100%</div>
+      <div class="entry">1000%</div>
+      <div class="entry">10000%</div>
+      <div class="entry">100000%</div>
+      <div class="entry">1000000%</div>
+      <div class="entry">10000000%</div>
+      <div class="entry">100000000%</div>
+      <div class="entry">1000000000%</div>
+      <div class="entry">10000000000%</div>
+    </div>
+    <div id="tip"></div>
+    <!--  <div id="cursor" onmousemove="onMouseMove(event)" onmouseleave="onMouseLeave(event)"></div>  -->
+    <div id="about">
+      hodl.camp <a href="#" onclick="return onHelpClick(event)"><i class="fa fa-info-circle"></i></a><br>
+      bitcoin entry/exit profitability
+    </div>
+    <div id="help">
+      each pixel shows the profitability of a bitcoin hodl between buy and sell date<br><br>
+      mutatrum 
+      <a href="http://twitter.com/mutatrum" target="_blank"><i class="fa fa-twitter"></i></a>
+      <a href="mailto:mutatrum@gmail.com" target="_blank"><i class="fa fa-envelope"></i></a>
+      <a href="https://github.com/mutatrum/hodl.camp" target="_blank"><i class="fa fa-github"></i></a><br>
+      <br>
+      price data: coinmetrics.io <a href="https://coinmetrics.io/charts/#assets=btc" target="_blank"><i class="fa fa-external-link"></i></a>
+    </div>
+ </div>
+</body>
+</html>

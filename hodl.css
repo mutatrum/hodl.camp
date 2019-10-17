@@ -1,0 +1,114 @@
+body {
+  background-color: black;
+  margin: 0px;
+  font-family: 'Droid Sans Mono', monospace;
+  font-size: 15px;
+}
+
+#wrapper {
+  height: 100%;
+  width: 100%;
+  margin: auto;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 999;
+  overflow: auto;
+}
+
+#border {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+}
+
+#hodl {
+  position: absolute;
+  background-color: #ffffbf;
+  display: none;
+}
+
+.year {
+  position: absolute;
+  height: 20px;
+}
+
+#index {
+  position: fixed;
+  top: 27px;
+  right: 151px;
+  pointer-events: none;
+}
+
+#marker {
+  position: absolute;
+  background-color: black;
+  display: none;
+}
+
+#legend {
+  position: fixed;
+  top: 16px;
+  right: 36px;
+  pointer-events: none;
+}
+
+.entry {
+  height: 20px;
+}
+
+#tip {
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  display: none;
+  pointer-events: none;
+}
+
+#about {
+  width: 300px;
+  position: fixed;
+  top: 16px;
+  left: 50%;
+  margin-left: -150px;
+  text-align: center;
+  display: none;
+}
+
+#help {
+  width: 300px;
+  position: fixed;
+  top: 76px;
+  left: 50%;
+  margin-left: -150px;
+  text-align: center;
+  display: none;
+}
+
+@media screen and (max-width: 950px) {
+  #tip {
+    top: 76px;
+  }
+  #help {
+    top: 176px;
+  }
+}
+
+@media screen and (max-width: 650px) {
+  #index {
+    top: initial;
+    right: 76px;
+    bottom: 20px;
+    transform: scale(0.5);
+    transform-origin : 100% 100%;
+  }
+  #legend {
+    top: initial;
+    right: 16px;
+    bottom: 16px;
+    transform: scale(0.5);
+    transform-origin : 100% 100%;
+  }
+}
