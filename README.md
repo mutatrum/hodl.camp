@@ -1,5 +1,5 @@
 # hodl.camp
-[hodl.camp](hodl.camp)
+[hodl.camp](http://hodl.camp/)
 
 bitcoin entry/exit profitability
 
