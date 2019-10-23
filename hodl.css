@@ -15,7 +15,8 @@ body {
   bottom: 0;
   right: 0;
   z-index: 999;
-  overflow: auto;
+  overflow: scroll;
+  -webkit-overflow-scrolling: touch;
 }
 
 #border {
@@ -26,7 +27,6 @@ body {
 
 #hodl {
   position: absolute;
-  background-color: #ffffbf;
   display: none;
 }
 
