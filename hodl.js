@@ -74,10 +74,6 @@ function createColorMap(colorMapContext) {
 function drawHodl() {
   var size = prices.length - 1;
 
-  var borderDiv = document.getElementById('border');
-  borderDiv.style.width = (size + 8) + 'px';
-  borderDiv.style.height = (size + 8) + 'px';
-  
   var backgroundColor = COLORMAPS[localStorage.palette][5];
 
   var hodlCanvas = document.getElementById('hodl');
@@ -302,10 +298,10 @@ function setScale() {
   var hodlCanvas = document.getElementById('hodl');
   hodlCanvas.style.transform = `scale(${scaleFraction})`;
 
-  var size = prices.length * scaleFraction;
+  var size = (prices.length - 1) * scaleFraction;
 
   var borderDiv = document.getElementById('border');
-  borderDiv.style.width = (size + 7) + 'px';
+  borderDiv.style.width = (size + 8) + 'px';
   borderDiv.style.height = (size + 8) + 'px';
 
   for (var i = 0; i < prices.length; i++) {
