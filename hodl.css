@@ -1,20 +1,22 @@
 body {
   background-color: black;
-  margin: 0px;
+  margin: 0;
   font-family: 'Droid Sans Mono', monospace;
   font-size: 15px;
 }
 
+#background {
+  position: fixed;
+  top: 8px;
+  left: 8px;
+}
+
 #wrapper {
-  height: 100%;
-  width: 100%;
-  margin: auto;
   position: fixed;
   top: 0;
   left: 0;
   bottom: 0;
   right: 0;
-  z-index: 999;
   overflow: scroll;
   -webkit-overflow-scrolling: touch;
 }
@@ -28,17 +30,32 @@ body {
 #hodl {
   position: absolute;
   display: none;
+  image-rendering: pixelated;
+  transform: scale(1);
+  transform-origin: top left;
 }
 
-.year {
+.label {
   position: absolute;
   height: 20px;
+}
+
+.dot {
+  position: absolute;
+  height: 4px;
+  width: 4px;
+  image-rendering: pixelated;
+  content: url("dot.png");
+}
+
+.line {
+  content: url("line.png");
 }
 
 #index {
   position: fixed;
   top: 27px;
-  right: 151px;
+  right: 147px;
   pointer-events: none;
 }
 
@@ -49,9 +66,9 @@ body {
 }
 
 #legend {
-  position: fixed;
-  top: 16px;
-  right: 36px;
+  position: absolute;
+  top: -10px;
+  right: -117px;
   pointer-events: none;
 }
 
@@ -80,7 +97,7 @@ body {
 #help {
   width: 300px;
   position: fixed;
-  top: 76px;
+  top: 91px;
   left: 50%;
   margin-left: -150px;
   text-align: center;
@@ -89,25 +106,18 @@ body {
 
 @media screen and (max-width: 950px) {
   #tip {
-    top: 76px;
+    top: 91px;
   }
   #help {
-    top: 176px;
+    top: 191px;
   }
 }
 
-@media screen and (max-width: 650px) {
+@media screen and (max-width: 630px) {
   #index {
     top: initial;
-    right: 76px;
-    bottom: 20px;
-    transform: scale(0.5);
-    transform-origin : 100% 100%;
-  }
-  #legend {
-    top: initial;
-    right: 16px;
-    bottom: 16px;
+    right: 85px;
+    bottom: 30px;
     transform: scale(0.5);
     transform-origin : 100% 100%;
   }

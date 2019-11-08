@@ -12,6 +12,10 @@ const COLORMAPS = [
 
 var prices;
 var since;
+const SCALES = [25, 33, 50, 67, 75, 80, 90, 100, 110, 125, 150, 175, 200, 250, 300, 400, 500];
+var scaleIndex = 7;
+var scaleSpanClearTimeout;
+var scrollBarWidth;
 
 function onLoad() {
   var xobj = new XMLHttpRequest();
@@ -33,112 +37,113 @@ function init() {
   if (localStorage.getItem("palette") === null) {
     localStorage.palette = 7;
   }
+  var wrapperDiv =  document.getElementById('wrapper');
+  scrollBarWidth = wrapperDiv.offsetWidth - wrapperDiv.clientWidth;
+  
+  var backgroundDiv = document.getElementById('background');
+  backgroundDiv.style.height = 'calc(100vh - ' + (scrollBarWidth + 16) + 'px)';
+  backgroundDiv.style.width = 'calc(100vw - ' + (scrollBarWidth + 16) + 'px)';
+  
+  createLabels();
+  setScale();
   drawIndex();
   drawHodl();
-  createLabels();
 }
 
 function drawIndex() {
-  var gradientCanvas = document.getElementById('gradient');
-  var gradientContext = gradientCanvas.getContext('2d');
+  var colorMapCanvas = document.getElementById('colormap');
+  var colorMapContext = colorMapCanvas.getContext('2d');
 
-  gradientContext.fillStyle = createIndexGradient(gradientContext);
-  gradientContext.fillRect(0, 0, 25, 401);
+  colorMapContext.fillStyle = createColorMap(colorMapContext);
+  colorMapContext.fillRect(0, 0, 25, 401);
 
-  gradientCanvas.style.display = 'block';
+  colorMapCanvas.style.display = 'block';
 }
 
-function createIndexGradient(indexContext) {
-  var indexGradient = indexContext.createLinearGradient(0, 0, 0, 400);
-  var stop = 0;
-  for (var color of COLORMAPS[localStorage.palette]) {
-    indexGradient.addColorStop(stop, color);
-    stop += 0.1;
+function createColorMap(colorMapContext) {
+  var colorMapGradient = colorMapContext.createLinearGradient(0, 0, 0, 400);
+  var step = 0;
+  var colorMap = COLORMAPS[localStorage.palette];
+  for (var color of colorMap) {
+    colorMapGradient.addColorStop(step / (colorMap.length - 1), color);
+    step++;
   }
-  return indexGradient;
+  return colorMapGradient;
 }
 
 function drawHodl() {
-  var size = prices.length;
+  var size = prices.length - 1;
 
   var borderDiv = document.getElementById('border');
-  borderDiv.style.width = (size + 7) + 'px';
+  borderDiv.style.width = (size + 8) + 'px';
   borderDiv.style.height = (size + 8) + 'px';
   
+  var backgroundColor = COLORMAPS[localStorage.palette][5];
+
   var hodlCanvas = document.getElementById('hodl');
-  hodlCanvas.width = size - 1;
+  hodlCanvas.style.backgroundColor = backgroundColor; 
+  hodlCanvas.style.display = 'block';
+  hodlCanvas.width = size;
   hodlCanvas.height = size;
   
   var hodlContext = hodlCanvas.getContext('2d');
   drawPixels(hodlContext);
-  drawDots(hodlContext);
   
-  hodlCanvas.style.backgroundColor = COLORMAPS[localStorage.palette][5]; 
-  hodlCanvas.style.display = 'block';
+  var backgroundDiv = document.getElementById('background');
+  backgroundDiv.style.backgroundColor = backgroundColor; 
 
   var aboutDiv = document.getElementById('about');
   aboutDiv.style.display = 'block';
 }
 
 function drawPixels(hodlContext) {
-  var size = prices.length;
-  var colors = getColorLookup();
+  var size = prices.length - 1;
+  var colorMap = getColorMap();
 
-  var imageData = hodlContext.createImageData(size - 1, size);
+  var imageData = hodlContext.createImageData(size, size);
   var buffer = new ArrayBuffer(imageData.data.length);
-  var pixelMap = new Uint32Array(buffer);
-  var y = size - 1;
+  var pixels = new Uint32Array(buffer);
+  var y = 0;
   for (var selldate = 1; selldate <= size; selldate++) {
     for (var buydate = 0; buydate < selldate; buydate++) {
       var profit = getProfit(buydate, selldate);
-      pixelMap[y + buydate] = colors[getColorIndex(profit)];
+      pixels[y + buydate] = colorMap[getColorIndex(profit)];
     }
-    y += size - 1;
+    y += size;
   }
   
   imageData.data.set(new Uint8ClampedArray(buffer));
   hodlContext.putImageData(imageData, 0, 0);
 }
 
-function drawDots(hodlContext) {
-  var size = prices.length;
-  for (var i = 0; i < size; i++) {
+function createLabels() {
+  var labelsDiv = document.getElementById('labels');
+  for (var i = 0; i < prices.length; i++) {
     var date = getIndexDate(i);
     if (date.getDate() == 1) {
       if (date.getMonth() == 0) {
-        hodlContext.moveTo(i + 0.5, i + 0.5);
-        hodlContext.lineTo(i + 3.5, i - 2.5);
-        hodlContext.stroke();
-      } else {
-        hodlContext.moveTo(i + 0.5, i + 0.5);
-        hodlContext.lineTo(i + 1.5, i - 0.5);
-        hodlContext.stroke();
+        var labelDiv = document.createElement('div');
+        labelDiv.id = 'y' + date.getFullYear();
+        labelDiv.classList.add('label');
+        labelDiv.innerHTML = date.getFullYear();
+  
+        labelsDiv.appendChild(labelDiv);
       }
+      var labelImg = document.createElement('img');
+      labelImg.id = 'y' + date.getFullYear() + 'm' + date.getMonth();
+      labelImg.classList.add('dot');
+      if (date.getMonth() == 0) {
+        labelImg.classList.add('line');
+      }
+      labelsDiv.appendChild(labelImg);
     }
   }
 }
 
-function createLabels() {
-  var yearsDiv = document.getElementById('years');
-  for (var i = 0; i < prices.length; i++) {
-    var date = getIndexDate(i);
-    if (date.getDate() == 1 && date.getMonth() == 0) {
-        
-      var div = document.createElement('div');
-      div.classList.add('year');
-      div.style.top = (i - 15) + 'px';
-      div.style.left = (i +  15) + 'px';
-      div.innerHTML = date.getFullYear();
-
-      yearsDiv.appendChild(div);
-    }
-  }
-}
-
-function getColorLookup() {
-  var gradientCanvas = document.getElementById('gradient');
-  var gradientContext = gradientCanvas.getContext('2d');
-  imageData = gradientContext.getImageData(0, 0, 1, 400);
+function getColorMap() {
+  var colorMapCanvas = document.getElementById('colormap');
+  var colorMapContext = colorMapCanvas.getContext('2d');
+  imageData = colorMapContext.getImageData(0, 0, 1, 400);
   return new Uint32Array(imageData.data.buffer);
 }
 
@@ -157,15 +162,15 @@ function onMouseMove(event) {
   var hodlCanvas = document.getElementById('hodl');
   var tipDiv = document.getElementById('tip');
   var markerCanvas = document.getElementById('marker');
-  var size = prices.length;
+  var size = prices.length - 1;
   if (event.offsetX >= 0 && event.offsetX < size && 
     event.offsetY >= 0 && event.offsetY < size &&
-    event.offsetX < event.offsetY) {
+    event.offsetX <= event.offsetY) {
     
     hodlCanvas.style.cursor = 'crosshair';
     
     var buy = event.offsetX;
-    var sell = event.offsetY;
+    var sell = event.offsetY + 1;
     var buyDate = formatEpoch(buy);
     var buyPrice = formatPrice(buy);
     var sellDate = formatEpoch(sell);
@@ -270,4 +275,61 @@ function onChangePaletteClick(event) {
   drawIndex();
   drawHodl();
   event.preventDefault();
+}
+
+function onZoomInClick(event) {
+  if (scaleIndex < SCALES.length - 1) {
+    scaleIndex++;
+    setScale();
+  }
+  setScaleSpan();
+  event.preventDefault();
+}
+
+function onZoomOutClick(event) {
+  if (scaleIndex > 0) {
+    scaleIndex--;
+    setScale();
+  }
+  setScaleSpan();
+  event.preventDefault();
+}
+
+function setScale() {
+  var scale = SCALES[scaleIndex];
+  var scaleFraction = scale / 100;
+
+  var hodlCanvas = document.getElementById('hodl');
+  hodlCanvas.style.transform = `scale(${scaleFraction})`;
+
+  var size = prices.length * scaleFraction;
+
+  var borderDiv = document.getElementById('border');
+  borderDiv.style.width = (size + 7) + 'px';
+  borderDiv.style.height = (size + 8) + 'px';
+
+  for (var i = 0; i < prices.length; i++) {
+    var date = getIndexDate(i);
+    if (date.getDate() == 1) {
+      if (date.getMonth() == 0) {
+        var div = document.getElementById('y' + date.getFullYear());
+        div.style.top = ((i * scaleFraction) - 14) + 'px';
+        div.style.left = ((i * scaleFraction) + 13) + 'px';
+      }
+      var img = document.getElementById('y' + date.getFullYear() + 'm' + date.getMonth());
+      img.style.top = ((i * scaleFraction) + 4) + 'px';
+      img.style.left = ((i * scaleFraction) + 8) + 'px';
+    }
+  }
+}
+
+function setScaleSpan() {
+  var scale = SCALES[scaleIndex];
+  var scaleSpan = document.getElementById('scale');
+  var scalePadSpan = document.getElementById('scale-pad');
+  scaleSpan.innerHTML = scale + '%';
+  scalePadSpan.innerHTML = '&nbsp;&nbsp;&nbsp;' + (scaleIndex > 6 ? '&nbsp;' : '');
+
+  clearTimeout(scaleSpanClearTimeout);
+  scaleSpanClearTimeout = setTimeout(function(){ scaleSpan.innerHTML = ''; scalePadSpan.innerHTML = '';}, 2000);
 }
