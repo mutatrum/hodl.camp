@@ -105,6 +105,28 @@ body {
   display: none;
 }
 
+#x-axis {
+  width: 300px;
+  position: fixed;
+  bottom: 32px;
+  left: 50%;
+  margin-left: -150px;
+  text-align: center;
+  pointer-events: none;
+}
+
+#y-axis {
+  height: 300px;
+  position: fixed;
+  left: 16px;
+  top: 50%;
+  margin-top: -150px;
+  text-align: center;
+  writing-mode: vertical-lr;
+  transform: rotate(180deg);
+  pointer-events: none;
+}
+
 @media screen and (max-width: 950px) {
   #tip {
     top: 91px;
