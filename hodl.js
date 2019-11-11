@@ -44,6 +44,9 @@ function init() {
   backgroundDiv.style.height = 'calc(100vh - ' + (scrollBarWidth + 16) + 'px)';
   backgroundDiv.style.width = 'calc(100vw - ' + (scrollBarWidth + 16) + 'px)';
   
+  var dateSpan = document.getElementById('date');
+  dateSpan.innerHTML = formatDate(prices.length - 1);
+
   createLabels();
   setScale();
   drawIndex();
@@ -167,9 +170,9 @@ function onMouseMove(event) {
     
     var buy = event.offsetX;
     var sell = event.offsetY + 1;
-    var buyDate = formatEpoch(buy);
+    var buyDate = formatDate(buy);
     var buyPrice = formatPrice(buy);
-    var sellDate = formatEpoch(sell);
+    var sellDate = formatDate(sell);
     var sellPrice = formatPrice(sell);
     var duration = formatDuration(buy, sell);
     var profit = getProfit(buy, sell);
@@ -212,7 +215,7 @@ function getIndexDate(index) {
   return date;
 }
 
-function formatEpoch(index) {
+function formatDate(index) {
   var date = getIndexDate(index);
   return date.getDate().toString().padStart(2, '0') + '-' + (date.getMonth() + 1).toString().padStart(2, '0') + '-' + date.getFullYear().toString();
 }
