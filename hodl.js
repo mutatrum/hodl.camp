@@ -9,6 +9,7 @@ const COLORMAPS = [
   ['#a50026', '#d73027', '#f46d43', '#fdae61', '#fee08b', '#ffffbf', '#d9ef8b', '#a6d96a', '#66bd63', '#1a9850', '#006837'],
   ['#9e0142', '#d53e4f', '#f46d43', '#fdae61', '#fee08b', '#ffffbf', '#e6f598', '#abdda4', '#66c2a5', '#3288bd', '#5e4fa2'],
 ];
+const STOPS = [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.55, 0.625, 0.725, 0.85, 1.0];
 
 var prices;
 var since;
@@ -65,11 +66,8 @@ function drawIndex() {
 
 function createColorMap(colorMapContext) {
   var colorMapGradient = colorMapContext.createLinearGradient(0, 0, 0, 400);
-  var step = 0;
-  var colorMap = COLORMAPS[localStorage.palette];
-  for (var color of colorMap) {
-    colorMapGradient.addColorStop(step / (colorMap.length - 1), color);
-    step++;
+  for (var i = 0; i <= 10; i++) {
+    colorMapGradient.addColorStop(STOPS[i], COLORMAPS[localStorage.palette][i]);
   }
   return colorMapGradient;
 }
