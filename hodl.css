@@ -45,11 +45,6 @@ body {
   height: 4px;
   width: 4px;
   image-rendering: pixelated;
-  content: url("dot.png");
-}
-
-.line {
-  content: url("line.png");
 }
 
 #index {

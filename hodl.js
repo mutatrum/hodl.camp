@@ -130,7 +130,9 @@ function createLabels() {
       labelImg.id = 'y' + date.getFullYear() + 'm' + date.getMonth();
       labelImg.classList.add('dot');
       if (date.getMonth() == 0) {
-        labelImg.classList.add('line');
+        labelImg.src = 'line.png';
+      } else {
+        labelImg.src = 'dot.png';
       }
       labelsDiv.appendChild(labelImg);
     }
