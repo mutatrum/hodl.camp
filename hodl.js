@@ -62,10 +62,7 @@ function drawIndex(colorMap) {
 function drawHodl(colorMap) {
   var size = prices.length - 1;
 
-  var backgroundColor = getColorScale().colors()[5];
-
   var hodlCanvas = document.getElementById('hodl');
-  hodlCanvas.style.backgroundColor = backgroundColor; 
   hodlCanvas.style.display = 'block';
   hodlCanvas.width = size;
   hodlCanvas.height = size;
@@ -74,7 +71,7 @@ function drawHodl(colorMap) {
   drawPixels(hodlContext, colorMap);
   
   var backgroundDiv = document.getElementById('background');
-  backgroundDiv.style.backgroundColor = backgroundColor; 
+  backgroundDiv.style.backgroundColor = getColorScale().colors()[5];
 
   var aboutDiv = document.getElementById('about');
   aboutDiv.style.display = 'block';
@@ -86,6 +83,8 @@ function drawPixels(hodlContext, colorMap) {
   var imageData = hodlContext.createImageData(size, size);
   var buffer = new ArrayBuffer(imageData.data.length);
   var pixels = new Uint32Array(buffer);
+  pixels.fill(colorMap[200]);
+  
   var y = 0;
   for (var selldate = 1; selldate <= size; selldate++) {
     for (var buydate = 0; buydate < selldate; buydate++) {
