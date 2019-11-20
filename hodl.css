@@ -35,6 +35,12 @@ body {
   transform-origin: top left;
 }
 
+#labels {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+}
+
 .label {
   position: absolute;
   height: 20px;
@@ -52,6 +58,19 @@ body {
   top: 16px;
   right: 32px;
   pointer-events: none;
+}
+
+.halving {
+  position: absolute;
+  border-style: solid;
+  opacity: 0.4;
+  border-width: 1px 1px 0 0;
+  pointer-events: none;
+}
+
+.grid {
+  border-style: dashed;
+  opacity: 0.2;
 }
 
 #marker {

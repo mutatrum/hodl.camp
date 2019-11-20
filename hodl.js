@@ -7,6 +7,10 @@ const SCALES = [25, 33, 50, 67, 75, 80, 90, 100, 110, 125, 150, 175, 200, 250, 3
 var scaleIndex = 7;
 var scaleSpanClearTimeout;
 var scrollBarWidth;
+const HALVINGS = ['2009-01-03',
+  '2010-04-22','2011-01-28','2011-12-14','2012-11-28',
+  '2013-10-09','2014-08-11','2015-07-29','2016-07-09',
+  '2017-06-23','2018-05-29','2019-05-24','2020-05-14'];
 
 function onLoad() {
   var xobj = new XMLHttpRequest();
@@ -36,7 +40,7 @@ function init() {
   backgroundDiv.style.width = 'calc(100vw - ' + (scrollBarWidth + 16) + 'px)';
   
   var dateSpan = document.getElementById('date');
-  dateSpan.innerHTML = formatDate(prices.length - 1);
+  dateSpan.innerHTML = formatDate(getIndexDate(prices.length - 1));
 
   createLabels();
   setScale();
@@ -121,6 +125,18 @@ function createLabels() {
       }
       labelsDiv.appendChild(labelImg);
     }
+    var halving = HALVINGS.indexOf(formatDate(date));
+    if (halving != -1) {
+      var halvingDiv = document.createElement('div');
+      halvingDiv.id = 'h' + i;
+      halvingDiv.classList.add('halving');
+      if (halving % 4 == 0) {
+        halvingDiv.innerHTML = '&puncsp;' + date.getFullYear() + ' halving';
+      } else {
+        halvingDiv.classList.add('grid');
+      }
+      labelsDiv.appendChild(halvingDiv);
+    }
   }
 }
 
@@ -159,9 +175,9 @@ function onMouseMove(event) {
     
     var buy = event.offsetX;
     var sell = event.offsetY + 1;
-    var buyDate = formatDate(buy);
+    var buyDate = formatDate(getIndexDate(buy));
     var buyPrice = formatPrice(buy);
-    var sellDate = formatDate(sell);
+    var sellDate = formatDate(getIndexDate(sell));
     var sellPrice = formatPrice(sell);
     var duration = formatDuration(buy, sell);
     var profit = getProfit(buy, sell);
@@ -204,9 +220,8 @@ function getIndexDate(index) {
   return date;
 }
 
-function formatDate(index) {
-  var date = getIndexDate(index);
-  return date.getDate().toString().padStart(2, '0') + '-' + (date.getMonth() + 1).toString().padStart(2, '0') + '-' + date.getFullYear().toString();
+function formatDate(date) {
+  return date.getFullYear().toString() + '-' + (date.getMonth() + 1).toString().padStart(2, '0') + '-' + date.getDate().toString().padStart(2, '0');
 }
 
 function formatDuration(buyEpoch, sellEpoch) {
@@ -299,15 +314,22 @@ function setScale() {
 
   for (var i = 0; i < prices.length; i++) {
     var date = getIndexDate(i);
+    var scaled = i * scaleFraction;
     if (date.getDate() == 1) {
       if (date.getMonth() == 0) {
         var div = document.getElementById('y' + date.getFullYear());
-        div.style.top = ((i * scaleFraction) - 14) + 'px';
-        div.style.left = ((i * scaleFraction) + 13) + 'px';
+        div.style.top = (scaled - 22) + 'px';
+        div.style.left = (scaled + 5) + 'px';
       }
       var img = document.getElementById('y' + date.getFullYear() + 'm' + date.getMonth());
-      img.style.top = ((i * scaleFraction) + 4) + 'px';
-      img.style.left = ((i * scaleFraction) + 8) + 'px';
+      img.style.top = (scaled - 4) + 'px';
+      img.style.left = scaled + 'px';
+    }
+    if (HALVINGS.includes(formatDate(date))) {
+      var div = document.getElementById('h' + i);
+      div.style.top = (scaled - 1) + 'px';
+      div.style.width = (scaled - 1) + 'px';
+      div.style.height = (size - scaled) + 'px';
     }
   }
 }
