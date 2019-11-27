@@ -9,6 +9,8 @@ body {
   position: fixed;
   top: 8px;
   left: 8px;
+  height: calc(100vh - var(--scrollbar-width) - 16px);
+  width: calc(100vw - var(--scrollbar-width) - 16px);
 }
 
 #wrapper {
@@ -43,7 +45,9 @@ body {
 
 .label {
   position: absolute;
-  height: 20px;
+  width: 140px;
+  text-align: right;
+  transform: rotate(-45deg);
 }
 
 .dot {
@@ -55,20 +59,22 @@ body {
 
 #index {
   position: fixed;
-  top: 16px;
-  right: 32px;
-  pointer-events: none;
-}
-
-.halving {
-  position: absolute;
-  border-style: solid;
-  opacity: 0.4;
-  border-width: 1px 1px 0 0;
+  bottom: calc(var(--scrollbar-width) + 16px);
+  left: 54px;
   pointer-events: none;
 }
 
 .grid {
+  position: absolute;
+  border-style: solid;
+  opacity: 0.4;
+  border-width: 0 0 1px 1px;
+  pointer-events: none;
+  display:table-cell;
+  vertical-align: text-bottom;
+}
+
+.minor {
   border-style: dashed;
   opacity: 0.2;
 }
@@ -152,9 +158,8 @@ body {
 
 @media screen and (max-width: 630px) {
   #index {
-    top: initial;
-    bottom: 30px;
     transform: scale(0.5);
-    transform-origin : 100% 100%;
+    transform-origin : bottom left;
+    left: 36px;
   }
 }

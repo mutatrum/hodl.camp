@@ -6,11 +6,11 @@ var since;
 const SCALES = [25, 33, 50, 67, 75, 80, 90, 100, 110, 125, 150, 175, 200, 250, 300, 400, 500];
 var scaleIndex = 7;
 var scaleSpanClearTimeout;
-var scrollBarWidth;
-const HALVINGS = ['2009-01-03',
-  '2010-04-22','2011-01-28','2011-12-14','2012-11-28',
-  '2013-10-09','2014-08-11','2015-07-29','2016-07-09',
-  '2017-06-23','2018-05-29','2019-05-24','2020-05-14'];
+const HALVINGS = [
+  '2009-01-03', '2010-04-22', '2011-01-28', '2011-12-14',
+  '2012-11-28', '2013-10-09', '2014-08-11', '2015-07-29',
+  '2016-07-09', '2017-06-23', '2018-05-29', '2019-05-24',
+  '2020-05-14'];
 
 function onLoad() {
   var xobj = new XMLHttpRequest();
@@ -33,11 +33,8 @@ function init() {
     localStorage.palette = 7;
   }
   var wrapperDiv =  document.getElementById('wrapper');
-  scrollBarWidth = wrapperDiv.offsetWidth - wrapperDiv.clientWidth;
-  
-  var backgroundDiv = document.getElementById('background');
-  backgroundDiv.style.height = 'calc(100vh - ' + (scrollBarWidth + 16) + 'px)';
-  backgroundDiv.style.width = 'calc(100vw - ' + (scrollBarWidth + 16) + 'px)';
+  var scrollbarWidth = wrapperDiv.offsetWidth - wrapperDiv.clientWidth;
+  document.documentElement.style.setProperty('--scrollbar-width', scrollbarWidth + 'px');
   
   var dateSpan = document.getElementById('date');
   dateSpan.innerHTML = formatDate(getIndexDate(prices.length - 1));
@@ -90,10 +87,10 @@ function drawPixels(hodlContext, colorMap) {
   pixels.fill(colorMap[200]);
   
   var y = 0;
-  for (var selldate = 1; selldate <= size; selldate++) {
-    for (var buydate = 0; buydate < selldate; buydate++) {
+  for (var buydate = 0; buydate <= size; buydate++) {
+    for (var selldate = buydate + 1; selldate <= size; selldate++) {
       var profit = getProfit(buydate, selldate);
-      pixels[y + buydate] = colorMap[getColorIndex(profit)];
+      pixels[y + selldate - 1] = colorMap[getColorIndex(profit)];
     }
     y += size;
   }
@@ -109,41 +106,68 @@ function createLabels() {
     if (date.getDate() == 1) {
       if (date.getMonth() == 0) {
         var labelDiv = document.createElement('div');
-        labelDiv.id = 'y' + date.getFullYear();
         labelDiv.classList.add('label');
         labelDiv.innerHTML = date.getFullYear();
-  
+        labelDiv.dataset.index = i;
         labelsDiv.appendChild(labelDiv);
       }
-      var labelImg = document.createElement('img');
-      labelImg.id = 'y' + date.getFullYear() + 'm' + date.getMonth();
-      labelImg.classList.add('dot');
+      var dotImg = document.createElement('img');
+      dotImg.classList.add('dot');
       if (date.getMonth() == 0) {
-        labelImg.src = 'line.png';
+        dotImg.src = 'line.png';
       } else {
-        labelImg.src = 'dot.png';
+        dotImg.src = 'dot.png';
       }
-      labelsDiv.appendChild(labelImg);
+      dotImg.dataset.index = i;
+      labelsDiv.appendChild(dotImg);
     }
-    var halving = HALVINGS.indexOf(formatDate(date));
-    if (halving != -1) {
-      var halvingDiv = document.createElement('div');
-      halvingDiv.id = 'h' + i;
-      halvingDiv.classList.add('halving');
-      if (halving % 4 == 0) {
-        halvingDiv.innerHTML = '&puncsp;' + date.getFullYear() + ' halving';
-      } else {
-        halvingDiv.classList.add('grid');
+    var halvingIndex = HALVINGS.indexOf(formatDate(date));
+    if (halvingIndex != -1) {
+      var gridDiv = document.createElement('div');
+      gridDiv.classList.add('grid');
+      if (halvingIndex % 4 != 0) {
+        gridDiv.classList.add('minor');
       }
-      labelsDiv.appendChild(halvingDiv);
+      gridDiv.dataset.index = i;
+      labelsDiv.appendChild(gridDiv);
+      
+      if (halvingIndex %4 == 0) {
+        var halvingDiv = document.createElement('div');
+        var era = halvingIndex / 4;
+        halvingDiv.innerHTML = '&puncsp;' + era + ordinal(era) + ' halving';
+        halvingDiv.classList.add('label');
+        halvingDiv.dataset.index = i;
+        labelsDiv.appendChild(halvingDiv);
+
+        var dotImg = document.createElement('img');
+        dotImg.classList.add('dot');
+        dotImg.src = 'line.png';
+        dotImg.dataset.index = i;
+        labelsDiv.appendChild(dotImg);
+      }
     }
   }
+}
+
+function ordinal(i) {
+  var ending = i % 10;
+  var tens = i % 100;
+  if (ending == 1 && tens != 11) {
+      return 'st';
+  }
+  if (ending == 2 && tens != 12) {
+      return 'nd';
+  }
+  if (ending == 3 && tens != 13) {
+      return 'rd';
+  }
+  return 'th';
 }
 
 function getColorMap() {
   var colorScale = getColorScale();
   var colors = colorScale.mode('lab').domain(DOMAIN).colors(401, 'rgb');
-  var buffer = colors.map(rgb => (255 << 24) | (rgb[2] << 16) | (rgb[1] << 8) | rgb[0]);
+  var buffer = colors.reverse().map(rgb => (255 << 24) | (rgb[2] << 16) | (rgb[1] << 8) | rgb[0]);
   return new Uint32Array(buffer);
 }
 
@@ -167,14 +191,14 @@ function onMouseMove(event) {
   var tipDiv = document.getElementById('tip');
   var markerCanvas = document.getElementById('marker');
   var size = prices.length - 1;
-  if (event.offsetX >= 0 && event.offsetX < size && 
-    event.offsetY >= 0 && event.offsetY < size &&
-    event.offsetX <= event.offsetY) {
+  if (event.offsetX >= 0 && event.offsetX <= size &&
+      event.offsetY >= 0 && event.offsetY <= size && 
+      event.offsetX >= event.offsetY) {
     
     hodlCanvas.style.cursor = 'crosshair';
     
-    var buy = event.offsetX;
-    var sell = event.offsetY + 1;
+    var buy = event.offsetY;
+    var sell = event.offsetX + 1;
     var buyDate = formatDate(getIndexDate(buy));
     var buyPrice = formatPrice(buy);
     var sellDate = formatDate(getIndexDate(sell));
@@ -200,7 +224,7 @@ function getColorIndex(profit) {
   } else {
     i = Math.log10(profit) * 10;
   }
-  return 200 + ((i * 2) | 0);
+  return 200 - ((i * 2) | 0);
 }
 
 function getProfit(buy, sell) {
@@ -312,24 +336,21 @@ function setScale() {
   borderDiv.style.width = (size + 8) + 'px';
   borderDiv.style.height = (size + 8) + 'px';
 
-  for (var i = 0; i < prices.length; i++) {
-    var date = getIndexDate(i);
-    var scaled = i * scaleFraction;
-    if (date.getDate() == 1) {
-      if (date.getMonth() == 0) {
-        var div = document.getElementById('y' + date.getFullYear());
-        div.style.top = (scaled - 22) + 'px';
-        div.style.left = (scaled + 5) + 'px';
-      }
-      var img = document.getElementById('y' + date.getFullYear() + 'm' + date.getMonth());
-      img.style.top = (scaled - 4) + 'px';
-      img.style.left = scaled + 'px';
+  var labelsDiv = document.getElementById('labels')
+  for (var labelDiv of labelsDiv.childNodes) {
+    var scaled = labelDiv.dataset.index * scaleFraction;
+    if (labelDiv.classList.contains('label')) {
+      labelDiv.style.top = (scaled + 45) + 'px';
+      labelDiv.style.left = (scaled - 127) + 'px';
     }
-    if (HALVINGS.includes(formatDate(date))) {
-      var div = document.getElementById('h' + i);
-      div.style.top = (scaled - 1) + 'px';
-      div.style.width = (scaled - 1) + 'px';
-      div.style.height = (size - scaled) + 'px';
+    if (labelDiv.classList.contains('dot')) {
+      labelDiv.style.top = scaled + 'px';
+      labelDiv.style.left = (scaled - 4) + 'px';
+    }
+    if (labelDiv.classList.contains('grid')) {
+      labelDiv.style.left = (scaled) + 'px';
+      labelDiv.style.width = (size - scaled) + 'px';
+      labelDiv.style.height = (scaled - 1) + 'px';
     }
   }
 }
