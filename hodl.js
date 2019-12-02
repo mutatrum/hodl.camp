@@ -35,6 +35,7 @@ function init() {
   var wrapperDiv =  document.getElementById('wrapper');
   var scrollbarWidth = wrapperDiv.offsetWidth - wrapperDiv.clientWidth;
   document.documentElement.style.setProperty('--scrollbar-width', scrollbarWidth + 'px');
+  document.documentElement.style.setProperty('--scale', 1);
   
   var dateSpan = document.getElementById('date');
   dateSpan.innerHTML = formatDate(getIndexDate(prices.length - 1));
@@ -105,63 +106,60 @@ function createLabels() {
     var date = getIndexDate(i);
     if (date.getDate() == 1) {
       if (date.getMonth() == 0) {
-        var labelDiv = document.createElement('div');
-        labelDiv.classList.add('label');
-        labelDiv.innerHTML = date.getFullYear();
-        labelDiv.dataset.index = i;
-        labelsDiv.appendChild(labelDiv);
+        labelsDiv.appendChild(createLabelDiv(date.getFullYear(), i));
       }
-      var dotImg = document.createElement('img');
-      dotImg.classList.add('dot');
-      if (date.getMonth() == 0) {
-        dotImg.src = 'line.png';
-      } else {
-        dotImg.src = 'dot.png';
-      }
-      dotImg.dataset.index = i;
-      labelsDiv.appendChild(dotImg);
+      labelsDiv.appendChild(createDotImg(date.getMonth() == 0 ? 'line.png' : 'dot.png', i));
     }
     var halvingIndex = HALVINGS.indexOf(formatDate(date));
     if (halvingIndex != -1) {
-      var gridDiv = document.createElement('div');
-      gridDiv.classList.add('grid');
-      if (halvingIndex % 4 != 0) {
-        gridDiv.classList.add('minor');
-      }
-      gridDiv.dataset.index = i;
-      labelsDiv.appendChild(gridDiv);
-      
-      if (halvingIndex %4 == 0) {
-        var halvingDiv = document.createElement('div');
-        var era = halvingIndex / 4;
-        halvingDiv.innerHTML = '&puncsp;' + era + ordinal(era) + ' halving';
-        halvingDiv.classList.add('label');
-        halvingDiv.dataset.index = i;
-        labelsDiv.appendChild(halvingDiv);
-
-        var dotImg = document.createElement('img');
-        dotImg.classList.add('dot');
-        dotImg.src = 'line.png';
-        dotImg.dataset.index = i;
-        labelsDiv.appendChild(dotImg);
+      labelsDiv.appendChild(createGridDiv(i, halvingIndex));
+      if (halvingIndex % 4 == 0) {
+        labelsDiv.appendChild(createLabelDiv('&puncsp;' + ordinal(halvingIndex / 4) + ' halving', i));
+        labelsDiv.appendChild(createDotImg('line.png', i));
       }
     }
   }
+}
+
+function createLabelDiv(innerHTML, i) {
+  var labelDiv = document.createElement('div');
+  labelDiv.classList.add('label');
+  labelDiv.innerHTML = innerHTML;
+  labelDiv.style.setProperty('--index', i + 'px');
+  return labelDiv;
+}
+
+function createDotImg(src, i) {
+  var dotImg = document.createElement('img');
+  dotImg.classList.add('dot');
+  dotImg.src = src;
+  dotImg.style.setProperty('--index', i + 'px');
+  return dotImg;
+}
+
+function createGridDiv(i, halvingIndex) {
+  var gridDiv = document.createElement('div');
+  gridDiv.classList.add('grid');
+  if (halvingIndex % 4 != 0) {
+    gridDiv.classList.add('minor');
+  }
+  gridDiv.style.setProperty('--index', i + 'px');
+  return gridDiv;
 }
 
 function ordinal(i) {
   var ending = i % 10;
   var tens = i % 100;
   if (ending == 1 && tens != 11) {
-      return 'st';
+      return i + 'st';
   }
   if (ending == 2 && tens != 12) {
-      return 'nd';
+      return i + 'nd';
   }
   if (ending == 3 && tens != 13) {
-      return 'rd';
+      return i + 'rd';
   }
-  return 'th';
+  return i + 'th';
 }
 
 function getColorMap() {
@@ -326,42 +324,18 @@ function onZoomOutClick(event) {
 function setScale() {
   var scale = SCALES[scaleIndex];
   var scaleFraction = scale / 100;
-
-  var hodlCanvas = document.getElementById('hodl');
-  hodlCanvas.style.transform = `scale(${scaleFraction})`;
-
   var size = (prices.length - 1) * scaleFraction;
 
-  var borderDiv = document.getElementById('border');
-  borderDiv.style.width = (size + 8) + 'px';
-  borderDiv.style.height = (size + 8) + 'px';
-
-  var labelsDiv = document.getElementById('labels')
-  for (var labelDiv of labelsDiv.childNodes) {
-    var scaled = labelDiv.dataset.index * scaleFraction;
-    if (labelDiv.classList.contains('label')) {
-      labelDiv.style.top = (scaled + 45) + 'px';
-      labelDiv.style.left = (scaled - 127) + 'px';
-    }
-    if (labelDiv.classList.contains('dot')) {
-      labelDiv.style.top = scaled + 'px';
-      labelDiv.style.left = (scaled - 4) + 'px';
-    }
-    if (labelDiv.classList.contains('grid')) {
-      labelDiv.style.left = (scaled) + 'px';
-      labelDiv.style.width = (size - scaled) + 'px';
-      labelDiv.style.height = (scaled - 1) + 'px';
-    }
-  }
+  var documentStyle = document.documentElement.style;
+  documentStyle.setProperty('--scale', scale / 100);
+  documentStyle.setProperty('--size', size + 'px');
 }
 
 function setScaleSpan() {
   var scale = SCALES[scaleIndex];
   var scaleSpan = document.getElementById('scale');
-  var scalePadSpan = document.getElementById('scale-pad');
-  scaleSpan.innerHTML = scale + '%';
-  scalePadSpan.innerHTML = '&nbsp;&nbsp;&nbsp;' + (scaleIndex > 6 ? '&nbsp;' : '');
+  scaleSpan.innerHTML = scale + '%' + (scaleIndex < 7 ? '&nbsp;' : '');
 
   clearTimeout(scaleSpanClearTimeout);
-  scaleSpanClearTimeout = setTimeout(function(){ scaleSpan.innerHTML = ''; scalePadSpan.innerHTML = '';}, 2000);
+  scaleSpanClearTimeout = setTimeout(function(){ scaleSpan.innerHTML = '&nbsp;&nbsp;&nbsp;&nbsp;';}, 2000);
 }
