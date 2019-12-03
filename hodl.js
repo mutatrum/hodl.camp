@@ -40,7 +40,7 @@ function init() {
   var scrollbarWidth = wrapperDiv.offsetWidth - wrapperDiv.clientWidth;
   setProperty('--scrollbar-width', `${scrollbarWidth}px`);
   
-  setInnerHTML('date', formatDate(getIndexDate(prices.length - 1));
+  setInnerHTML('date', formatDate(getIndexDate(prices.length - 1)));
 
   createLabels();
 
@@ -200,7 +200,7 @@ function onMouseMove(event) {
       `bought on ${buyDate} for ${buyPrice}<br>`+
       `&nbsp;&nbsp;sold on ${sellDate} for ${sellPrice}<br>` + 
       `&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hodl ${duration}<br>` + 
-      `&nbsp;&nbsp;&nbsp;profit ${profit}%`;
+      `&nbsp;&nbsp;&nbsp;profit ${profit}%`);
     
     var colorIndex = getColorIndex(profit);
     setProperty('--color-index', `${colorIndex}px`);
@@ -330,7 +330,7 @@ function setScale() {
 
 function setScaleSpan() {
   var scale = SCALES[scaleIndex];
-  setInnerHTML('scale', scale + '%' + (scale < 100 ? '&nbsp;' : '');
+  setInnerHTML('scale', scale + '%' + (scale < 100 ? '&nbsp;' : ''));
   setProperty('--visibility-scale', 'visible')
 
   clearTimeout(scaleSpanClearTimeout);
