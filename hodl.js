@@ -206,6 +206,8 @@ function onMouseMove(event) {
     setProperty('--color-index', `${colorIndex}px`);
     setProperty('--display-marker', 'block');
     setProperty('--cursor', 'crosshair');
+    setProperty('--x-position', `${event.offsetX}px`);
+    setProperty('--y-position', `${event.offsetY}px`);
   } else {
     onMouseLeave(event);
   }

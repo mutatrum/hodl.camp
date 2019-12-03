@@ -91,8 +91,6 @@ body {
   opacity: 0.4;
   border-width: 0 0 1px 1px;
   pointer-events: none;
-  display: table-cell;
-  vertical-align: text-bottom;
   left: calc(var(--index) * var(--scale));
   width: calc(var(--size) - (var(--index) * var(--scale)) - 1px);
   height: calc((var(--index) * var(--scale)) - 1px);
@@ -174,6 +172,26 @@ body {
   writing-mode: vertical-lr;
   transform: rotate(180deg);
   pointer-events: none;
+}
+
+#crosshair {
+  display: var(--display-marker);
+}
+
+.x-index {
+  --index: var(--x-position);
+}
+
+.y-index {
+  --index: var(--y-position);
+}
+
+#x-grid {
+  border-width: 0 0 0 1px;
+}
+
+#y-grid {
+  border-width: 0 0 1px 0;
 }
 
 @media screen and (max-width: 950px) {
