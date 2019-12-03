@@ -208,6 +208,10 @@ function onMouseMove(event) {
     setProperty('--cursor', 'crosshair');
     setProperty('--x-position', `${event.offsetX}px`);
     setProperty('--y-position', `${event.offsetY}px`);
+    
+    setInnerHTML('x-label', `sold on ${buyDate}`);
+    setInnerHTML('y-label', `bought on ${buyDate}`);
+    setInnerHTML('profit', `${profit}%`);
   } else {
     onMouseLeave(event);
   }

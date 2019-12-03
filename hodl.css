@@ -62,11 +62,11 @@ body {
 
 .label {
   position: absolute;
-  width: 140px;
+  width: 200px;
   text-align: right;
   transform: rotate(-45deg);
-  top: calc((var(--index) * var(--scale)) + 45px);
-  left: calc((var(--index) * var(--scale)) - 127px);
+  top: calc((var(--index) * var(--scale)) + 66px);
+  left: calc((var(--index) * var(--scale)) - 178px);
 }
 
 .dot {
@@ -152,28 +152,6 @@ body {
   display: var(--display-help);
 }
 
-#x-axis {
-  width: 300px;
-  position: fixed;
-  bottom: 32px;
-  left: 50%;
-  margin-left: -150px;
-  text-align: center;
-  pointer-events: none;
-}
-
-#y-axis {
-  height: 300px;
-  position: fixed;
-  left: 16px;
-  top: 50%;
-  margin-top: -150px;
-  text-align: center;
-  writing-mode: vertical-lr;
-  transform: rotate(180deg);
-  pointer-events: none;
-}
-
 #crosshair {
   display: var(--display-marker);
 }
@@ -186,12 +164,25 @@ body {
   --index: var(--y-position);
 }
 
+#x-label, #y-label {
+  background-color: var(--background-color);
+  z-index: 1;
+}
+
 #x-grid {
   border-width: 0 0 0 1px;
 }
 
 #y-grid {
   border-width: 0 0 1px 0;
+}
+
+#profit {
+  position: absolute;
+  left: calc((var(--x-position) * var(--scale)) + 7px);
+  top: calc((var(--y-position) * var(--scale)) - 24px);
+  display: var(--display-marker);
+  pointer-events: none;
 }
 
 @media screen and (max-width: 950px) {
