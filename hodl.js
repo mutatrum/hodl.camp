@@ -1,11 +1,14 @@
 const COLORMAPS = ['BrBG', 'PiYG', 'PRGn', 'PuOr', 'RdBu', 'RdGy', 'RdYlBu', 'RdYlGn', 'Spectral'];
 const DOMAIN = [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.55, 0.625, 0.725, 0.85, 1.0];
+const LINE = 'line.png';
+const DOT = 'dot.png';
 
 var prices;
 var since;
 const SCALES = [25, 33, 50, 67, 75, 80, 90, 100, 110, 125, 150, 175, 200, 250, 300, 400, 500];
 var scaleIndex = 7;
 var scaleSpanClearTimeout;
+var showHelp = false;
 const HALVINGS = [
   '2009-01-03', '2010-04-22', '2011-01-28', '2011-12-14',
   '2012-11-28', '2013-10-09', '2014-08-11', '2015-07-29',
@@ -29,19 +32,20 @@ function onLoad() {
 }
 
 function init() {
-  if (localStorage.getItem("palette") === null) {
+  if (localStorage.getItem('palette') === null) {
     localStorage.palette = 7;
   }
+  
   var wrapperDiv =  document.getElementById('wrapper');
   var scrollbarWidth = wrapperDiv.offsetWidth - wrapperDiv.clientWidth;
-  document.documentElement.style.setProperty('--scrollbar-width', scrollbarWidth + 'px');
-  document.documentElement.style.setProperty('--scale', 1);
+  setProperty('--scrollbar-width', `${scrollbarWidth}px`);
   
-  var dateSpan = document.getElementById('date');
-  dateSpan.innerHTML = formatDate(getIndexDate(prices.length - 1));
+  setInnerHTML('date', formatDate(getIndexDate(prices.length - 1));
 
   createLabels();
-  setScale();
+
+  var size = prices.length - 1;
+  setProperty('--size', `${size}px`);
 
   var colorMap = getColorMap();
   drawIndex(colorMap);
@@ -57,26 +61,20 @@ function drawIndex(colorMap) {
   for (var i = 0; i < 25; i++) {
     colorMapContext.putImageData(imageData, i, 0);
   }
-
-  colorMapCanvas.style.display = 'block';
 }
 
 function drawHodl(colorMap) {
   var size = prices.length - 1;
 
   var hodlCanvas = document.getElementById('hodl');
-  hodlCanvas.style.display = 'block';
   hodlCanvas.width = size;
   hodlCanvas.height = size;
   
   var hodlContext = hodlCanvas.getContext('2d');
   drawPixels(hodlContext, colorMap);
   
-  var backgroundDiv = document.getElementById('background');
-  backgroundDiv.style.backgroundColor = getColorScale().colors()[5];
-
-  var aboutDiv = document.getElementById('about');
-  aboutDiv.style.display = 'block';
+  setProperty('--background-color', getColorScale().colors()[5]);
+  setProperty('--display-about', 'block');
 }
 
 function drawPixels(hodlContext, colorMap) {
@@ -102,48 +100,59 @@ function drawPixels(hodlContext, colorMap) {
 
 function createLabels() {
   var labelsDiv = document.getElementById('labels');
-  for (var i = 0; i < prices.length; i++) {
-    var date = getIndexDate(i);
+  for (var index = 0; index < prices.length; index++) {
+    var date = getIndexDate(index);
     if (date.getDate() == 1) {
       if (date.getMonth() == 0) {
-        labelsDiv.appendChild(createLabelDiv(date.getFullYear(), i));
+        var yearLabelDiv = createLabelDiv(index, date.getFullYear());
+        labelsDiv.appendChild(yearLabelDiv);
       }
-      labelsDiv.appendChild(createDotImg(date.getMonth() == 0 ? 'line.png' : 'dot.png', i));
+      
+      var monthDotImg = createDotImg(index, date.getMonth() == 0 ? LINE : DOT);
+      labelsDiv.appendChild(monthDotImg);
     }
+
     var halvingIndex = HALVINGS.indexOf(formatDate(date));
     if (halvingIndex != -1) {
-      labelsDiv.appendChild(createGridDiv(i, halvingIndex));
+      
+      var labelDiv = createGridDiv(index, halvingIndex);
+      labelsDiv.appendChild(labelDiv);
+      
       if (halvingIndex % 4 == 0) {
-        labelsDiv.appendChild(createLabelDiv('&puncsp;' + ordinal(halvingIndex / 4) + ' halving', i));
-        labelsDiv.appendChild(createDotImg('line.png', i));
+        var halving = ordinal(halvingIndex / 4);
+        var halvingLabelDiv = createLabelDiv(index, `&puncsp;${halving} halving`);
+        labelsDiv.appendChild(halvingLabelDiv);
+        
+        var halvingDotImg = createDotImg(index, LINE);
+        labelsDiv.appendChild(halvingDotImg);
       }
     }
   }
 }
 
-function createLabelDiv(innerHTML, i) {
+function createLabelDiv(index, innerHTML) {
   var labelDiv = document.createElement('div');
   labelDiv.classList.add('label');
   labelDiv.innerHTML = innerHTML;
-  labelDiv.style.setProperty('--index', i + 'px');
+  labelDiv.style.setProperty('--index', `${index}px`);
   return labelDiv;
 }
 
-function createDotImg(src, i) {
+function createDotImg(index, src) {
   var dotImg = document.createElement('img');
   dotImg.classList.add('dot');
   dotImg.src = src;
-  dotImg.style.setProperty('--index', i + 'px');
+  dotImg.style.setProperty('--index', `${index}px`);
   return dotImg;
 }
 
-function createGridDiv(i, halvingIndex) {
+function createGridDiv(index, halvingIndex) {
   var gridDiv = document.createElement('div');
   gridDiv.classList.add('grid');
   if (halvingIndex % 4 != 0) {
     gridDiv.classList.add('minor');
   }
-  gridDiv.style.setProperty('--index', i + 'px');
+  gridDiv.style.setProperty('--index', `${index}px`);
   return gridDiv;
 }
 
@@ -173,28 +182,11 @@ function getColorScale() {
   return chroma.scale(COLORMAPS[localStorage.palette]);
 }
 
-function onMouseLeave(event) {
-  var tipCanvas = document.getElementById('tip');
-  tipCanvas.style.display = 'none';
-  
-  var markerCanvas = document.getElementById('marker');
-  markerCanvas.style.display = 'none';
-  
-  var hodlCanvas = document.getElementById('hodl');
-  hodlCanvas.style.cursor = 'default';
-}
-
 function onMouseMove(event) {
-  var hodlCanvas = document.getElementById('hodl');
-  var tipDiv = document.getElementById('tip');
-  var markerCanvas = document.getElementById('marker');
-  var size = prices.length - 1;
-  if (event.offsetX >= 0 && event.offsetX <= size &&
-      event.offsetY >= 0 && event.offsetY <= size && 
+  if (event.offsetX >= 0 && event.offsetX < prices.length &&
+      event.offsetY >= 0 && event.offsetY < prices.length && 
       event.offsetX >= event.offsetY) {
-    
-    hodlCanvas.style.cursor = 'crosshair';
-    
+
     var buy = event.offsetY;
     var sell = event.offsetX + 1;
     var buyDate = formatDate(getIndexDate(buy));
@@ -203,17 +195,25 @@ function onMouseMove(event) {
     var sellPrice = formatPrice(sell);
     var duration = formatDuration(buy, sell);
     var profit = getProfit(buy, sell);
-    tipDiv.innerHTML = `bought on ${buyDate} for ${buyPrice}<br>&nbsp;&nbsp;sold on ${sellDate} for ${sellPrice}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hodl ${duration}<br>&nbsp;&nbsp;&nbsp;profit ${profit}%`;
-    tipDiv.style.display = 'block';
+
+    setInnerHTML('tip', 
+      `bought on ${buyDate} for ${buyPrice}<br>`+
+      `&nbsp;&nbsp;sold on ${sellDate} for ${sellPrice}<br>` + 
+      `&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hodl ${duration}<br>` + 
+      `&nbsp;&nbsp;&nbsp;profit ${profit}%`;
     
     var colorIndex = getColorIndex(profit);
-    markerCanvas.style.top = colorIndex + 'px';
-    markerCanvas.style.display = 'block';
+    setProperty('--color-index', `${colorIndex}px`);
+    setProperty('--display-marker', 'block');
+    setProperty('--cursor', 'crosshair');
   } else {
-    hodlCanvas.style.cursor = 'default';
-    tipDiv.style.display = 'none';
-    markerCanvas.style.display = 'none';
+    onMouseLeave(event);
   }
+}
+
+function onMouseLeave(event) {
+  setProperty('--display-marker', 'none');
+  setProperty('--cursor', 'default');
 }
 
 function getColorIndex(profit) {
@@ -232,8 +232,7 @@ function getProfit(buy, sell) {
 }
 
 function formatPrice(index) {
-  var price = prices[index];
-  return '$' + price.toFixed(2);
+  return '$' + prices[index].toFixed(2);
 }
 
 function getIndexDate(index) {
@@ -290,8 +289,8 @@ function plural(n, word) {
 }
 
 function onHelpClick(event) {
-  var helpDiv = document.getElementById('help');
-  helpDiv.style.display = (helpDiv.style.display == 'block' ? 'none' : 'block');
+  showHelp = !showHelp;
+  setProperty('--display-help', showHelp ? 'block' : 'none');
   event.preventDefault();
 }
 
@@ -322,20 +321,26 @@ function onZoomOutClick(event) {
 }
 
 function setScale() {
-  var scale = SCALES[scaleIndex];
-  var scaleFraction = scale / 100;
-  var size = (prices.length - 1) * scaleFraction;
+  var scale = SCALES[scaleIndex] / 100;
+  var size = (prices.length - 1) * scale;
 
-  var documentStyle = document.documentElement.style;
-  documentStyle.setProperty('--scale', scale / 100);
-  documentStyle.setProperty('--size', size + 'px');
+  setProperty('--scale', scale);
+  setProperty('--size', `${size}px`);
 }
 
 function setScaleSpan() {
   var scale = SCALES[scaleIndex];
-  var scaleSpan = document.getElementById('scale');
-  scaleSpan.innerHTML = scale + '%' + (scaleIndex < 7 ? '&nbsp;' : '');
+  setInnerHTML('scale', scale + '%' + (scale < 100 ? '&nbsp;' : '');
+  setProperty('--visibility-scale', 'visible')
 
   clearTimeout(scaleSpanClearTimeout);
-  scaleSpanClearTimeout = setTimeout(function(){ scaleSpan.innerHTML = '&nbsp;&nbsp;&nbsp;&nbsp;';}, 2000);
+  scaleSpanClearTimeout = setTimeout(function(){ setProperty('--visibility-scale', 'hidden') }, 2000);
+}
+
+function setInnerHTML(id, innerHTML) {
+  document.getElementById(id).innerHTML = innerHTML;
+}
+
+function setProperty(key, value) {
+  document.documentElement.style.setProperty(key, value);
 }
