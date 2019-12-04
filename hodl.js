@@ -6,8 +6,8 @@ const DOT = 'dot.png';
 var prices;
 var since;
 const SCALES = [25, 33, 50, 67, 75, 80, 90, 100, 110, 125, 150, 175, 200, 250, 300, 400, 500];
-var scaleIndex = 7;
 var scaleSpanClearTimeout;
+var paletteSpanClearTimeout;
 var showHelp = false;
 const HALVINGS = [
   '2009-01-03', '2010-04-22', '2011-01-28', '2011-12-14',
@@ -35,6 +35,9 @@ function init() {
   if (localStorage.getItem('palette') === null) {
     localStorage.palette = 7;
   }
+  if (localStorage.getItem('scaleIndex') === null) {
+    localStorage.scaleIndex = 7;
+  }
   
   var wrapperDiv =  document.getElementById('wrapper');
   var scrollbarWidth = wrapperDiv.offsetWidth - wrapperDiv.clientWidth;
@@ -44,12 +47,18 @@ function init() {
 
   createLabels();
 
-  var size = prices.length - 1;
-  setProperty('--size', `${size}px`);
+  setScale();
 
   var colorMap = getColorMap();
   drawIndex(colorMap);
   drawHodl(colorMap);
+  
+  if (getPalette() != 7) {
+    setPaletteSpan();
+  }
+  if (getScaleIndex() != 7) {
+    setScaleSpan();
+  }
 }
 
 function drawIndex(colorMap) {
@@ -179,7 +188,7 @@ function getColorMap() {
 }
 
 function getColorScale() {
-  return chroma.scale(COLORMAPS[localStorage.palette]);
+  return chroma.scale(COLORMAPS[getPalette()]);
 }
 
 function onMouseMove(event) {
@@ -301,16 +310,20 @@ function onHelpClick(event) {
 }
 
 function onChangePaletteClick(event) {
-  localStorage.palette = (localStorage.palette + 1) % COLORMAPS.length;
+  var palette = (getPalette() + 1) % COLORMAPS.length;
+  localStorage.palette = palette;
+
   var colorMap = getColorMap();
   drawIndex(colorMap);
   drawHodl(colorMap);
+  setPaletteSpan();
   event.preventDefault();
 }
 
 function onZoomInClick(event) {
+  var scaleIndex = getScaleIndex();
   if (scaleIndex < SCALES.length - 1) {
-    scaleIndex++;
+    localStorage.scaleIndex = scaleIndex + 1;
     setScale();
   }
   setScaleSpan();
@@ -318,16 +331,25 @@ function onZoomInClick(event) {
 }
 
 function onZoomOutClick(event) {
+  var scaleIndex = getScaleIndex();
   if (scaleIndex > 0) {
-    scaleIndex--;
+    localStorage.scaleIndex = scaleIndex - 1;
     setScale();
   }
   setScaleSpan();
   event.preventDefault();
 }
 
+function getScaleIndex() {
+  return Number(localStorage.scaleIndex);
+}
+
+function getPalette() {
+  return Number(localStorage.palette);
+}
+
 function setScale() {
-  var scale = SCALES[scaleIndex] / 100;
+  var scale = SCALES[getScaleIndex()] / 100;
   var size = (prices.length - 1) * scale;
 
   setProperty('--scale', scale);
@@ -335,12 +357,20 @@ function setScale() {
 }
 
 function setScaleSpan() {
-  var scale = SCALES[scaleIndex];
-  setInnerHTML('scale', scale + '%' + (scale < 100 ? '&nbsp;' : ''));
+  var scale = SCALES[getScaleIndex()];
+  setInnerHTML('scale', `${scale}%`);
   setProperty('--visibility-scale', 'visible')
 
   clearTimeout(scaleSpanClearTimeout);
   scaleSpanClearTimeout = setTimeout(function(){ setProperty('--visibility-scale', 'hidden') }, 2000);
+}
+
+function setPaletteSpan() {
+  setInnerHTML('palette', COLORMAPS[getPalette()]);
+  setProperty('--visibility-palette', 'visible')
+
+  clearTimeout(paletteSpanClearTimeout);
+  paletteSpanClearTimeout = setTimeout(function(){ setProperty('--visibility-palette', 'hidden') }, 2000);
 }
 
 function setInnerHTML(id, innerHTML) {

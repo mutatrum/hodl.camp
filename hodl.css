@@ -7,6 +7,7 @@
   --display-help: none;
   --display-marker: none;
   --visibility-scale: hidden;
+  --visibility-palette: hidden;
   --cursor: default;
 }
 
@@ -149,6 +150,14 @@ body {
 
 #scale {
   visibility: var(--visibility-scale);
+  position: absolute;
+  margin-left: 8px;
+}
+
+#palette {
+  visibility: var(--visibility-palette);
+  position: absolute;
+  margin-left: 8px;
 }
 
 #help {
@@ -190,7 +199,7 @@ body {
   position: absolute;
   left: calc((var(--x-position) * var(--scale)) + 7px);
   top: calc((var(--y-position) * var(--scale)) - 24px);
-  width: max-content;
+  white-space: nowrap;
   display: var(--display-marker);
   pointer-events: none;
 }
