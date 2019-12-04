@@ -210,22 +210,21 @@ body {
   z-index: 1;
 }
 
-#profit {
+.cross {
   position: absolute;
   left: calc((var(--x-position) * var(--scale)) + 7px);
-  top: calc((var(--y-position) * var(--scale)) - 24px);
+  top: calc((var(--y-position) * var(--scale)) + var(--y-offset));
   white-space: nowrap;
   display: var(--display-marker);
   pointer-events: none;
 }
 
 #duration {
-  position: absolute;
-  left: calc((var(--x-position) * var(--scale)) + 7px);
-  top: calc((var(--y-position) * var(--scale)) + 2px);
-  white-space: nowrap;
-  display: var(--display-marker);
-  pointer-events: none;
+  --y-offset: -24px;
+}
+
+#profit {
+  --y-offset: 0px;
 }
 
 @media screen and (max-width: 950px) {
