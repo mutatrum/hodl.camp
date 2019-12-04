@@ -211,7 +211,7 @@ function onMouseMove(event) {
     
     setInnerHTML('x-label', `sold on ${sellDate}`);
     setInnerHTML('y-label', `bought on ${buyDate}`);
-    setInnerHTML('profit', `${profit}%`);
+    setInnerHTML('profit', `profit ${profit}%`);
   } else {
     onMouseLeave(event);
   }

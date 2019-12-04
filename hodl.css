@@ -58,6 +58,12 @@ body {
   position: absolute;
   top: 8px;
   left: 8px;
+  width: var(--size);
+  height: var(--size);
+  min-height: calc(100% - 16px);
+  min-width: calc(100% - 16px);
+  overflow: hidden;
+  pointer-events: none;
 }
 
 .label {
@@ -65,8 +71,9 @@ body {
   width: 200px;
   text-align: right;
   transform: rotate(-45deg);
-  top: calc((var(--index) * var(--scale)) + 66px);
-  left: calc((var(--index) * var(--scale)) - 178px);
+  --position: calc(var(--index) * var(--scale));
+  top: calc(var(--position) + 66px);
+  left: calc(var(--position) - 178px);
 }
 
 .dot {
@@ -74,8 +81,9 @@ body {
   height: 4px;
   width: 4px;
   image-rendering: pixelated;
-  top: calc((var(--index) * var(--scale)));
-  left: calc((var(--index) * var(--scale)) - 4px);
+  --position: calc(var(--index) * var(--scale));
+  top: var(--position);
+  left: calc(var(--position) - 4px);
 }
 
 #index {
@@ -91,9 +99,10 @@ body {
   opacity: 0.4;
   border-width: 0 0 1px 1px;
   pointer-events: none;
-  left: calc(var(--index) * var(--scale));
-  width: calc(var(--size) - (var(--index) * var(--scale)) - 1px);
-  height: calc((var(--index) * var(--scale)) - 1px);
+  --position: calc(var(--index) * var(--scale));
+  left: var(--position);
+  width: calc(var(--size) - var(--position) - 1px);
+  height: calc(var(--position) - 1px);
 }
 
 .minor {
@@ -181,6 +190,7 @@ body {
   position: absolute;
   left: calc((var(--x-position) * var(--scale)) + 7px);
   top: calc((var(--y-position) * var(--scale)) - 24px);
+  width: max-content;
   display: var(--display-marker);
   pointer-events: none;
 }
