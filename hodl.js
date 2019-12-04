@@ -141,7 +141,7 @@ function createLabels() {
 
 function createLabelDiv(index, innerHTML) {
   var labelDiv = document.createElement('div');
-  labelDiv.classList.add('label');
+  labelDiv.classList.add('index', 'label');
   labelDiv.innerHTML = innerHTML;
   labelDiv.style.setProperty('--index', `${index}px`);
   return labelDiv;
@@ -149,7 +149,7 @@ function createLabelDiv(index, innerHTML) {
 
 function createDotImg(index, src) {
   var dotImg = document.createElement('img');
-  dotImg.classList.add('dot');
+  dotImg.classList.add('index', 'dot');
   dotImg.src = src;
   dotImg.style.setProperty('--index', `${index}px`);
   return dotImg;
@@ -157,7 +157,7 @@ function createDotImg(index, src) {
 
 function createGridDiv(index, halvingIndex) {
   var gridDiv = document.createElement('div');
-  gridDiv.classList.add('grid');
+  gridDiv.classList.add('index', 'grid');
   if (halvingIndex % 4 != 0) {
     gridDiv.classList.add('minor');
   }
@@ -220,7 +220,10 @@ function onMouseMove(event) {
     
     setInnerHTML('x-label', `sold on ${sellDate}`);
     setInnerHTML('y-label', `bought on ${buyDate}`);
+    setInnerHTML('x-price', `for ${sellPrice}`)
+    setInnerHTML('y-price', `for ${buyPrice}`)
     setInnerHTML('profit', `profit ${profit}%`);
+    setInnerHTML('duration', `hodl ${duration}`);
   } else {
     onMouseLeave(event);
   }

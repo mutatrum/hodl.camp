@@ -67,14 +67,19 @@ body {
   pointer-events: none;
 }
 
+.index {
+  --position: calc(var(--index) * var(--scale));
+  top: calc(var(--position) + var(--top-offset));
+  left: calc(var(--position) + var(--left-offset));
+}
+
 .label {
   position: absolute;
   width: 200px;
   text-align: right;
   transform: rotate(-45deg);
-  --position: calc(var(--index) * var(--scale));
-  top: calc(var(--position) + 66px);
-  left: calc(var(--position) - 178px);
+  --top-offset: 66px;
+  --left-offset: -178px;
 }
 
 .dot {
@@ -82,9 +87,8 @@ body {
   height: 4px;
   width: 4px;
   image-rendering: pixelated;
-  --position: calc(var(--index) * var(--scale));
-  top: var(--position);
-  left: calc(var(--position) - 4px);
+  --top-offset: 0px;
+  --left-offset: -4px;
 }
 
 #index {
@@ -92,6 +96,7 @@ body {
   bottom: calc(var(--scrollbar-width) + 16px);
   left: 54px;
   pointer-events: none;
+  z-index: 1;
 }
 
 .grid {
@@ -100,7 +105,7 @@ body {
   opacity: 0.4;
   border-width: 0 0 1px 1px;
   pointer-events: none;
-  --position: calc(var(--index) * var(--scale));
+  top: 0px;
   left: var(--position);
   width: calc(var(--size) - var(--position) - 1px);
   height: calc(var(--position) - 1px);
@@ -174,17 +179,22 @@ body {
   display: var(--display-marker);
 }
 
-.x-index {
+.x-position {
   --index: var(--x-position);
 }
 
-.y-index {
+.y-position {
   --index: var(--y-position);
 }
 
-#x-label, #y-label {
-  background-color: var(--background-color);
-  z-index: 1;
+#x-price {
+  --top-offset: 66px + 14px;
+  --left-offset: -178px + 14px;
+}
+
+#y-price {
+  --top-offset: 66px + 14px;
+  --left-offset: -178px + 14px;
 }
 
 #x-grid {
@@ -195,10 +205,24 @@ body {
   border-width: 0 0 1px 0;
 }
 
+.grid-label {
+  background-color: var(--background-color);
+  z-index: 1;
+}
+
 #profit {
   position: absolute;
   left: calc((var(--x-position) * var(--scale)) + 7px);
   top: calc((var(--y-position) * var(--scale)) - 24px);
+  white-space: nowrap;
+  display: var(--display-marker);
+  pointer-events: none;
+}
+
+#duration {
+  position: absolute;
+  left: calc((var(--x-position) * var(--scale)) + 7px);
+  top: calc((var(--y-position) * var(--scale)) + 2px);
   white-space: nowrap;
   display: var(--display-marker);
   pointer-events: none;
