@@ -14,3 +14,7 @@ price data: [coinmetrics.io](https://coinmetrics.io/charts/#assets=btc)
 # usage
 
 Check out and download the [raw data](https://coinmetrics.io/newdata/split/btc_PriceUSD.txt) from coinmetrics.
+
+# screenshot
+
+![hodl.png](hodl.png)
