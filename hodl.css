@@ -116,6 +116,19 @@ body {
   opacity: 0.2;
 }
 
+#hodl-line {
+  position: absolute;
+  border-style: dashed;
+  opacity: 0.4;
+  border-width: 1px 0 0 0;
+  text-align: right;
+  pointer-events: none;
+  transform: rotate(45deg);
+  transform-origin: 0 0;
+  left: calc(var(--hodl-line) * var(--scale));
+  width: calc(var(--hodl-line-length) * var(--scale));
+}
+
 #marker {
   position: absolute;
   width: 25px;
