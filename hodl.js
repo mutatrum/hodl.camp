@@ -88,6 +88,8 @@ function drawHodl(colorMap) {
 
 function drawPixels(hodlContext, colorMap) {
   var hodlLine = 0;
+  var hodlBuy;
+  var hodlSell;
   var size = prices.length - 1;
 
   var imageData = hodlContext.createImageData(size, size);
@@ -102,6 +104,8 @@ function drawPixels(hodlContext, colorMap) {
       var duration = selldate - buydate;
       if (profit < 0 && hodlLine < duration) {
         hodlLine = duration;
+        hodlBuy = buydate;
+        hodlSell = selldate;
       }
       pixels[y + selldate - 1] = colorMap[getColorIndex(profit)];
     }
@@ -113,7 +117,7 @@ function drawPixels(hodlContext, colorMap) {
   
   setProperty('--hodl-line', `${hodlLine}px`);
   setProperty('--hodl-line-length', `${(size - hodlLine) * Math.sqrt(2)}px`);
-  setInnerHTML('hodl-line', `hodl line: ${formatDuration(0, hodlLine)}`);
+  setInnerHTML('hodl-line', `hodl line: ${formatDuration(hodlBuy, hodlSell)}`);
 }
 
 function createLabels() {
