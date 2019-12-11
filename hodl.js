@@ -1,14 +1,15 @@
 const COLORMAPS = ['BrBG', 'PiYG', 'PRGn', 'PuOr', 'RdBu', 'RdGy', 'RdYlBu', 'RdYlGn', 'Spectral'];
+const SCALES = ['25', '33', '50', '67', '75', '80', '90', '100', '110', '125', '150', '175', '200', '250', '300', '400', '500'];
 const DOMAIN = [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.55, 0.625, 0.725, 0.85, 1.0];
 const LINE = 'line.png';
 const DOT = 'dot.png';
 
 var prices;
 var since;
-const SCALES = [25, 33, 50, 67, 75, 80, 90, 100, 110, 125, 150, 175, 200, 250, 300, 400, 500];
 var scaleSpanClearTimeout;
 var paletteSpanClearTimeout;
 var showHelp = false;
+
 const HALVINGS = [
   '2009-01-03', '2010-04-22', '2011-01-28', '2011-12-14',
   '2012-11-28', '2013-10-09', '2014-08-11', '2015-07-29',
@@ -32,18 +33,29 @@ function onLoad() {
 }
 
 function init() {
+  var hashParameters = getHashParameters();
+
   if (localStorage.getItem('palette') === null) {
     localStorage.palette = 7;
   }
+  var palette = COLORMAPS.indexOf(hashParameters.get('palette'))
+  if (palette != -1) {
+    localStorage.palette = palette;
+  }
+
   if (localStorage.getItem('scaleIndex') === null) {
     localStorage.scaleIndex = 7;
+  }
+  var scaleIndex = SCALES.indexOf(hashParameters.get('scale'));
+  if (scaleIndex != -1) {
+    localStorage.scaleIndex = scaleIndex;
   }
   
   var wrapperDiv =  document.getElementById('wrapper');
   var scrollbarWidth = wrapperDiv.offsetWidth - wrapperDiv.clientWidth;
   setProperty('--scrollbar-width', `${scrollbarWidth}px`);
   
-  setInnerHTML('date', formatDate(getIndexDate(prices.length - 1)));
+  setInnerHTML('updated-date', formatDate(getIndexDate(prices.length - 1)));
 
   createLabels();
 
@@ -334,6 +346,7 @@ function onChangePaletteClick(event) {
   drawIndex(colorMap);
   drawHodl(colorMap);
   setPaletteSpan();
+  setPaletteHash();
   event.preventDefault();
 }
 
@@ -344,6 +357,7 @@ function onZoomInClick(event) {
     setScale();
   }
   setScaleSpan();
+  setScaleHash();
   event.preventDefault();
 }
 
@@ -354,6 +368,7 @@ function onZoomOutClick(event) {
     setScale();
   }
   setScaleSpan();
+  setScaleHash();
   event.preventDefault();
 }
 
@@ -382,12 +397,32 @@ function setScaleSpan() {
   scaleSpanClearTimeout = setTimeout(function(){ setProperty('--visibility-scale', 'hidden') }, 2000);
 }
 
+function setScaleHash() {
+  var hashParameters = getHashParameters();
+  hashParameters.set('scale', SCALES[localStorage.scaleIndex]);
+  setHashParameters(hashParameters);
+}
+
 function setPaletteSpan() {
   setInnerHTML('palette', COLORMAPS[getPalette()]);
   setProperty('--visibility-palette', 'visible')
 
   clearTimeout(paletteSpanClearTimeout);
   paletteSpanClearTimeout = setTimeout(function(){ setProperty('--visibility-palette', 'hidden') }, 2000);
+}
+
+function setPaletteHash() {
+  var hashParameters = getHashParameters();
+  hashParameters.set('palette', COLORMAPS[getPalette()]);
+  setHashParameters(hashParameters);
+}
+
+function getHashParameters() {
+  return new URLSearchParams(window.location.hash.substr(1));
+}
+
+function setHashParameters(hashParameters) {
+  window.location.hash = '#' + hashParameters.toString();
 }
 
 function setInnerHTML(id, innerHTML) {
