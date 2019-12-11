@@ -25,7 +25,7 @@ function onLoad() {
       var result = xobj.responseText.split("\n")
       since = new Date(result[0]);
       prices = result.slice(2).map(Number);
-      
+
       init();
     }
   };
@@ -50,11 +50,11 @@ function init() {
   if (scaleIndex != -1) {
     localStorage.scaleIndex = scaleIndex;
   }
-  
+
   var wrapperDiv =  document.getElementById('wrapper');
   var scrollbarWidth = wrapperDiv.offsetWidth - wrapperDiv.clientWidth;
   setProperty('--scrollbar-width', `${scrollbarWidth}px`);
-  
+
   setInnerHTML('updated-date', formatDate(getIndexDate(prices.length - 1)));
 
   createLabels();
@@ -64,7 +64,7 @@ function init() {
   var colorMap = getColorMap();
   drawIndex(colorMap);
   drawHodl(colorMap);
-  
+
   if (getPalette() != 7) {
     setPaletteSpan();
   }
@@ -90,10 +90,10 @@ function drawHodl(colorMap) {
   var hodlCanvas = document.getElementById('hodl');
   hodlCanvas.width = size;
   hodlCanvas.height = size;
-  
+
   var hodlContext = hodlCanvas.getContext('2d');
   drawPixels(hodlContext, colorMap);
-  
+
   setProperty('--background-color', getColorScale().colors()[5]);
   setProperty('--display-about', 'block');
 }
@@ -108,7 +108,7 @@ function drawPixels(hodlContext, colorMap) {
   var buffer = new ArrayBuffer(imageData.data.length);
   var pixels = new Uint32Array(buffer);
   pixels.fill(colorMap[200]);
-  
+
   var y = 0;
   for (var buydate = 0; buydate <= size; buydate++) {
     for (var selldate = buydate + 1; selldate <= size; selldate++) {
@@ -123,10 +123,10 @@ function drawPixels(hodlContext, colorMap) {
     }
     y += size;
   }
-  
+
   imageData.data.set(new Uint8ClampedArray(buffer));
   hodlContext.putImageData(imageData, 0, 0);
-  
+
   setProperty('--hodl-line', `${hodlLine}px`);
   setProperty('--hodl-line-length', `${(size - hodlLine) * Math.sqrt(2)}px`);
   setInnerHTML('hodl-line', `hodl line: ${formatDuration(hodlBuy, hodlSell)}`);
@@ -141,22 +141,22 @@ function createLabels() {
         var yearLabelDiv = createLabelDiv(index, date.getFullYear());
         labelsDiv.appendChild(yearLabelDiv);
       }
-      
+
       var monthDotImg = createDotImg(index, date.getMonth() == 0 ? LINE : DOT);
       labelsDiv.appendChild(monthDotImg);
     }
 
     var halvingIndex = HALVINGS.indexOf(formatDate(date));
     if (halvingIndex != -1) {
-      
+
       var labelDiv = createGridDiv(index, halvingIndex);
       labelsDiv.appendChild(labelDiv);
-      
+
       if (halvingIndex % 4 == 0) {
         var halving = ordinal(halvingIndex / 4);
         var halvingLabelDiv = createLabelDiv(index, `&puncsp;${halving} halving`);
         labelsDiv.appendChild(halvingLabelDiv);
-        
+
         var halvingDotImg = createDotImg(index, LINE);
         labelsDiv.appendChild(halvingDotImg);
       }
@@ -218,7 +218,7 @@ function getColorScale() {
 
 function onMouseMove(event) {
   if (event.offsetX >= 0 && event.offsetX < prices.length &&
-      event.offsetY >= 0 && event.offsetY < prices.length && 
+      event.offsetY >= 0 && event.offsetY < prices.length &&
       event.offsetX >= event.offsetY) {
 
     var buy = event.offsetY;
@@ -231,19 +231,19 @@ function onMouseMove(event) {
     var profitValue = getProfit(buy, sell);
     var profit = profitValue.toFixed(2);
 
-    setInnerHTML('tip', 
+    setInnerHTML('tip',
       `bought on ${buyDate} for ${buyPrice}<br>`+
-      `&nbsp;&nbsp;sold on ${sellDate} for ${sellPrice}<br>` + 
-      `&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hodl ${duration}<br>` + 
+      `&nbsp;&nbsp;sold on ${sellDate} for ${sellPrice}<br>` +
+      `&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hodl ${duration}<br>` +
       `&nbsp;&nbsp;&nbsp;profit ${profit}%`);
-    
+
     var colorIndex = getColorIndex(profitValue);
     setProperty('--color-index', `${colorIndex}px`);
     setProperty('--display-marker', 'block');
     setProperty('--cursor', 'crosshair');
     setProperty('--x-position', `${event.offsetX}px`);
     setProperty('--y-position', `${event.offsetY}px`);
-    
+
     setInnerHTML('x-label', `sold on ${sellDate}`);
     setInnerHTML('y-label', `bought on ${buyDate}`);
     setInnerHTML('x-price', `for ${sellPrice}`)
@@ -306,7 +306,7 @@ function formatDuration(buyEpoch, sellEpoch) {
   var y = plural(year, 'year');
   var m = plural(month, 'month');
   var d = plural(day, 'day');
-  
+
   if (year != 0) {
     if (month != 0) {
       if (day != 0) {
