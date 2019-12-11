@@ -216,7 +216,8 @@ function onMouseMove(event) {
     var sellDate = formatDate(getIndexDate(sell));
     var sellPrice = formatPrice(sell);
     var duration = formatDuration(buy, sell);
-    var profit = getProfit(buy, sell);
+    var profitValue = getProfit(buy, sell);
+    var profit = profitValue.toFixed(2);
 
     setInnerHTML('tip', 
       `bought on ${buyDate} for ${buyPrice}<br>`+
@@ -224,7 +225,7 @@ function onMouseMove(event) {
       `&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hodl ${duration}<br>` + 
       `&nbsp;&nbsp;&nbsp;profit ${profit}%`);
     
-    var colorIndex = getColorIndex(profit);
+    var colorIndex = getColorIndex(profitValue);
     setProperty('--color-index', `${colorIndex}px`);
     setProperty('--display-marker', 'block');
     setProperty('--cursor', 'crosshair');
@@ -259,7 +260,7 @@ function getColorIndex(profit) {
 function getProfit(buy, sell) {
   var buyPrice = prices[buy];
   var sellPrice = prices[sell];
-  return Math.round(((sellPrice - buyPrice) / buyPrice) * 100)
+  return (sellPrice - buyPrice) / buyPrice * 100;
 }
 
 function formatPrice(index) {
