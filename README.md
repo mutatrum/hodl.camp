@@ -17,4 +17,4 @@ Check out and download the [raw data](https://coinmetrics.io/newdata/split/btc_P
 
 # screenshot
 
-![hodl.png](hodl.png)
+![hodl.png](https://hodl.camp/hodl.png)
