@@ -180,13 +180,33 @@ body {
 }
 
 #help {
-  width: 300px;
   position: fixed;
-  top: 91px;
-  left: 50%;
-  margin-left: -150px;
-  text-align: center;
   display: var(--display-help);
+  bottom: 10%;
+  left: 10%;
+  width: 70%;
+  height: 50%;
+  max-width: 900px;
+  max-height:503px;
+  background-color: var(--background-color);
+  z-index: 2;
+  border-width: 2px;
+  border-color: black;
+  border-style: solid;
+  padding: 8px;
+  overflow: auto;
+}
+
+#help-close {
+  position: sticky;
+  height: 0px;
+  top: 0px;
+  text-align: right;
+}
+
+span.dashed {
+  border-bottom: 1px dashed #090909;
+  text-decoration: none; 
 }
 
 #crosshair {
@@ -244,9 +264,6 @@ body {
 @media screen and (max-width: 950px) {
   #tip {
     top: 91px;
-  }
-  #help {
-    top: 191px;
   }
 }
 

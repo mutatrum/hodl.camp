@@ -1,4 +1,6 @@
-const COLORMAPS = ['BrBG', 'PiYG', 'PRGn', 'PuOr', 'RdBu', 'RdGy', 'RdYlBu', 'RdYlGn', 'Spectral'];
+const COLORMAPS = ['BrBG', 'PiYG', 'PRGn', 'PuOr', 'RdBu', 'RdGy', 'RdYlBu', 'RdYlGn'];
+const REDS = ['brown', 'pink', 'purple', 'brown', 'red', 'red', 'red', 'red'];
+const GREENS = ['blue', 'green', 'green', 'purple', 'blue', 'grey', 'blue', 'green'];
 const SCALES = ['25', '33', '50', '67', '75', '80', '90', '100', '110', '125', '150', '175', '200', '250', '300', '400', '500'];
 const DOMAIN = [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.55, 0.625, 0.725, 0.85, 1.0];
 const LINE = 'line.png';
@@ -41,6 +43,7 @@ function init() {
   var palette = COLORMAPS.indexOf(hashParameters.get('palette'))
   if (palette != -1) {
     localStorage.palette = palette;
+    setColorSpans();
   }
 
   if (localStorage.getItem('scaleIndex') === null) {
@@ -55,6 +58,7 @@ function init() {
   var scrollbarWidth = wrapperDiv.offsetWidth - wrapperDiv.clientWidth;
   setProperty('--scrollbar-width', `${scrollbarWidth}px`);
 
+  setInnerHTML('start-date', formatDate(getIndexDate(0)));
   setInnerHTML('updated-date', formatDate(getIndexDate(prices.length - 1)));
 
   createLabels();
@@ -347,7 +351,13 @@ function onChangePaletteClick(event) {
   drawHodl(colorMap);
   setPaletteSpan();
   setPaletteHash();
+  setColorSpans();
   event.preventDefault();
+}
+
+function setColorSpans() {
+  setInnerHTML('red', REDS[localStorage.palette]);
+  setInnerHTML('green', GREENS[localStorage.palette]);
 }
 
 function onZoomInClick(event) {
@@ -426,7 +436,14 @@ function setHashParameters(hashParameters) {
 }
 
 function setInnerHTML(id, innerHTML) {
-  document.getElementById(id).innerHTML = innerHTML;
+  var element = document.getElementById(id)
+  if (element) {
+    element.innerHTML = innerHTML;
+  }
+  var elements = document.getElementsByClassName(id);
+  for (var i = 0; i < elements.length; i++) {
+    elements[i].innerHTML = innerHTML;
+  }
 }
 
 function setProperty(key, value) {

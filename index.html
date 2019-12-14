@@ -84,25 +84,44 @@
     <div id="tip"></div>
     <div id="about">
       hodl.camp
-      <a href="#" onclick="return onHelpClick(event)"><i class="fa fa-info-circle"></i></a>
-      <a href="#" onclick="return onChangePaletteClick(event)" TITLE="change color map"><i class="fa fa-low-vision"></i></a><span id="palette"></span><br>
+      <a href="#" onclick="return onHelpClick(event)"><i class="fa fa-question-circle"></i></a>
+      <a href="#" onclick="return onChangePaletteClick(event)" title="change color map"><i class="fa fa-low-vision"></i></a><span id="palette"></span><br>
       bitcoin entry/exit profitability<br>
       <a href="#" onclick="return onZoomOutClick(event)"><i class="fa fa-search-minus"></i></a>
       <a href="#" onclick="return onZoomInClick(event)"><i class="fa fa-search-plus"></i></a>
       <span id="scale"></span>
     </div>
     <div id="help">
-      profitability of a bitcoin hodl between buy and sell date<br>
-      updated to <span id="updated-date"></span><br><br>
-      mutatrum
+      <div id="help-close"><a href="#" onclick="return onHelpClick(event)"><i class="fa fa-times-circle"></i></a></div>
+      Welcome to Hodl Camp.<br>
+      <br>
+      This is an interactive graph on the profitability of <span class="dashed" title="holding">hodling</span> bitcoin.<br>
+      <br>
+      Time flows diagonally, from the upper left corner to the bottom right corner.<br>
+      It starts on <span class="start-date dashed" title="Bitcoin was not traded on exchanges before this date. Earlier price history is anecdotal, such as the famous 10000 bitcoin pizzas."></span> and ends on <span class="updated-date dashed" title="Price data is updated daily."></span>.<br>
+      <br>
+      By moving the mouse or tapping the heat map, you will traverse all historical buy and sell dates.<br>
+      <br>
+      Moving vertically changes the buy date. Up is earlier, down is later.<br>
+      Moving horizontally changes the sell date. Left is earlier, right is later.<br>
+      <br>
+      Where the lines cross, the color shows the profitability, <span class="green">green</span> for positive and <span class="red">red</span> for negative.<br>
+      <br>
+      The <span class="green">green</span> scale is log<sub>10</sub>, the <span class="red">red</span> scale is linear.<br>
+      <br>
+      One pixel is one day. Zoom in (<a href="#" onclick="return onZoomInClick(event)"><i class="fa fa-search-plus"></i></a>) to see more detail or zoom out (<a href="#" onclick="return onZoomOutClick(event)"><i class="fa fa-search-minus"></i></a>) to see the bigger picture.<br>
+      Drag or scroll to move around.<br>
+      <br>
+      Change the color map (<a href="#" onclick="return onChangePaletteClick(event)"><i class="fa fa-low-vision"></i></a><span id="palette"></span>) if <span class="green">green</span>/<span class="red">red</span> doesn't work for you.<br>
+      <br>
+      price data: <a href="https://coinmetrics.io/charts/#assets=btc" target="_blank">coin metrics <i class="fa fa-external-link"></i></a><br>
+      color maps: <a href="http://colorbrewer2.org/" target="_blank">color brewer <i class="fa fa-external-link"></i></a><br>
+      &nbsp;chroma.js: <a href="https://vis4.net/chromajs/" target="_blank">chroma.js <i class="fa fa-external-link"></i></a><br>
+      &nbsp;&nbsp;&nbsp;contact: 
       <a href="http://twitter.com/mutatrum" target="_blank"><i class="fa fa-twitter"></i></a>
       <a href="mailto:mutatrum@gmail.com" target="_blank"><i class="fa fa-envelope"></i></a>
       <a href="https://github.com/mutatrum/hodl.camp" target="_blank"><i class="fa fa-github"></i></a>
-      <a href="https://tippin.me/@mutatrum" target="_blank"><i class="fa fa-bolt"></i></a><br>
-      <br>
-      price data: <a href="https://coinmetrics.io/charts/#assets=btc" target="_blank">coin metrics <i class="fa fa-external-link"></i></a><br>
-      color maps: <a href="http://colorbrewer2.org/" target="_blank">color brewer <i class="fa fa-external-link"></i></a>
-      chroma.js: <a href="https://vis4.net/chromajs/" target="_blank">chroma.js <i class="fa fa-external-link"></i></a>&nbsp;&nbsp;
+      <a href="https://tippin.me/@mutatrum" target="_blank"><i class="fa fa-bolt"></i></a>
     </div>
   </div>
 </body>
