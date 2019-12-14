@@ -195,6 +195,7 @@ body {
   border-style: solid;
   padding: 8px;
   overflow: auto;
+  opacity: 0.8;
 }
 
 #help-close {
