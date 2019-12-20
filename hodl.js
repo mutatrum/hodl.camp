@@ -284,7 +284,7 @@ function formatPrice(index) {
 }
 
 function getIndexDate(index) {
-  var date = new Date(since);
+  var date = new Date();
   date.setDate(since.getDate() + index);
   return date;
 }
