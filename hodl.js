@@ -2,45 +2,43 @@ const COLORMAPS = ['BrBG', 'PiYG', 'PRGn', 'PuOr', 'RdBu', 'RdGy', 'RdYlBu', 'Rd
 const REDS = ['brown', 'pink', 'purple', 'brown', 'red', 'red', 'red', 'red'];
 const GREENS = ['blue', 'green', 'green', 'purple', 'blue', 'grey', 'blue', 'green'];
 const SCALES = ['25', '33', '50', '67', '75', '80', '90', '100', '110', '125', '150', '175', '200', '250', '300', '400', '500'];
+const PAIRS = ['btc-usd', 'btc-xau', 'xau-usd'];
+const PAIR_LABELS = ['BTC/USD', 'BTC/XAU', 'XAU/USD'];
+const ASSET_LABELS = ['bitcoin', 'bitcoin', 'gold'];
 const DOMAIN = [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.55, 0.625, 0.725, 0.85, 1.0];
 const LINE = 'line.png';
 const DOT = 'dot.png';
 
-var prices;
-var since;
+var data;
+var size;
+
 var scaleSpanClearTimeout;
 var paletteSpanClearTimeout;
 var showHelp = false;
 
-const HALVINGS = [
-  '2009-01-03', '2010-04-22', '2011-01-28', '2011-12-14',
-  '2012-11-28', '2013-10-09', '2014-08-11', '2015-07-29',
-  '2016-07-09', '2017-06-23', '2018-05-29', '2019-05-24',
-  '2020-05-14'];
-
-function onLoad() {
-  var xobj = new XMLHttpRequest();
-  xobj.overrideMimeType('application/txt');
-  xobj.open('GET', 'btc_PriceUSD.txt', true);
-  xobj.onreadystatechange = function () {
-    if (xobj.readyState == 4 && xobj.status == '200') {
-      var result = xobj.responseText.split("\n")
-      since = new Date(result[0]);
-      prices = result.slice(2).map(Number);
-
-      init();
-    }
-  };
-  xobj.send(null);
+async function onLoad() {
+  var response = await fetch('data.json');
+  data = await response.json();
+  size = data.bitcoin.length - 1;
+  init();
 }
 
 function init() {
   var hashParameters = getHashParameters();
+  
+  if (localStorage.getItem('pair') === null) {
+    localStorage.pair = 0;
+  }
+  var pair = PAIRS.indexOf(hashParameters.get('pair'));
+  if (pair != -1) {
+    localStorage.pair = pair;
+  }
+  setPair();
 
   if (localStorage.getItem('palette') === null) {
     localStorage.palette = 7;
   }
-  var palette = COLORMAPS.indexOf(hashParameters.get('palette'))
+  var palette = COLORMAPS.indexOf(hashParameters.get('palette'));
   if (palette != -1) {
     localStorage.palette = palette;
     setColorSpans();
@@ -59,7 +57,7 @@ function init() {
   setProperty('--scrollbar-width', `${scrollbarWidth}px`);
 
   setInnerHTML('start-date', formatDate(getIndexDate(0)));
-  setInnerHTML('updated-date', formatDate(getIndexDate(prices.length - 1)));
+  setInnerHTML('updated-date', formatDate(getIndexDate(data.bitcoin.length - 1)));
 
   createLabels();
 
@@ -77,6 +75,28 @@ function init() {
   }
 }
 
+function setPair() {
+  getPrice = getPriceFunction();
+  formatPrice = formatPriceFunction();
+  setInnerHTML('pair', PAIR_LABELS[localStorage.pair]);
+  setInnerHTML('asset', ASSET_LABELS[localStorage.pair]);
+}
+
+function getPriceFunction() {
+  switch (PAIRS[localStorage.pair]) {
+    case 'btc-usd': return function(index) { return data.bitcoin[index] };
+    case 'btc-xau': return function(index) { return data.bitcoin[index] / data.gold[index] };
+    case 'xau-usd': return function(index) { return data.gold[index] };
+  }
+}
+
+function formatPriceFunction() {
+  switch (PAIRS[localStorage.pair].split('-')[1]) {
+    case 'usd': return function(index) { return '$' + getPrice(index).toFixed(2) };
+    case 'xau': return function(index) { return getPrice(index).toFixed(4) + ' t oz' };
+  }
+}
+
 function drawIndex(colorMap) {
   var colorMapCanvas = document.getElementById('colormap');
   var colorMapContext = colorMapCanvas.getContext('2d');
@@ -89,8 +109,6 @@ function drawIndex(colorMap) {
 }
 
 function drawHodl(colorMap) {
-  var size = prices.length - 1;
-
   var hodlCanvas = document.getElementById('hodl');
   hodlCanvas.width = size;
   hodlCanvas.height = size;
@@ -106,7 +124,6 @@ function drawPixels(hodlContext, colorMap) {
   var hodlLine = 0;
   var hodlBuy;
   var hodlSell;
-  var size = prices.length - 1;
 
   var imageData = hodlContext.createImageData(size, size);
   var buffer = new ArrayBuffer(imageData.data.length);
@@ -138,7 +155,7 @@ function drawPixels(hodlContext, colorMap) {
 
 function createLabels() {
   var labelsDiv = document.getElementById('labels');
-  for (var index = 0; index < prices.length; index++) {
+  for (var index = 0; index <= size; index++) {
     var date = getIndexDate(index);
     if (date.getDate() == 1) {
       if (date.getMonth() == 0) {
@@ -150,7 +167,7 @@ function createLabels() {
       labelsDiv.appendChild(monthDotImg);
     }
 
-    var halvingIndex = HALVINGS.indexOf(formatDate(date));
+    var halvingIndex = data.halvings.indexOf(formatDate(date));
     if (halvingIndex != -1) {
 
       var labelDiv = createGridDiv(index, halvingIndex);
@@ -221,8 +238,8 @@ function getColorScale() {
 }
 
 function onMouseMove(event) {
-  if (event.offsetX >= 0 && event.offsetX < prices.length &&
-      event.offsetY >= 0 && event.offsetY < prices.length &&
+  if (event.offsetX >= 0 && event.offsetX <= size &&
+      event.offsetY >= 0 && event.offsetY <= size &&
       event.offsetX >= event.offsetY) {
 
     var buy = event.offsetY;
@@ -274,18 +291,14 @@ function getColorIndex(profit) {
 }
 
 function getProfit(buy, sell) {
-  var buyPrice = prices[buy];
-  var sellPrice = prices[sell];
+  var buyPrice = getPrice(buy);
+  var sellPrice = getPrice(sell);
   return (sellPrice - buyPrice) / buyPrice * 100;
 }
 
-function formatPrice(index) {
-  return '$' + prices[index].toFixed(2);
-}
-
 function getIndexDate(index) {
-  var date = new Date();
-  date.setDate(since.getDate() + index);
+  var date = new Date(data.since);
+  date.setDate(date.getDate() + index);
   return date;
 }
 
@@ -334,6 +347,20 @@ function formatDuration(buyEpoch, sellEpoch) {
 
 function plural(n, word) {
   return n + ' ' + word + (n > 1 ? 's' : '');
+}
+
+function onPairClick(event) {
+  var pair = PAIR_LABELS.indexOf(event.target.text);
+  localStorage.pair = pair;
+  setPair();
+
+  var hashParameters = getHashParameters();
+  hashParameters.set('pair', PAIRS[pair]);
+  setHashParameters(hashParameters);
+
+  var colorMap = getColorMap();
+  drawHodl(colorMap);
+  event.preventDefault();
 }
 
 function onHelpClick(event) {
@@ -392,10 +419,9 @@ function getPalette() {
 
 function setScale() {
   var scale = SCALES[getScaleIndex()] / 100;
-  var size = (prices.length - 1) * scale;
 
   setProperty('--scale', scale);
-  setProperty('--size', `${size}px`);
+  setProperty('--size', `${size * scale}px`);
 }
 
 function setScaleSpan() {

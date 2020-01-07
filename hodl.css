@@ -158,13 +158,28 @@ body {
 }
 
 #about {
-  width: 300px;
+  width: 400px;
   position: fixed;
   top: 16px;
   left: 50%;
-  margin-left: -150px;
+  margin-left: -200px;
   text-align: center;
   display: var(--display-about);
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  white-space: nowrap;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
 }
 
 #scale {
@@ -187,15 +202,19 @@ body {
   width: 70%;
   height: 50%;
   max-width: 900px;
-  max-height:503px;
-  background-color: var(--background-color);
-  z-index: 2;
-  border-width: 2px;
-  border-color: black;
-  border-style: solid;
-  padding: 8px;
+  max-height: 583px;
   overflow: auto;
   opacity: 0.8;
+}
+
+.dialog-border {
+  padding: 8px;
+  border-width: 1px;
+  border-color: black;
+  border-style: solid;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  background-color: var(--background-color);
+  z-index: 1;
 }
 
 #help-close {

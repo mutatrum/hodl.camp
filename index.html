@@ -86,12 +86,20 @@
       hodl.camp
       <a href="#" onclick="return onHelpClick(event)"><i class="fa fa-question-circle"></i></a>
       <a href="#" onclick="return onChangePaletteClick(event)" title="change color map"><i class="fa fa-low-vision"></i></a><span id="palette"></span><br>
-      bitcoin entry/exit profitability<br>
+      <span id="asset"></span> entry/exit profitability<br>
+      <span class="dropdown">
+        <span id="pair" class="dashed"></span> <i class="fa fa-caret-down"></i>
+        <span class="dropdown-content dialog-border">
+          <a href="#" onclick="return onPairClick(event)">BTC/USD</a><br>
+          <a href="#" onclick="return onPairClick(event)">BTC/XAU</a><br>
+          <a href="#" onclick="return onPairClick(event)">XAU/USD</a>
+        </span>
+      </span>
       <a href="#" onclick="return onZoomOutClick(event)"><i class="fa fa-search-minus"></i></a>
       <a href="#" onclick="return onZoomInClick(event)"><i class="fa fa-search-plus"></i></a>
       <span id="scale"></span>
     </div>
-    <div id="help">
+    <div class="dialog-border" id="help">
       <div id="help-close"><a href="#" onclick="return onHelpClick(event)"><i class="fa fa-times-circle"></i></a></div>
       Welcome to Hodl Camp.<br>
       <br>
@@ -109,12 +117,14 @@
       <br>
       The <span class="green">green</span> scale is log<sub>10</sub>, the <span class="red">red</span> scale is linear.<br>
       <br>
-      One pixel is one day. Zoom in (<a href="#" onclick="return onZoomInClick(event)"><i class="fa fa-search-plus"></i></a>) to see more detail or zoom out (<a href="#" onclick="return onZoomOutClick(event)"><i class="fa fa-search-minus"></i></a>) to see the bigger picture.<br>
+      One pixel is one day. Zoom in (<a href="#" onclick="return onZoomInClick(event)"><i class="fa fa-search-plus"></i></a>) to see more detail. Zoom out (<a href="#" onclick="return onZoomOutClick(event)"><i class="fa fa-search-minus"></i></a>) to see the bigger picture.<br>
       Drag or scroll to move around.<br>
+      <br>
+      Next to bitcoin denominated in U.S. dollar, it's also possible to plot the price of bitcoin denominated in <span class="dashed" title="One troy ounce of gold equals 31.1034768 gram or 1.09714286 ounce">troy ounces</span> of gold (XAU). This eliminates the influence of price fluctuations of U.S. dollar and instead uses a hard money: gold.</br>
       <br>
       Change the color map (<a href="#" onclick="return onChangePaletteClick(event)"><i class="fa fa-low-vision"></i></a><span id="palette"></span>) if <span class="green">green</span>/<span class="red">red</span> doesn't work for you.<br>
       <br>
-      price data: <a href="https://coinmetrics.io/charts/#assets=btc" target="_blank">coin metrics <i class="fa fa-external-link"></i></a><br>
+      price data: <a href="https://coinmetrics.io/charts/#assets=btc" target="_blank">coin metrics <i class="fa fa-external-link"></i></a> (bitcoin) and <a href="https://www.quandl.com/data/WGC/GOLD_DAILY_USD-Gold-Prices-Daily-Currency-USD" target="_blank">Quandl <i class="fa fa-external-link"></i></a> (gold)<br>
       color maps: <a href="http://colorbrewer2.org/" target="_blank">color brewer <i class="fa fa-external-link"></i></a><br>
       &nbsp;chroma.js: <a href="https://vis4.net/chromajs/" target="_blank">chroma.js <i class="fa fa-external-link"></i></a><br>
       &nbsp;&nbsp;&nbsp;contact: 
