@@ -250,11 +250,11 @@ function onMouseMove(event) {
 }
 
 function onMouseLeave(event) {
-  mouseX = 0;
-  mouseY = 0;
+  if (!pinned) {
+    mouseX = -1;
+    mouseY = -1;
+  }
 
-  setProperty('--cursor', 'default');
-  
   updateMarker();
 }
 
@@ -307,8 +307,8 @@ function updateMarker() {
   setProperty('--display-pinned', pinned ? 'block' : 'none');
 
   if (!pinned) {
-    buy = event.offsetY;
-    sell = event.offsetX + 1;
+    sell = mouseX;
+    buy = mouseY + 1;
   }
 
   if (sell > 0 && sell < size &&
@@ -343,6 +343,7 @@ function updateMarker() {
     setInnerHTML('duration', `hodl ${duration}`);
   } else {
     setProperty('--display-marker', 'none');
+    setProperty('--cursor', 'default');
   }
 }
 
