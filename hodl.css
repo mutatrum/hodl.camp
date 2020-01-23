@@ -6,6 +6,7 @@
   --display-about: none;
   --display-help: none;
   --display-marker: none;
+  --display-pinned: none;
   --visibility-scale: hidden;
   --visibility-palette: hidden;
   --cursor: default;
@@ -202,7 +203,7 @@ body {
   width: 70%;
   height: 50%;
   max-width: 900px;
-  max-height: 583px;
+  max-height: 605px;
   overflow: auto;
   opacity: 0.8;
 }
@@ -266,7 +267,7 @@ span.dashed {
 
 .cross {
   position: absolute;
-  left: calc((var(--x-position) * var(--scale)) + 7px);
+  left: calc((var(--x-position) * var(--scale)) + var(--x-offset));
   top: calc((var(--y-position) * var(--scale)) + var(--y-offset));
   white-space: nowrap;
   display: var(--display-marker);
@@ -274,11 +275,20 @@ span.dashed {
 }
 
 #duration {
+  --x-offset: 7px;
   --y-offset: -24px;
 }
 
 #profit {
+  --x-offset: 7px;
   --y-offset: 0px;
+}
+
+#pinned {
+  display: var(--display-pinned);
+  --x-offset: 7px;
+  --y-offset: -44px;
+  opacity: 0.4;
 }
 
 @media screen and (max-width: 950px) {

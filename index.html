@@ -33,11 +33,11 @@
 <meta name="twitter:image" content="https://hodl.camp/hodl.png" />
 <meta name="twitter:url" value="https://hodl.camp/" />
 </head>
-<body onload="onLoad()">
+<body onload="onLoad()" onkeydown="onKeyDown(event)">
   <div id="background"></div>
   <div id="wrapper">
     <div id="border">
-      <canvas id="hodl" onmousemove="onMouseMove(event)" onmouseleave="onMouseLeave(event)"></canvas>
+      <canvas id="hodl" onmousemove="onMouseMove(event)" onmouseleave="onMouseLeave(event)" ontouchend="onTouchEnd(event)" onclick="onClick(event)"></canvas>
     </div>
     <div id="labels">
       <div id="crosshair">
@@ -51,6 +51,7 @@
         <div class="index y-position label grid-label" id="y-price"></div>
         <div class="cross" id="duration"></div>
         <div class="cross" id="profit"></div>
+        <div class="cross" id="pinned"><i class="fa fa-thumb-tack"></i></div>
       </div>
       <div id="hodl-line"></div>
     </div>
@@ -108,7 +109,7 @@
       Time flows diagonally, from the upper left corner to the bottom right corner.<br>
       It starts on <span class="start-date dashed" title="Bitcoin was not traded on exchanges before this date. Earlier price history is anecdotal, such as the famous 10000 bitcoin pizzas."></span> and ends on <span class="updated-date dashed" title="Price data is updated daily."></span>.<br>
       <br>
-      By moving the mouse or tapping the heat map, you will traverse all historical buy and sell dates.<br>
+      By moving the mouse or tapping the heat map, you will traverse all historical buy and sell dates. Pin the marker by clicking and move around with <strong>WASD</strong> keys.<br>
       <br>
       Moving vertically changes the buy date. Up is earlier, down is later.<br>
       Moving horizontally changes the sell date. Left is earlier, right is later.<br>
@@ -120,7 +121,7 @@
       One pixel is one day. Zoom in (<a href="#" onclick="return onZoomInClick(event)"><i class="fa fa-search-plus"></i></a>) to see more detail. Zoom out (<a href="#" onclick="return onZoomOutClick(event)"><i class="fa fa-search-minus"></i></a>) to see the bigger picture.<br>
       Drag or scroll to move around.<br>
       <br>
-      Next to bitcoin denominated in U.S. dollar, it's also possible to plot the price of bitcoin denominated in <span class="dashed" title="One troy ounce of gold equals 31.1034768 gram or 1.09714286 ounce">troy ounces</span> of gold (XAU). This eliminates the influence of price fluctuations of U.S. dollar and instead uses a hard money: gold.</br>
+      Next to bitcoin denominated in U.S. dollar, it's also possible to plot the price of bitcoin denominated in <span class="dashed" title="One troy ounce gold equals 31.1034768 gram or 1.09714286 ounce">troy ounces gold</span> (XAU). This eliminates the influence of price fluctuations of U.S. dollar and instead uses a hard money: gold.</br>
       <br>
       Change the color map (<a href="#" onclick="return onChangePaletteClick(event)"><i class="fa fa-low-vision"></i></a><span id="palette"></span>) if <span class="green">green</span>/<span class="red">red</span> doesn't work for you.<br>
       <br>

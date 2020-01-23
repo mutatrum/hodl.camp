@@ -11,6 +11,9 @@ const DOT = 'dot.png';
 
 var data;
 var size;
+var buy, sell;
+var mouseX, mouseY;
+var pinned = false;
 
 var scaleSpanClearTimeout;
 var paletteSpanClearTimeout;
@@ -238,12 +241,80 @@ function getColorScale() {
 }
 
 function onMouseMove(event) {
-  if (event.offsetX >= 0 && event.offsetX <= size &&
-      event.offsetY >= 0 && event.offsetY <= size &&
-      event.offsetX >= event.offsetY) {
+  mouseX = event.offsetX;
+  mouseY = event.offsetY;
+  
+  setProperty('--cursor', mouseX >= mouseY ? 'crosshair' : 'default');
 
-    var buy = event.offsetY;
-    var sell = event.offsetX + 1;
+  updateMarker();
+}
+
+function onMouseLeave(event) {
+  mouseX = 0;
+  mouseY = 0;
+
+  setProperty('--cursor', 'default');
+  
+  updateMarker();
+}
+
+function onClick(event) {
+  if (mouseX >= mouseY) {
+    pinned = !pinned;
+    
+    updateMarker();
+  }  
+}
+
+function onTouchEnd(event) {
+  // cancelable event is a click, not a drag
+  if (event.cancelable) {
+    pinned = false;
+    
+    updateMarker();
+  }
+}
+
+function onKeyDown(event) {
+  var step = event.shiftKey ? 10 : 1;
+  switch (event.code) {
+    case 'KeyW':
+      pinned = true;
+      buy = Math.max(0, buy - step);
+      break;
+    case 'KeyS':
+      pinned = true;
+      buy = Math.min(sell - 1, buy + step);
+      break;
+    case 'KeyA':
+      pinned = true;
+      sell = Math.max(buy + 1, sell - step);
+      break;
+    case 'KeyD':
+      pinned = true;
+      sell = Math.min(size - 1, sell + step);
+      break;
+    case 'Space':
+      pinned = !pinned;
+      break;
+    default:
+      return;
+  }
+  updateMarker();
+}
+
+function updateMarker() {
+  setProperty('--display-pinned', pinned ? 'block' : 'none');
+
+  if (!pinned) {
+    buy = event.offsetY;
+    sell = event.offsetX + 1;
+  }
+
+  if (sell > 0 && sell < size &&
+      buy >= 0 && buy < size + 1 &&
+      buy < sell) {
+    
     var buyDate = formatDate(getIndexDate(buy));
     var buyPrice = formatPrice(buy);
     var sellDate = formatDate(getIndexDate(sell));
@@ -261,9 +332,8 @@ function onMouseMove(event) {
     var colorIndex = getColorIndex(profitValue);
     setProperty('--color-index', `${colorIndex}px`);
     setProperty('--display-marker', 'block');
-    setProperty('--cursor', 'crosshair');
-    setProperty('--x-position', `${event.offsetX}px`);
-    setProperty('--y-position', `${event.offsetY}px`);
+    setProperty('--x-position', `${sell - 1}px`);
+    setProperty('--y-position', `${buy}px`);
 
     setInnerHTML('x-label', `sold on ${sellDate}`);
     setInnerHTML('y-label', `bought on ${buyDate}`);
@@ -272,13 +342,8 @@ function onMouseMove(event) {
     setInnerHTML('profit', `profit ${profit}%`);
     setInnerHTML('duration', `hodl ${duration}`);
   } else {
-    onMouseLeave(event);
+    setProperty('--display-marker', 'none');
   }
-}
-
-function onMouseLeave(event) {
-  setProperty('--display-marker', 'none');
-  setProperty('--cursor', 'default');
 }
 
 function getColorIndex(profit) {
@@ -360,6 +425,8 @@ function onPairClick(event) {
 
   var colorMap = getColorMap();
   drawHodl(colorMap);
+  updateMarker();
+
   event.preventDefault();
 }
 
