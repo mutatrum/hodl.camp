@@ -19,13 +19,13 @@ body {
   width: 80vw;
 }
 
-#sats_per_dollar {
-  border-radius: 2vw;
-  margin: 5px;
-}
-
-#status {
+.status {
   font-size: 1vh;
   text-align: right;
   opacity: 0.5;
+}
+
+#sats_per_dollar {
+  border-radius: 2vw;
+  margin: 5px;
 }

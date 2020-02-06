@@ -10,6 +10,9 @@ var current = 0;
 var background;
 var color;
 
+var spinner = "◢◣◤◥";
+var spin = 0;
+
 function init() {
   var r = Math.floor(Math.random() * 256);
   var g = Math.floor(Math.random() * 256);
@@ -18,12 +21,12 @@ function init() {
   background = (255 << 24) + (b << 16) + (g << 8) + r;
   color = (r * 0.299 + g * 0.587 + b * 0.114) > 149 ? 0xFF000000 : 0xFFFFFFFF;
 
-  document.getElementById('status').innerHTML = 'connect';
+  document.getElementById('event').innerHTML = 'connect';
   
   const webSocket = new WebSocket('wss://api-pub.bitfinex.com/ws/2');
 
   webSocket.onopen = function (event) {
-    document.getElementById('status').innerHTML = 'open';
+    document.getElementById('event').innerHTML = 'open';
     let msg = JSON.stringify({ 
       event: 'subscribe', 
       channel: 'ticker', 
@@ -34,12 +37,11 @@ function init() {
   };
   
   webSocket.onclose = function(event) {
-    document.getElementById('status').innerHTML = `close ${event.code} ${event.reason}`;
+    document.getElementById('event').innerHTML = `close ${event.code} ${event.reason}`;
   }
   
   webSocket.onerror = function(event) {
-    document.getElementById('status').innerHTML = `close ${event.code} ${event.reason}`;
-    document.getElementById('status').innerHTML = 'error';
+    document.getElementById('event').innerHTML = `close ${event.code} ${event.reason}`;
   }
   
   webSocket.onmessage = function(event) {
@@ -52,9 +54,11 @@ function init() {
     
         update(sats);
       }
+      document.getElementById('spinner').innerHTML = ' ' + spinner[spin];
+      spin = (spin + 1) % spinner.length;
     }
     else {
-      document.getElementById('status').innerHTML = data.event;
+      document.getElementById('event').innerHTML = data.event;
     }
   };
 }
