@@ -1,0 +1,31 @@
+body {
+  background-color: black;
+  margin: 0;
+  font-family: 'Droid Sans Mono', monospace;
+  font-size: 2vh;
+  color: white;
+}
+
+#center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  flex-direction: column;
+}
+
+.cell {
+  padding: 1vh;
+  width: 80vw;
+}
+
+#sats_per_dollar {
+  border-radius: 2vw;
+  margin: 5px;
+}
+
+#status {
+  font-size: 1vh;
+  text-align: right;
+  opacity: 0.5;
+}

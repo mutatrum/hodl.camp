@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-149677150-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag("js", new Date());
+  gtag("config", "UA-149677150-1");
+</script>
+
+<meta charset="UTF-8" />
+<title>mutatrum.com</title>
+<link rel="stylesheet" type="text/css" href="sats_per_dollar.css">
+<script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"></script>
+<script>WebFont.load({google: {families: ["Droid Sans Mono"]}});</script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script async src="http://platform.twitter.com/widgets.js" charset="utf-8"></script>
+<script src="sats_per_dollar.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=10, minimum-scale=0, user-scalable=yes">
+
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://hodl.camp/sats_per_dollar/" />
+<meta property="og:title" content="sats per dollar" />
+<meta property="og:image" content="hodl.png" />
+<meta property="og:description" content="sats per dollar" />
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:domain" value="hodl.camp" />
+<meta name="twitter:title" value="sats per dollar" />
+<meta name="twitter:description" value="sats per dollar" />
+<meta name="twitter:image" content="sats_per_dollar.jpg" />
+<meta name="twitter:url" value="https://hodl.camp/sats_per_dollar/" />
+</head>
+<body onload="onLoad()">
+  <div id="center">
+    <div class="cell" id="title"></div>
+    <div class="cell" id="sats"></div>
+    <canvas class="cell" id="sats_per_dollar"></canvas>
+    <div class="cell" id="status"></div>
+  </div>
+</body>
+</html>
