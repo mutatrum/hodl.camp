@@ -17,6 +17,8 @@ function init() {
   
   background = (255 << 24) + (b << 16) + (g << 8) + r;
   color = (r * 0.299 + g * 0.587 + b * 0.114) > 149 ? 0xFF000000 : 0xFFFFFFFF;
+
+  document.getElementById('status').innerHTML = 'connect';
   
   const webSocket = new WebSocket('wss://api-pub.bitfinex.com/ws/2');
 
