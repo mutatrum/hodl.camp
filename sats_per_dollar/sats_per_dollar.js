@@ -3,24 +3,16 @@ async function onLoad() {
 }
 
 const WIDTH = 506;
+const BLOCK = 31;
 const GRID = 10;
 const COLUMNS = 16;
 
-var current = 0;
-var background;
-var color;
+var color = chroma.random();
 
 var spinner = "◢◣◤◥";
 var spin = 0;
 
 function init() {
-  var r = Math.floor(Math.random() * 256);
-  var g = Math.floor(Math.random() * 256);
-  var b = Math.floor(Math.random() * 256);
-  
-  background = (255 << 24) + (b << 16) + (g << 8) + r;
-  color = (r * 0.299 + g * 0.587 + b * 0.114) > 149 ? 0xFF000000 : 0xFFFFFFFF;
-
   document.getElementById('event').innerHTML = 'connect';
   
   const webSocket = new WebSocket('wss://api-pub.bitfinex.com/ws/2');
@@ -50,7 +42,7 @@ function init() {
       var message = data[1];
       if (Array.isArray(message)) {
         var price = message[6];
-        var sats = Math.floor(1 / price * 1e8);
+        var sats = Math.floor(1e8 / price);
     
         update(sats);
       }
@@ -64,11 +56,11 @@ function init() {
 }
 
 function update(sats) {
-  if (current == sats) {
-    return;
-  }
-  current = sats;
-  
+  color = chroma.mix(color, chroma.random(), 0.05);
+
+  var background = getBackground(color);
+  var foreground = getForeground(color);
+
   document.getElementById('title').innerHTML = 'sats per dollar';
   document.getElementById('sats').innerHTML = sats;
   
@@ -91,10 +83,10 @@ function update(sats) {
   
   for (var i = 0; i < sats; i++) {
 
-    var x = 6 + (ax * 3) + (bx * 31);
-    var y = 6 + (ay * 3) + (by * 31);
+    var x = 6 + (ax * 3) + (bx * BLOCK);
+    var y = 6 + (ay * 3) + (by * BLOCK);
     
-    dot(pixels, x, y, color);
+    dot(pixels, x, y, foreground);
     
     ax++;
     if (ax == GRID) {
@@ -117,6 +109,15 @@ function update(sats) {
   ctx.putImageData(imageData, 0, 0);
 }
 
+function getBackground(color) {
+  return color.num() ^ 0xFF000000;
+}
+
+function getForeground(color) {
+  var rgb = color.rgb();
+  return (rgb[0] * 0.299 + rgb[1] * 0.587 + rgb[2] * 0.114) > 149 ? 0xFF000000 : 0xFFFFFFFF;
+}
+
 function dot(pixels, x, y, color) {
   var p = (y * WIDTH) + x;
   
@@ -128,5 +129,5 @@ function dot(pixels, x, y, color) {
 
 function getHeight(sats) {
   var rows = Math.floor(sats / (COLUMNS * GRID * GRID)) + 1;
-  return (rows * 31) + 10;
+  return (rows * BLOCK) + 10;
 }
