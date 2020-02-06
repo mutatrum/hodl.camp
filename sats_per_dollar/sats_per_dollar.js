@@ -49,7 +49,7 @@ function init() {
     if (Array.isArray(data)) {
       var message = data[1];
       if (Array.isArray(message)) {
-        var price = message[0];
+        var price = message[6];
         var sats = Math.floor(1 / price * 1e8);
     
         update(sats);
