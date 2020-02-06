@@ -7,7 +7,10 @@ const BLOCK = 31;
 const GRID = 10;
 const COLUMNS = 16;
 
-var color = chroma.random();
+var color;
+var startColor = chroma.random();
+var endColor = chroma.random();
+var colorIndex = 0;
 
 var spinner = "◢◣◤◥";
 var spin = 0;
@@ -56,7 +59,13 @@ function init() {
 }
 
 function update(sats) {
-  color = chroma.mix(color, chroma.random(), 0.05);
+  color = chroma.mix(startColor, endColor, colorIndex / 100, 'lab');
+
+  colorIndex = (colorIndex + 1) % 100;
+  if (colorIndex == 0) {
+    startColor = endColor;
+    endColor = chroma.random();
+  }
 
   var background = getBackground(color);
   var foreground = getForeground(color);
