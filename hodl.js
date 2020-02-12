@@ -292,7 +292,7 @@ function onKeyDown(event) {
       break;
     case 'KeyD':
       pinned = true;
-      sell = Math.min(size - 1, sell + step);
+      sell = Math.min(size, sell + step);
       break;
     case 'Space':
       pinned = !pinned;
@@ -311,8 +311,8 @@ function updateMarker() {
     buy = mouseY + 1;
   }
 
-  if (sell > 0 && sell < size &&
-      buy >= 0 && buy < size + 1 &&
+  if (sell > 0 && sell <= size &&
+      buy >= 0 && buy <= size &&
       buy < sell) {
     
     var buyDate = formatDate(getIndexDate(buy));
