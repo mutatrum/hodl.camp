@@ -1,0 +1,31 @@
+body {
+  background-color: black;
+  margin: 0;
+  font-family: 'Droid Sans Mono', monospace;
+  font-size: 30px;
+  color: white;
+}
+
+#center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  flex-direction: column;
+}
+
+.cell {
+  padding: 5px;
+  width: 80vmin;
+}
+
+.status {
+  font-size: 15px;
+  text-align: right;
+  opacity: 0.5;
+}
+
+#halving_candles {
+  border-radius: 15px;
+  height: 80vmin;
+}
