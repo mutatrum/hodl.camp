@@ -218,7 +218,7 @@ function drawPriceIndex(ctx, getY, price) {
 }
 
 function drawCandle(ctx, getY, x, w, candle) {
-  ctx.lineWidth = 4;
+  ctx.lineWidth = 2;
   ctx.setLineDash([]);
   
   var yo = getY(candle.o);
