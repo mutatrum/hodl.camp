@@ -113,7 +113,7 @@ var height;
 function update(price) {
   var candle = candles[candles.length-1];
   candle.h = Math.max(candle.h, price);
-  candle.l = Math.max(candle.l, price);
+  candle.l = Math.min(candle.l, price);
   candle.c = price;
 
   var maxPrice = candles.reduce((max, candle) => Math.max(max, candle ? candle.h : 0), 0);
