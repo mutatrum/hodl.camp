@@ -42,6 +42,17 @@ async function init() {
   }
   candle.c = data.bitcoin[size];
   
+  webSocketConnect();
+  
+  window.onresize = function(event) {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(function() {
+      update(candles[candles.length-1].c);
+    }, 250);
+  }
+}
+
+function webSocketConnect() {
   document.getElementById('event').innerHTML = 'connect';
   
   const webSocket = new WebSocket('wss://api-pub.bitfinex.com/ws/2');
@@ -59,6 +70,7 @@ async function init() {
   
   webSocket.onclose = function(event) {
     document.getElementById('event').innerHTML = `close ${event.code} ${event.reason}`;
+    setTimeout(webSocketConnect, 1000);
   }
   
   webSocket.onerror = function(event) {
@@ -79,13 +91,6 @@ async function init() {
       document.getElementById('event').innerHTML = data.event;
     }
   };
-
-  window.onresize = function(event) {
-    clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(function() {
-      update(candles[candles.length-1].c);
-    }, 250);
-  }
 }
 
 function createCandle(price) {
@@ -172,7 +177,7 @@ function update(price) {
     if (i % 4 == 3) {
       drawHalvingLine(ctx, x + (w / 2));
       if (width > 600) {
-        drawHalvingLabel(ctx, x + (w / 2), data.halvings[i]);
+        drawHalvingLabel(ctx, x + (w / 2), data.halvings[i+1]);
       }
     }
     
