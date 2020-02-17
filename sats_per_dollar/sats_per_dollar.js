@@ -16,6 +16,10 @@ var spinner = "◢◣◤◥";
 var spin = 0;
 
 function init() {
+  webSocketConnect();
+}
+
+function webSocketConnect() {
   document.getElementById('event').innerHTML = 'connect';
   
   const webSocket = new WebSocket('wss://api-pub.bitfinex.com/ws/2');
@@ -33,6 +37,7 @@ function init() {
   
   webSocket.onclose = function(event) {
     document.getElementById('event').innerHTML = `close ${event.code} ${event.reason}`;
+    setTimeout(webSocketConnect, 1000);
   }
   
   webSocket.onerror = function(event) {
