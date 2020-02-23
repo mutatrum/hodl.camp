@@ -2,7 +2,7 @@ body {
   background-color: black;
   margin: 0;
   font-family: 'Droid Sans Mono', monospace;
-  font-size: 2vh;
+  font-size: 30px;
   color: white;
 }
 
@@ -15,17 +15,17 @@ body {
 }
 
 .cell {
-  padding: 1vh;
-  width: 80vw;
+  padding: 5px;
+  width: 90vmin;
 }
 
 .status {
-  font-size: 1vh;
+  font-size: 15px;
   text-align: right;
   opacity: 0.5;
 }
 
 #sats_per_dollar {
-  border-radius: 2vw;
-  margin: 5px;
+  border-radius: 15px;
+  width: 90vmin;
 }
