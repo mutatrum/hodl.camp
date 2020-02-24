@@ -25,6 +25,23 @@ body {
   opacity: 0.5;
 }
 
+.right{
+    float:right;
+}
+
+.left{
+    float:left;
+}
+
+a {
+  text-decoration: none;
+  color: white;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
 #halving_candles {
   border-radius: 15px;
   height: 90vmin;
