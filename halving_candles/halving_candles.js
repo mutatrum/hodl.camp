@@ -231,7 +231,7 @@ function drawCandle(ctx, getX, getY, i) {
   ctx.stroke();
   
   ctx.beginPath();
-  ctx.rect(x - (w / 4), y, w / 2, h);
+  ctx.rect(x - (w / 2), y, w, h);
   ctx.fill();
   ctx.stroke();
 
