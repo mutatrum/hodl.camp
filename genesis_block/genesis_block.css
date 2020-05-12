@@ -1,0 +1,101 @@
+@font-face {
+    font-family: 'AnonymousPro-Regular';
+    src: url('AnonymousPro-Regular.woff2') format('woff2'),
+        url('AnonymousPro-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+  background-color: black;
+  margin: 0;
+  font-family: 'AnonymousPro-Regular';
+  font-size: 28px;
+  color: white;
+}
+
+#center {
+  display: flex;
+  /* justify-content: start; */
+  align-items: center;
+  height: calc(100vh - 40px);
+  flex-direction: column;
+  padding: 20px;
+}
+
+.fragment {
+  border: 10px;
+  border-color: BLACK;
+  border-radius: 10px;
+  padding: 1px 3px 1px 6px;
+  margin: -1px -3px -1px -6px;
+}
+
+.fragment-fade {
+  border-color: BLACK;
+  transition: background-color 0.2s; 
+}
+
+.fragment-highlight {
+  background-color: GRAY;
+  transition: background-color 0.2s; 
+}
+
+#annotations {
+  position: relative; 
+  width: 90vmin;
+}
+
+#annotations-content {
+  position: absolute;
+}
+
+.annotation {
+  display: none;
+  font-size: 20px;
+  width: 90vmin;
+  height: calc(90vh - 540px);
+  overflow-y: auto;
+}
+
+.annotation-show {
+  display: block;
+}
+
+#content {
+  line-height: 30px;
+  width: 90vmin;
+}
+
+.cell {
+  padding: 5px;
+  width: 90vmin;
+}
+
+.status {
+  font-size: 15px;
+  opacity: 0.5;
+}
+
+.right{
+    float:right;
+}
+
+.left{
+    float:left;
+}
+
+p {
+  text-indent: 40px;
+  margin: 0px;
+  
+}
+
+a {
+  text-decoration: none;
+  color: white;
+}
+
+a:hover {
+  text-decoration: underline;
+}

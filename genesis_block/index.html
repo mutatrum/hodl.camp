@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+<head>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-149677150-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag("js", new Date());
+  gtag("config", "UA-149677150-1");
+</script>
+
+<meta charset="UTF-8" />
+<title>genesis block</title>
+<link rel="stylesheet" type="text/css" href="genesis_block.css">
+<script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"></script>
+<script>WebFont.load({google: {families: ["AnonymousPro-Regular"]}});</script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chroma-js/2.0.6/chroma.min.js"></script>
+<script src="genesis_block.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=10, minimum-scale=0, user-scalable=yes">
+
+<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://hodl.camp/genesis_block/" />
+<meta property="og:title" content="genesis block" />
+<meta property="og:image" content="https://hodl.camp/genesis_block/genesis_block.png" />
+<meta property="og:description" content="genesis block" />
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:domain" value="hodl.camp" />
+<meta name="twitter:title" value="genesis block" />
+<meta name="twitter:description" value="genesis block" />
+<meta name="twitter:image" content="https://hodl.camp/genesis_block/genesis_block.png" />
+<meta name="twitter:url" value="https://hodl.camp/genesis_block/" />
+</head>
+<body onload="onLoad()">
+  <div id="center">
+    <div class="cell" id="title">Genesis block</div>
+    <div class="cell" id="content"></div>
+    <div class="cell status">
+      <span class="right"><a target="_blank" href="https://twitter.com/mutatrum"><i class="fa fa-twitter"></i> mutatrum</a></span>
+    </div>
+    <div class="cell">
+      <div class="cell annotation" data-fragment="01000000">
+        Version:
+      </div>
+      <div class="cell annotation" data-fragment="0000000000000000000000000000000000000000000000000000000000000000">
+        Previous block: As there is no previous block, this is all zeros.<br>
+        <br>
+        For the next block, this is calculated by taking the block header, eg. the first 80 bytes of this block and
+        performing a SHA-256 hash twice. This results in
+        <blockquote>0x6fe28c0ab6f1b372c1a6a246ae63f74f931e8365e15a089c68d6190000000000</blockquote>
+        which is found in the next block.<br>
+        <br>
+        The double hash is a protection against length extension attack.
+      </div>
+      <div class="cell annotation" data-fragment="3BA3EDFD7A7B12B27AC72C3E67768F617FC81BC3888A51323A9FB8AA4B1E5E4A">
+        Merkle root: a unique fingerprint of all the transactions in a block. This is constructed by continuously 
+        pairwise hashing of transaction IDs until you end up with a single hash.<br>
+        <br>
+        The benefit of having a merkle tree is that you don't need all the transaction IDs to prove a single
+        transaction 
+      </div>
+      <div class="cell annotation" data-fragment="29AB5F49">
+        Timestamp: Little-endian order unix timestamp of 2009-01-03T18:15:05 UTC.<br>
+        <br>
+        Bitcoin is designed to mine a block on average every 10 minutes, due to a self-balancing difficulty. 
+      </div>
+      <div class="cell annotation" data-fragment="FFFF001D">
+        <!--  https://medium.facilelogin.com/the-mystery-behind-block-time-63351e35603a --> 
+        nBits: The resulting hash
+      </div>
+      <div class="cell annotation" data-fragment="1DAC2B7C">
+        Nonce: Little-endian order number 0x7C2BAC1D, which equals to 2083236893 in decimal.<br>
+        <br>
+        This is the main modifier to get the block hash below to the target number. By leaving all other fields the same
+        the hash 
+      </div>
+      <div class="cell annotation" data-fragment="01">
+        Number of transactions: 
+      </div>
+      <div class="cell annotation" data-fragment="01000000">
+        Version:
+      </div>
+      <div class="cell annotation" data-fragment="01">
+        Input:
+      </div>
+      <div class="cell annotation" data-fragment="0000000000000000000000000000000000000000000000000000000000000000FFFFFFFF">
+        Previous output:
+      </div>
+      <div class="cell annotation" data-fragment="4D">
+        Script length: 
+      </div>
+      <div class="cell annotation" data-fragment="04">
+        Scriptsig PUSH the next 4 bytes
+      </div>
+      <div class="cell annotation" data-fragment="FFFF001D">
+        Scriptsig nbits
+      </div>
+      <div class="cell annotation" data-fragment="01">
+        Scriptsig PUSH 1 byte
+      </div>
+      <div class="cell annotation" data-fragment="04">
+        Scriptsig PUSHed 1 byte - I'm not entirely sure what this 4 represents
+      </div>
+      <div class="cell annotation" data-fragment="45">
+        Scriptsig PUSH the next 69 bytes (0x45 == 69)
+      </div>
+      <div class="cell annotation" data-fragment="5468652054696D65732030332F4A616E2F32303039204368616E63656C6C6F72206F6E206272696E6B206F66207365636F6E64206261696C6F757420666F722062616E6B73">
+        Scriptsig coinbase data: This is a reference to the front page of the Times newspaper from January 3rd, 2009. This
+        proofs the genesis block was not created before this date.
+        <hr>
+        <h2>Chancellor on brink of second bailout for banks</h2>
+        <h3>Billions may be needed as lending squeeze tightens</h3>
+        <b>Francis Elliott</b> Deputy Political Editor<br>
+        <b>Gary Duncan</b> Economics Editor<br>
+        <br>
+        Alistair Darling has been forced to consider a second bailout for banks as the lending drought worsens.<br>
+        <p>The Chancellor will decide within weeks whether to pump billions more into the economy as evidence mounts that
+        the £37 billion part-nationalisation last year has failed to keep credit flowing. Options include cash injections,
+        offering banks cheaper state guarantees to raise money privately or buying up &ldquo;toxic assets&rdquo;, The
+        Times has learnt.</p>
+        <p>The Bank of England revealed yesterday that, despite intense pressure, the banks curbed lending in the final
+        quarter of last year and plan even lighter restrictions in the coming months. Its findings will alarm the
+        Treasury.</p>
+        <p>The Bank is expected to take yet more aggressive action this week by cutting the base rate from its current
+        level of 2 per cent. Doing so would reduce the cost of borrowing but have little effect on the availability of
+        loans.</p>
+        <p>Whitehall sources said that ministers planned to &ldquo;keep the banks on the boil&rdquo; but accepted that
+        they need more help to restore lending levels. Formally, the Treasury plans to focus on state-backed gurantees to
+        encourage private finance, but a number of interventions are on the table, including further injections of
+        taxpayers&rsquo; cash.</p> 
+        <p>Under one option, a &ldquo;bad bank&rdquo; would be created to dispose of bad debts. The Treasury would take
+        bad loans off the hands of troubled banks, perhaps swapping them for government bonds. The toxic assets, blamed
+        for poisoning the financial system, would be parked in a state vehicle or &ldquo;bad bank&rdquo; that would manage
+        them and attempt to dispose of them while &ldquo;detoxifying&rdquo; the mainstream banking system.</p>
+        <p>The idea would mirror the initial proposal by Henry Paulson, the US Treasury Secretary, to underpin the
+        American banking system by buying up toxic assets. The idea was abandoned, ironically, when Mr Paulson decided to
+        follow Britain&rsquo;s plan of injecting cash directly into troubled banks.</p>
+        <p>Mr Darling, Gordon Brown and Lord Mandelson, the Business Secretary, are expected to take the final decision on
+        what extra help to give the banks by the end of the month.</p>
+        <p>The banks have taken much of the heat for the economy&rsquo;s woes. But ministers are said increasingly to
+        accept that attacking the banks will not by itself transform a situation that is jeopardising Britain&rsquo;s
+        economic prospects.</p>
+        <p>Insiders point out that Mr Darling&rsquo;s criticism of mortgage lenders has softened in recent weeks.</p>
+        <p>After the Bank of England&rsquo;s radical cuts in interest rates over the past two months, the focus at the
+        Treasury has shifted away from mortgage lending to the pressure being put on businesses by the scarcity of loans,
+        which is emerging as the bigger economic danger.</p>
+        <p>Richard Lambert, the Director-General of the CBI, said yesterday: &ldquo;The Government is going to have to do
+        more to restore credit flows across the economy.&rdquo;</p>
+        <p>He said that the car industry was especially vulnerable: &ldquo;Without access to credit or loan guarantees on
+        commercial terms, this vital part of the economy will incur lasting damage.&rdquo;</p>
+        <p>The scale of the lending drought was highlighted as separate Bank figures showed that the number of new home
+        loans approved plunged to a record lose in November. Only 27,000 mortgages for house purchase were approved by
+        banks and building societies, down from a revised 31,000 in October. It is the lowest level since the Bank began
+        collecting data in 1999. The Bank&rsquo;s quarterly credit conditions survey showed that banks restricted access
+        to loans of all kinds by companies and consumers in the past quarter, and that they plan to tighten the screws
+        more in this quarter.</p>
+        <p>Halifax reported that the price of the average house fell by more than £100 a day last year. Its quarterly
+        figures showed that the average house ended the year down in price by £37,178, or 162 per cent.</p>
+        <br>
+        <h3>Pressing their point</h3>
+        &ldquo;The single most pressing challenge to economic policy is to get the banking system to get lending in any
+        normal sense&rdquo;<br>
+        <b>Mervyn King, Governor of the Bank of England, Nov 26</b><br>
+        <br>
+        &ldquo;They are close to cutting off their noses to spite their faces&rdquo;<br>
+        <b>Lord Mandelson, Business Secretary, accuses the banks of being too conservative, Nov 30</b><br>
+        <br>
+        &ldquo;The banks have to understand that we have put substantial sums of public money in to support them. They,
+        in turn, need to play their part&rdquo;<br>
+        <b>Alistair Darling, Dec 10</b><br>
+        <br>
+        &ldquo;Quite clearly a lot more needs to be done&rdquo;<br>
+        <b>Alistair Darling, Dec 15</b> 
+        <hr>
+      </div>
+      <div class="cell annotation" data-fragment="FFFFFFFF">
+        sequence
+      </div>
+      <div class="cell annotation" data-fragment="01">
+        outputs
+      </div>
+      <div class="cell annotation" data-fragment="00F2052A01000000">
+        Little-endian order number 0x12A05F200, which equals 5000000000 in decimal. This is the coinbase miner subsidy of 
+        <b>50 BTC</b> in the first reward era. Satoshis are the standard notation for all amounts in the bitcoin 
+        protocol.<br>
+        <br>
+        Every 210000 blocks, the miner subsidy is cut in half (the halving). After 33 halvings there is no more miner
+        subsidy, and the transaction fees pay for the mining expenditure and the security of the network.<br>
+        <br>
+        When all the halvings are done, there have been 20999999.97690000 bitcoin mined, thus 2310000 satoshis short 
+        of 21 million.<br>
+        <br>
+        The 21 million is actually not in the code. The subsidy per block is derived the starting value of 50 BTC per 
+        block, and divide that block subsidy by 2 for every 210000 blocks.
+        <blockquote>
+        int64 CBlock::GetBlockValue(int64 nFees) const<br>
+        {<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;int64 nSubsidy = 50 * COIN;<br>
+        <br>
+        &nbsp;&nbsp;&nbsp;&nbsp;// Subsidy is cut in half every 4 years<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;nSubsidy >>= (nBestHeight / 210000);<br>
+        <br>
+        &nbsp;&nbsp;&nbsp;&nbsp;return nSubsidy + nFees;<br>
+        }
+        </blockquote>
+        <br>
+        The lower limit on the size of a transaction (the dust limit) is 546 satoshis. However, for the coinbase
+        transaction (the mining subsidy), this limit is not applicable.  
+      </div>
+      <div class="cell annotation" data-fragment="43">
+        pk_script length
+      </div>
+      <div class="cell annotation" data-fragment="4104678AFDB0FE5548271967F1A67130B7105CD6A828E03909A67962E0EA1F61DEB649F6BC3F4CEF38C4F35504E51EC112DE5C384DF7BA">
+        pk_script 
+      </div>
+      <div class="cell annotation" data-fragment="0B8D578A4C702B6BF11D5F">
+        pk_script pubkey 0x5F1DF16B2B704C8A578D0B
+      </div>
+      <div class="cell annotation" data-fragment="AC">
+        pk_script OP_CHECKSIG
+      </div>
+      <div class="cell annotation" data-fragment="00000000">
+        lock time
+      </div>
+    </div>
+  </div>
+</body>
+</html>
