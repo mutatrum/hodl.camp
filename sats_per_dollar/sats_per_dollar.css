@@ -45,3 +45,29 @@ a:hover {
   border-radius: 15px;
   width: 90vmin;
 }
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  white-space: nowrap;
+  left: -10px;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.dialog-border {
+  padding: 8px;
+  border-width: 1px;
+  border-color: white;
+  border-style: solid;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  background-color: black;
+  z-index: 1;
+}

@@ -11,7 +11,7 @@
 </script>
 
 <meta charset="UTF-8" />
-<title>mutatrum.com</title>
+<title>sats per dollar</title>
 <link rel="stylesheet" type="text/css" href="sats_per_dollar.css">
 <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"></script>
 <script>WebFont.load({google: {families: ["Droid Sans Mono"]}});</script>
@@ -38,11 +38,17 @@
 </head>
 <body onload="onLoad()">
   <div id="center">
-    <div class="cell"><a target="_blank" href="https://twitter.com/sats_per_dollar"><span id="title"></span></a></div>
+    <div class="cell">
+      sats per 
+      <span class="dropdown">
+        <span id="fiat"></span><span class="status"> <i class="fa fa-caret-down"></i></span>
+        <span id="fiat_list" class="dropdown-content dialog-border"></span>
+      </span>
+    </div>
     <div class="cell" id="sats"></div>
     <canvas class="cell" id="sats_per_dollar"></canvas>
     <div class="cell status">
-      <span class="left" ><a target="_blank" href="https://twitter.com/mutatrum"><i class="fa fa-twitter"></i> mutatrum</a></span>
+      <span class="left"><a target="_blank" href="https://twitter.com/mutatrum"> mutatrum</a>&nbsp;&nbsp;<a target="_blank" href="https://twitter.com/sats_per_dollar"><i class="fa fa-twitter"></i></a></span> 
       <span class="right"><span id="status"></span><span id="spinner"></span></span>
     </div>
   </div>

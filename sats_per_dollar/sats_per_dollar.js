@@ -6,16 +6,35 @@ const WIDTH = 506;
 const BLOCK = 31;
 const GRID = 10;
 const COLUMNS = 16;
+const FIAT_SYMBOLS = ['USD', 'EUR', 'GBP', 'JPY'];
+const FIAT_NAMES = ['dollar', 'euro', 'pound', 'yen'];
 
 var color;
 var startColor = chroma.random();
 var endColor = chroma.random();
 var colorIndex = 0;
+var fiatIndex = 0;
 
 var spinner = "◢◣◤◥";
 var spin = 0;
 
 function init() {
+  const urlParams = new URLSearchParams(window.location.search);
+  fiatIndex = FIAT_SYMBOLS.indexOf(urlParams.get('fiat'));
+  if (fiatIndex == -1) {
+    fiatIndex = 0;
+  }
+  
+  var fiatList = document.getElementById("fiat_list");
+  for (i = 0; i < FIAT_SYMBOLS.length; i++) {
+    if (fiatIndex != i) {
+      if (i == 0) {
+        fiatList.innerHTML += `<a href=".">dollar</a><br>`;
+      } else {
+        fiatList.innerHTML += `<a href="?fiat=${FIAT_SYMBOLS[i]}">${FIAT_NAMES[i]}</a><br>`;
+      }
+    }
+  } 
   webSocketConnect();
 }
 
@@ -29,7 +48,7 @@ function webSocketConnect() {
     let msg = JSON.stringify({ 
       event: 'subscribe', 
       channel: 'ticker', 
-      symbol: 'tBTCUSD' 
+      symbol: 'tBTC' + FIAT_SYMBOLS[fiatIndex]
     });
 
     webSocket.send(msg); 
@@ -75,7 +94,7 @@ function update(sats) {
   var background = getBackground(color);
   var foreground = getForeground(color);
 
-  document.getElementById('title').innerHTML = 'sats per dollar';
+  document.getElementById('fiat').innerHTML = FIAT_NAMES[fiatIndex];
   document.getElementById('sats').innerHTML = sats;
   
   var canvas = document.getElementById('sats_per_dollar');
