@@ -6,8 +6,8 @@ const WIDTH = 506;
 const BLOCK = 31;
 const GRID = 10;
 const COLUMNS = 16;
-const FIAT_SYMBOLS = ['USD', 'EUR', 'GBP', 'JPY'];
-const FIAT_NAMES = ['dollar', 'euro', 'pound', 'yen'];
+const FIAT_SYMBOLS = ['USD', 'EUR', 'GBP', 'JPY', 'AUD'];
+const FIAT_NAMES = ['dollar', 'euro', 'pound', 'yen', 'australian dollar'];
 
 var color;
 var startColor = chroma.random();
@@ -34,11 +34,22 @@ function init() {
         fiatList.innerHTML += `<a href="?fiat=${FIAT_SYMBOLS[i]}">${FIAT_NAMES[i]}</a><br>`;
       }
     }
-  } 
-  webSocketConnect();
+  }
+
+  switch(fiatIndex) {
+    case 0:
+    case 1:
+    case 2:
+    case 3:
+      bitfinexConnect();
+      break;
+    case 4:
+      bitarooConnect();
+      break;
+  }
 }
 
-function webSocketConnect() {
+function bitfinexConnect() {
   setStatus('connect');
 
   const webSocket = new WebSocket('wss://api-pub.bitfinex.com/ws/2');
@@ -80,6 +91,24 @@ function webSocketConnect() {
       setStatus(data.event);
     }
   };
+}
+
+function bitarooConnect() {
+  bitarooPoll();
+  setStatus('ok');
+  setInterval(bitarooPoll, 10000);
+}
+
+async function bitarooPoll() {
+  var response = await fetch('https://api.bitaroo.com.au/trade/market-data/btcaud');
+  var data = await response.json();
+
+  var price = data.dailyStats.lastPrice;
+  var sats = Math.floor(1e8 / price);
+  update(sats);
+
+  document.getElementById('spinner').innerHTML = ' ' + spinner[spin];
+  spin = (spin + 1) % spinner.length;
 }
 
 function update(sats) {
