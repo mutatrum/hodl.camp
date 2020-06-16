@@ -100,7 +100,7 @@ function bitarooConnect() {
 }
 
 async function bitarooPoll() {
-  var response = await fetch('https://api.bitaroo.com.au/trade/market-data/btcaud');
+  var response = await fetch('https://api.bitaroo.com.au/trade/market-data/btcaud', { mode: 'no-cors'} );
   var data = await response.json();
 
   var price = data.dailyStats.lastPrice;
