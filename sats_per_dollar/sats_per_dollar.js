@@ -6,8 +6,55 @@ const WIDTH = 506;
 const BLOCK = 31;
 const GRID = 10;
 const COLUMNS = 16;
-const FIAT_SYMBOLS = ['USD', 'EUR', 'GBP', 'JPY', 'AUD'];
-const FIAT_NAMES = ['dollar', 'euro', 'pound', 'yen', 'australian dollar'];
+
+const BITFINEX = {
+  url: 'wss://api-pub.bitfinex.com/ws/2',
+  subscribe: function(symbol) {
+    return {
+      event: 'subscribe', 
+      channel: 'ticker', 
+      symbol: 'tBTC' + symbol
+    };
+  },
+  handle: function(data) {
+    if (Array.isArray(data)) {
+      var message = data[1];
+      if (Array.isArray(message)) {
+        var price = message[6];
+        var sats = Math.floor(1e8 / price);
+        update(sats);
+      }
+    }
+    else {
+      setStatus(data.event);
+    }
+  }
+}
+const KRAKEN = {
+  url: 'wss://ws.kraken.com/',
+  subscribe: function(symbol) {
+    return { 
+      event: 'subscribe', 
+      subscription: {name: 'ticker'},
+      pair: ['XBT/' + symbol],
+    };
+  },
+  handle: function(data) {
+    if (Array.isArray(data)) {
+      var price = data[1].a[0];
+      var sats = Math.floor(1e8 / price);
+      update(sats);
+    } else {
+      if (data.status) {
+        setStatus(data.status);      
+      }
+    }
+  }
+}
+
+const FIAT_SYMBOLS = ['USD', 'EUR', 'GBP', 'JPY', 'AUD', 'CAD', 'CHF'];
+const FIAT_NAMES = ['dollar', 'euro', 'pound sterling', 'japanese yen', 'australian dollar', 'canadian dollar', 'swiss franc'];
+const FIAT_EXCHANGE = [BITFINEX, KRAKEN, KRAKEN, BITFINEX, KRAKEN, KRAKEN, KRAKEN];
 
 var color;
 var startColor = chroma.random();
@@ -24,7 +71,9 @@ function init() {
   if (fiatIndex == -1) {
     fiatIndex = 0;
   }
-  
+
+  document.getElementById('fiat').innerHTML = FIAT_NAMES[fiatIndex];
+
   var fiatList = document.getElementById("fiat_list");
   for (i = 0; i < FIAT_SYMBOLS.length; i++) {
     if (fiatIndex != i) {
@@ -36,31 +85,17 @@ function init() {
     }
   }
 
-  switch(fiatIndex) {
-    case 0:
-    case 1:
-    case 2:
-    case 3:
-      bitfinexConnect();
-      break;
-    case 4:
-      bitarooConnect();
-      break;
-  }
+  connect(FIAT_EXCHANGE[fiatIndex], FIAT_SYMBOLS[fiatIndex]);
 }
 
-function bitfinexConnect() {
+function connect(exchange, symbol) {
   setStatus('connect');
 
-  const webSocket = new WebSocket('wss://api-pub.bitfinex.com/ws/2');
+  const webSocket = new WebSocket(exchange.url);
 
   webSocket.onopen = function (event) {
     setStatus('open');
-    let msg = JSON.stringify({ 
-      event: 'subscribe', 
-      channel: 'ticker', 
-      symbol: 'tBTC' + FIAT_SYMBOLS[fiatIndex]
-    });
+    let msg = JSON.stringify(exchange.subscribe(symbol));
 
     webSocket.send(msg); 
   };
@@ -76,39 +111,10 @@ function bitfinexConnect() {
   
   webSocket.onmessage = function(event) {
     var data = JSON.parse(event.data);
-    if (Array.isArray(data)) {
-      var message = data[1];
-      if (Array.isArray(message)) {
-        var price = message[6];
-        var sats = Math.floor(1e8 / price);
-    
-        update(sats);
-      }
-      document.getElementById('spinner').innerHTML = ' ' + spinner[spin];
-      spin = (spin + 1) % spinner.length;
-    }
-    else {
-      setStatus(data.event);
-    }
+    exchange.handle(data);
+    document.getElementById('spinner').innerHTML = ' ' + spinner[spin];
+    spin = (spin + 1) % spinner.length;
   };
-}
-
-function bitarooConnect() {
-  bitarooPoll();
-  setStatus('ok');
-  setInterval(bitarooPoll, 10000);
-}
-
-async function bitarooPoll() {
-  var response = await fetch('https://api.bitaroo.com.au/trade/market-data/btcaud');
-  var data = await response.json();
-
-  var price = data.dailyStats.lastPrice;
-  var sats = Math.floor(1e8 / price);
-  update(sats);
-
-  document.getElementById('spinner').innerHTML = ' ' + spinner[spin];
-  spin = (spin + 1) % spinner.length;
 }
 
 function update(sats) {
@@ -123,7 +129,6 @@ function update(sats) {
   var background = getBackground(color);
   var foreground = getForeground(color);
 
-  document.getElementById('fiat').innerHTML = FIAT_NAMES[fiatIndex];
   document.getElementById('sats').innerHTML = sats;
   
   var canvas = document.getElementById('sats_per_dollar');
