@@ -102,7 +102,7 @@ function connect(exchange, symbol) {
   
   webSocket.onclose = function(event) {
     setStatus(`close ${event.code} ${event.reason}`);
-    setTimeout(webSocketConnect, 1000);
+    setTimeout(function() {connect(exchange, symbol)}, 5000);
   }
   
   webSocket.onerror = function(event) {
