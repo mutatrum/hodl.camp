@@ -129,6 +129,7 @@ function update(sats) {
   var background = getBackground(color);
   var foreground = getForeground(color);
 
+  document.title = `${sats} sats per ${FIAT_NAMES[fiatIndex]}`;
   document.getElementById('sats').innerHTML = sats;
   
   var canvas = document.getElementById('sats_per_dollar');
