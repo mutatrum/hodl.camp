@@ -51,10 +51,29 @@ const KRAKEN = {
     }
   }
 }
+const BINANCE = {
+  url: 'wss://stream.binance.com:9443/ws',
+  subscribe: function(symbol) {
+    return { 
+      method: 'SUBSCRIBE', 
+      params: ['btc' + symbol.toLowerCase() + '@ticker'],
+      id: 1
+    };
+  },
+  handle: function(data) {
+    if (data.id) {
+      setStatus('subscribed');
+    } else {
+      var price = data.c;
+      var sats = Math.floor(1e8 / price);
+      update(sats);
+    }
+  }
+}
 
-const FIAT_SYMBOLS = ['USD', 'EUR', 'GBP', 'JPY', 'AUD', 'CAD', 'CHF'];
-const FIAT_NAMES = ['dollar', 'euro', 'pound sterling', 'japanese yen', 'australian dollar', 'canadian dollar', 'swiss franc'];
-const FIAT_EXCHANGE = [BITFINEX, KRAKEN, KRAKEN, BITFINEX, KRAKEN, KRAKEN, KRAKEN];
+const FIAT_SYMBOLS = ['USD', 'EUR', 'GBP', 'JPY', 'AUD', 'CAD', 'CHF', 'NGN', 'RUB', 'TRY', 'ZAR', 'UAH'];
+const FIAT_NAMES = ['dollar', 'euro', 'pound sterling', 'japanese yen', 'australian dollar', 'canadian dollar', 'swiss franc', 'nigerian naira', 'russian rubble', 'turkish lira', 'south african rand', 'ukrainian hryvnia'];
+const FIAT_EXCHANGE = [BITFINEX, KRAKEN, KRAKEN, BITFINEX, KRAKEN, KRAKEN, KRAKEN, BINANCE, BINANCE, BINANCE, BINANCE, BINANCE];
 
 var color;
 var startColor = chroma.random();
