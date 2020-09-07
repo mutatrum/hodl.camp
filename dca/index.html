@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-149677150-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag("js", new Date());
+  gtag("config", "UA-149677150-1");
+</script>
+
+<meta charset="UTF-8" />
+<title>dca</title>
+<link rel="stylesheet" type="text/css" href="dca.css">
+<script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"></script>
+<script>WebFont.load({google: {families: ["Droid Sans Mono"]}});</script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chroma-js/2.0.6/chroma.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+<script src="dca.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=10, minimum-scale=0, user-scalable=yes">
+
+<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://hodl.camp/dca/" />
+<meta property="og:title" content="dca" />
+<meta property="og:image" content="https://hodl.camp/dca/dca.png" />
+<meta property="og:description" content="dca" />
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:domain" value="hodl.camp" />
+<meta name="twitter:title" value="dca" />
+<meta name="twitter:description" value="dca" />
+<meta name="twitter:image" content="https://hodl.camp/dca/dca.png" />
+<meta name="twitter:url" value="https://hodl.camp/dca/" />
+</head>
+<body onload="onLoad()">
+  <div id="center">
+    <div class="cell">
+      if you were stacking sats for
+      <input type="number" id="amount" min="1" max="99" value="10" autocomplete="off" onkeyup="onAmountChange()"  oninput="onAmountChange()" >
+      dollar<span id="plural">s</span> a day<br>
+      it took <span id="duration"></span> to reach one whole bitcoin
+    </div>
+    <div id="container" class="chart-container">
+      <canvas id="dca"></canvas>
+    </div>
+    <div class="cell status">
+      <span class="left" ><a target="_blank" href="https://twitter.com/mutatrum"><i class="fa fa-twitter"></i> mutatrum</a></span>
+      <span class="right"><span id="status"></span><span id="spinner"></span></span>
+    </div>
+  </div>
+</body>
+</html>
