@@ -1,0 +1,79 @@
+body {
+  background-color: black;
+  margin: 0;
+  font-family: 'Droid Sans Mono', monospace;
+  font-size: 30px;
+  color: white;
+}
+
+#center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  flex-direction: column;
+}
+
+.cell {
+  padding: 5px;
+  width: 90vw;
+}
+
+.status {
+  font-size: 15px;
+  text-align: right;
+  opacity: 0.5;
+}
+
+.right{
+    float:right;
+}
+
+.left{
+    float:left;
+}
+
+a {
+  text-decoration: none;
+  color: white;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+#longest_streak {
+  border-radius: 15px;
+  height: 90vw;
+}
+
+
+@media screen and (max-width: 1800px) {
+  body {
+    font-size: 25px;
+  }
+}
+
+@media screen and (max-width: 1500px) {
+  body {
+    font-size: 20px;
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  body {
+    font-size: 15px;
+  }
+}
+
+@media screen and (max-width: 900px) {
+  body {
+    font-size: 12px;
+  }
+}
+
+@media screen and (max-width: 700px) {
+  body {
+    font-size: 10px;
+  }
+}
