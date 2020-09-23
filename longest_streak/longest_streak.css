@@ -47,6 +47,12 @@ a:hover {
   height: 90vw;
 }
 
+.lb {
+  display: inline;
+}
+.lb::after {
+  content: '\a0\a0';
+}
 
 @media screen and (max-width: 1800px) {
   body {
@@ -75,5 +81,12 @@ a:hover {
 @media screen and (max-width: 700px) {
   body {
     font-size: 10px;
+  }
+
+  .lb {
+    display: block;
+  }
+  .lb::after {
+    content: '';
   }
 }

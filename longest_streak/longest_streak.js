@@ -63,7 +63,7 @@ function createContent() {
       content.innerHTML += ')';
 
       if (start != 0 && start != streakStart) {
-        content.innerHTML += '&nbsp;&nbsp;Current streak: ' + formatDays(size - start + 1) + ' (' + formatDate(getIndexDate(start)) + ' - today)';
+        content.innerHTML += '<span class="lb"></span>Current streak: ' + formatDays(size - start + 1) + ' (' + formatDate(getIndexDate(start)) + ' - today)';
       }
 
       content.innerHTML += '</br>';
