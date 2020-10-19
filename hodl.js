@@ -321,13 +321,13 @@ function updateMarker() {
     var sellPrice = formatPrice(sell);
     var duration = formatDuration(buy, sell);
     var profitValue = getProfit(buy, sell);
-    var profit = profitValue.toFixed(2);
+    var profit = Math.abs(profitValue).toFixed(2);
 
     setInnerHTML('tip',
-      `bought on ${buyDate} for ${buyPrice}<br>`+
-      `&nbsp;&nbsp;sold on ${sellDate} for ${sellPrice}<br>` +
-      `&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hodl ${duration}<br>` +
-      `&nbsp;&nbsp;&nbsp;profit ${profit}%`);
+      `entry on ${buyDate} for ${buyPrice}<br>`+
+      `&nbsp;exit on ${sellDate} for ${sellPrice}<br>` +
+      `&nbsp;&nbsp;&nbsp;&nbsp;hodl ${duration}<br>` +
+      `&nbsp;&nbsp;${profitValue < 0 ? '&nbsp;&nbsp;loss' : 'profit'} ${profit}%`);
 
     var colorIndex = getColorIndex(profitValue);
     setProperty('--color-index', `${colorIndex}px`);
@@ -335,11 +335,11 @@ function updateMarker() {
     setProperty('--x-position', `${sell - 1}px`);
     setProperty('--y-position', `${buy}px`);
 
-    setInnerHTML('x-label', `sold on ${sellDate}`);
-    setInnerHTML('y-label', `bought on ${buyDate}`);
+    setInnerHTML('y-label', `entry on ${buyDate}`);
+    setInnerHTML('x-label', `exit on ${sellDate}`);
     setInnerHTML('x-price', `for ${sellPrice}`)
     setInnerHTML('y-price', `for ${buyPrice}`)
-    setInnerHTML('profit', `profit ${profit}%`);
+    setInnerHTML('profit', `${profitValue < 0 ? 'loss' : 'profit'} ${profit}%`);
     setInnerHTML('duration', `hodl ${duration}`);
   } else {
     setProperty('--display-marker', 'none');
