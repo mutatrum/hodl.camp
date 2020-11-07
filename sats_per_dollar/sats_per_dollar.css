@@ -46,6 +46,15 @@ a:hover {
   width: 90vmin;
 }
 
+.dropbtn {
+  background-color: black;
+  color: white;
+  padding: 0px;
+  font-family: 'Droid Sans Mono', monospace;
+  font-size: 30px; 
+  border: none;
+}
+
 .dropdown {
   position: relative;
   display: inline-block;
@@ -56,13 +65,6 @@ a:hover {
   position: absolute;
   white-space: nowrap;
   left: -10px;
-}
-
-.dropdown:hover .dropdown-content {
-  display: block;
-}
-
-.dialog-border {
   padding: 8px;
   border-width: 1px;
   border-color: white;
@@ -72,10 +74,6 @@ a:hover {
   z-index: 1;
 }
 
-.disable-select {
-  user-select: none; /* supported by Chrome and Opera */
- -webkit-user-select: none; /* Safari */
- -khtml-user-select: none; /* Konqueror HTML */
- -moz-user-select: none; /* Firefox */
- -ms-user-select: none; /* Internet Explorer/Edge */
+.dropdown:hover .dropdown-content {
+  display: block;
 }

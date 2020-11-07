@@ -37,12 +37,12 @@
 </head>
 <body onload="onLoad()">
   <div id="center">
-    <div class="cell disable-select">
+    <div class="cell">
       sats per 
-      <span class="dropdown">
-        <span id="fiat"></span><span class="status"> <i class="fa fa-caret-down"></i></span>
-        <span id="fiat_list" class="dropdown-content dialog-border"></span>
-      </span>
+      <div class="dropdown">
+        <button class="dropbtn"><span id="fiat"></span><span class="status"> <i class="fa fa-caret-down"></i></span></button>
+        <div id="fiat_list" class="dropdown-content"></div>
+      </div>
     </div>
     <div class="cell" id="sats"></div>
     <canvas class="cell" id="sats_per_dollar"></canvas>
