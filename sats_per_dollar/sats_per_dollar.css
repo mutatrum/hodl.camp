@@ -74,6 +74,10 @@ a:hover {
   z-index: 1;
 }
 
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
 textarea,
 input[type="text"],
 input[type="button"],
