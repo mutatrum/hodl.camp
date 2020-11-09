@@ -49,6 +49,8 @@ function updateValues() {
   durationSpan.innerHTML = formatDuration(sats.length - duration, sats.length);
   var pluralSpan = document.getElementById('plural');
   pluralSpan.style.display = amount > 1 ? 'initial' : 'none';
+  var valueSpan = document.getElementById('value');
+  valueSpan.innerHTML = duration * amount;
 }
 
 function initChart() {
@@ -83,6 +85,10 @@ function initChart() {
         display: false
       },
       tooltips: {
+        custom: function(tooltip) {
+          if (!tooltip) return;
+          tooltip.displayColors = false;
+        },
         callbacks: {
           title: function (tooltipItem, data) {
             var days = data.datasets[0].data[tooltipItem[0].index];
@@ -92,7 +98,9 @@ function initChart() {
             return formatDate(start) + ' - ' + formatDate(end);
           },
           label: function (tooltipItem) {
-            return formatDuration(tooltipItem.index - tooltipItem.yLabel, tooltipItem.index);
+            const duration = tooltipItem.yLabel;
+            const amount = document.getElementById('amount').value;
+            return [formatDuration(tooltipItem.index - duration, tooltipItem.index), '$' + duration * amount];
           }
         }
       },
