@@ -70,10 +70,28 @@ const BINANCE = {
     }
   }
 }
+const FTX = {
+  url: 'wss://ftx.com/ws/',
+  subscribe: function(symbol) {
+    return {
+      op: 'subscribe',
+      channel: 'ticker',
+      market: 'BTC/'+symbol
+    };
+  },
+  handle: function(data) {
+    setStatus(data.type);
+    if (data.data) {
+      var price = data.data.last;
+      var sats = Math.floor(1e8 / price);
+      update(sats);
+    }
+  }
+}
 
-const FIAT_SYMBOLS = ['USD', 'EUR', 'GBP', 'JPY', 'AUD', 'CAD', 'CHF', 'NGN', 'RUB', 'TRY', 'ZAR', 'UAH'];
-const FIAT_NAMES = ['dollar', 'euro', 'pound sterling', 'japanese yen', 'australian dollar', 'canadian dollar', 'swiss franc', 'nigerian naira', 'russian rubble', 'turkish lira', 'south african rand', 'ukrainian hryvnia'];
-const FIAT_EXCHANGE = [BITFINEX, KRAKEN, KRAKEN, BITFINEX, KRAKEN, KRAKEN, KRAKEN, BINANCE, BINANCE, BINANCE, BINANCE, BINANCE];
+const FIAT_SYMBOLS = ['USD', 'EUR', 'GBP', 'JPY', 'AUD', 'CAD', 'CHF', 'NGN', 'RUB', 'TRY', 'ZAR', 'UAH', 'BRL'];
+const FIAT_NAMES = ['🇺🇸 dollar', '🇪🇺 euro', '🇬🇧 pound sterling', '🇯🇵 yen', '🇦🇺 dollar', '🇨🇦 dollar', '🇨🇭 franc', '🇳🇬 naira', '🇷🇺 rubble', '🇹🇷 lira', '🇿🇦 rand', '🇺🇦 hryvnia', '🇧🇷 real'];
+const FIAT_EXCHANGE = [BITFINEX, KRAKEN, KRAKEN, BITFINEX, KRAKEN, KRAKEN, KRAKEN, BINANCE, BINANCE, BINANCE, BINANCE, BINANCE, FTX];
 
 var color;
 var startColor = chroma.random();
@@ -97,7 +115,7 @@ function init() {
   for (i = 0; i < FIAT_SYMBOLS.length; i++) {
     if (fiatIndex != i) {
       if (i == 0) {
-        fiatList.innerHTML += `<a href=".">dollar</a><br>`;
+        fiatList.innerHTML += `<a href=".">${FIAT_NAMES[0]}</a><br>`;
       } else {
         fiatList.innerHTML += `<a href="?fiat=${FIAT_SYMBOLS[i]}">${FIAT_NAMES[i]}</a><br>`;
       }
