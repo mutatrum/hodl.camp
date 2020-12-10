@@ -158,7 +158,7 @@ function formatDuration(startEpoch, endEpoch) {
     if (day != 0) {
       return y + ' and ' + d;
     }
-    return y;
+    return 'exactly ' + y;
   }
   if (month != 0) {
     if (day != 0) {
