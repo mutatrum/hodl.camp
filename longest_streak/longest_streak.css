@@ -2,7 +2,7 @@ body {
   background-color: black;
   margin: 0;
   font-family: 'Droid Sans Mono', monospace;
-  font-size: 30px;
+  font-size: min(3vw, 2vh);
   color: white;
 }
 
@@ -54,35 +54,7 @@ a:hover {
   content: '\a0\a0';
 }
 
-@media screen and (max-width: 1800px) {
-  body {
-    font-size: 25px;
-  }
-}
-
-@media screen and (max-width: 1500px) {
-  body {
-    font-size: 20px;
-  }
-}
-
-@media screen and (max-width: 1200px) {
-  body {
-    font-size: 15px;
-  }
-}
-
-@media screen and (max-width: 900px) {
-  body {
-    font-size: 12px;
-  }
-}
-
-@media screen and (max-width: 700px) {
-  body {
-    font-size: 10px;
-  }
-
+@media screen and (max-width: 1650px) {
   .lb {
     display: block;
   }
