@@ -1,5 +1,5 @@
 async function onLoad() {
-  var index = document.getElementById('content');
+  var index = document.getElementById('data');
   
   var line = 0;
   var pos = 0;

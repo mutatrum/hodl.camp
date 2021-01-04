@@ -18,7 +18,7 @@ body {
   display: flex;
   /* justify-content: start; */
   align-items: center;
-  height: calc(100vh - 40px);
+  /* height: calc(100vh - 40px); */
   flex-direction: column;
   padding: 20px;
 }
@@ -43,7 +43,7 @@ body {
 
 #annotations {
   position: relative; 
-  width: 90vmin;
+  max-width: 100%;
 }
 
 #annotations-content {
@@ -53,9 +53,6 @@ body {
 .annotation {
   display: none;
   font-size: 20px;
-  width: 90vmin;
-  height: calc(90vh - 540px);
-  overflow-y: auto;
 }
 
 .annotation-show {
@@ -64,12 +61,13 @@ body {
 
 #content {
   line-height: 30px;
-  width: 90vmin;
+  width: 1192px;
 }
 
 .cell {
-  padding: 5px;
-  width: 90vmin;
+  padding: 10px 0px 10px 0px;
+  width: 
+  /* width: 90vmin; */
 }
 
 .status {
