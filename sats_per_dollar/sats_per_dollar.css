@@ -51,7 +51,7 @@ a:hover {
   color: white;
   padding: 0px;
   font-family: 'Droid Sans Mono', monospace;
-  font-size: 30px; 
+  font-size: inherit;
   border: none;
 }
 
@@ -84,4 +84,23 @@ input[type="button"],
 input[type="submit"] {
   -webkit-appearance: none;
   border-radius: 0;
+}
+
+@media screen and (max-width: 950px) {
+  body {
+    font-size: 15px;
+  }
+ 
+  .cell {
+    padding: 2px;
+  }
+  
+  .status {
+    font-size: 10px;
+  }
+
+  #sats_per_dollar {
+    border-radius: 5px;
+    width: 90vmin;
+  }  
 }

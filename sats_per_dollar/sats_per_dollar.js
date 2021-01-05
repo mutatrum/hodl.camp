@@ -2,11 +2,14 @@ async function onLoad() {
   init();
 }
 
-const WIDTH = 506;
-const BLOCK = 31;
+const COLUMNS = 10;
 const GRID = 10;
-const COLUMNS = 16;
-
+const GRID_GAP = 2;
+const DOT = 4;
+const DOT_GAP = 1;
+const BORDER = 5;
+const BLOCK = (DOT * 10) + (DOT_GAP * 9) + GRID_GAP;
+  
 const BITFINEX = {
   url: 'wss://api-pub.bitfinex.com/ws/2',
   subscribe: function(symbol) {
@@ -171,14 +174,15 @@ function update(sats) {
   
   var canvas = document.getElementById('sats_per_dollar');
   
+  var width = getWidth();
   var height = getHeight(sats);
   
-  canvas.width = WIDTH;
+  canvas.width = width;
   canvas.height = height;
 
   const ctx = canvas.getContext('2d');
   
-  const imageData = ctx.getImageData(0, 0, WIDTH, height);
+  const imageData = ctx.getImageData(0, 0, width, height);
   
   var buffer = new ArrayBuffer(imageData.data.length);
   var pixels = new Uint32Array(buffer);
@@ -188,10 +192,10 @@ function update(sats) {
   
   for (var i = 0; i < sats; i++) {
 
-    var x = 6 + (ax * 3) + (bx * BLOCK);
-    var y = 6 + (ay * 3) + (by * BLOCK);
+    var x = BORDER + (ax * (DOT + DOT_GAP)) + (bx * BLOCK);
+    var y = BORDER + (ay * (DOT + DOT_GAP)) + (by * BLOCK);
     
-    dot(pixels, x, y, foreground);
+    dot(pixels, x, y, foreground, width);
     
     ax++;
     if (ax == GRID) {
@@ -223,18 +227,22 @@ function getForeground(color) {
   return (rgb[0] * 0.299 + rgb[1] * 0.587 + rgb[2] * 0.114) > 149 ? 0xFF000000 : 0xFFFFFFFF;
 }
 
-function dot(pixels, x, y, color) {
-  var p = (y * WIDTH) + x;
-  
-  pixels[p            ] = color;
-  pixels[p         + 1] = color;
-  pixels[p + WIDTH    ] = color;
-  pixels[p + WIDTH + 1] = color;
+function dot(pixels, x, y, color, width) {
+  var p = (y * width) + x;
+
+  for(var i = 0; i < DOT; i++) {
+    pixels.fill(color, p, p + DOT);
+    p += width;
+  }
+}
+
+function getWidth() {
+  return (COLUMNS * 10 * DOT) + (COLUMNS * 9 * DOT_GAP) + ((COLUMNS - 1) * GRID_GAP) + BORDER + BORDER;
 }
 
 function getHeight(sats) {
-  var rows = Math.floor(sats / (COLUMNS * GRID * GRID)) + 1;
-  return (rows * BLOCK) + 10;
+  var rows = Math.ceil(sats / (COLUMNS * 100));
+  return (rows * 10 * DOT) + (rows * 9 * DOT_GAP) + ((rows - 1) * GRID_GAP) + BORDER + BORDER;
 }
 
 function setStatus(status) {
