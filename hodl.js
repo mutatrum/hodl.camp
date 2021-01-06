@@ -55,6 +55,22 @@ function init() {
     localStorage.scaleIndex = scaleIndex;
   }
 
+  var pin = hashParameters.get('pin');
+  if (pin) {
+    var dates = pin.split('_');
+    for (var index = 0; index <= size; index++) {
+      var date = formatDate(getIndexDate(index));
+      if (date == dates[0]) {
+        buy = index;
+      }
+      if (date == dates[1]) {
+        sell = index;
+      }
+    }
+    pinned = buy && sell;
+    updateMarker();
+  }
+
   var wrapperDiv =  document.getElementById('wrapper');
   var scrollbarWidth = wrapperDiv.offsetWidth - wrapperDiv.clientWidth;
   setProperty('--scrollbar-width', `${scrollbarWidth}px`);
@@ -157,8 +173,22 @@ function drawPixels(hodlContext, colorMap) {
 }
 
 function createLabels() {
+  var ath = 0;
+  var athPrice = 0;
+  var atl = 0;
+  var atlPrice = Number.MAX_VALUE;
   var labelsDiv = document.getElementById('labels');
   for (var index = 0; index <= size; index++) {
+    var price = data.bitcoin[index];
+    if (price > athPrice) {
+      ath = index;
+      athPrice = price;
+      atlPrice = Number.MAX_VALUE;
+    }
+    if (price < atlPrice) {
+      atl = index;
+      atlPrice = price;
+    }
     var date = getIndexDate(index);
     if (date.getDate() == 1) {
       if (date.getMonth() == 0) {
@@ -183,9 +213,25 @@ function createLabels() {
 
         var halvingDotImg = createDotImg(index, LINE);
         labelsDiv.appendChild(halvingDotImg);
+
+        var athLabelDiv = createLabelDiv(ath, formatPrice(ath));
+        athLabelDiv.classList.add('grid-price');
+        labelsDiv.append(athLabelDiv);
+        athPrice = 0;
+
+        var atlLabelDiv = createLabelDiv(atl, formatPrice(atl));
+        atlLabelDiv.classList.add('grid-price');
+        labelsDiv.append(atlLabelDiv);
+        atlPrice = Number.MAX_VALUE;
       }
     }
   }
+  var athLabelDiv = createLabelDiv(ath, formatPrice(ath));
+  athLabelDiv.classList.add('grid-price');
+  labelsDiv.append(athLabelDiv);
+  var atlLabelDiv = createLabelDiv(atl, formatPrice(atl));
+  atlLabelDiv.classList.add('grid-price');
+  labelsDiv.append(atlLabelDiv);
 }
 
 function createLabelDiv(index, innerHTML) {
@@ -341,9 +387,20 @@ function updateMarker() {
     setInnerHTML('y-price', `for ${buyPrice}`)
     setInnerHTML('profit', `${profitValue < 0 ? 'loss' : 'profit'} ${profit}%`);
     setInnerHTML('duration', `hodl ${duration}`);
+
+    var hashParameters = getHashParameters();
+    if (pinned) {
+      hashParameters.set('pin', buyDate+'_'+sellDate);
+    } else {
+      hashParameters.delete('pin');
+    }
+    setHashParameters(hashParameters);
   } else {
     setProperty('--display-marker', 'none');
     setProperty('--cursor', 'default');
+    var hashParameters = getHashParameters();
+    hashParameters.delete('pin');
+    setHashParameters(hashParameters);
   }
 }
 
@@ -526,7 +583,12 @@ function getHashParameters() {
 }
 
 function setHashParameters(hashParameters) {
-  window.location.hash = '#' + hashParameters.toString();
+  var parameters = hashParameters.toString();
+  if (parameters.length > 0) {
+    window.location.hash = '#' + parameters;
+  } else {
+    window.location.hash = '';
+  }
 }
 
 function setInnerHTML(id, innerHTML) {

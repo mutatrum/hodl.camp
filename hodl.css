@@ -262,6 +262,11 @@ span.dashed {
 
 .grid-label {
   background-color: var(--background-color);
+  z-index: 2;
+}
+
+.grid-price {
+  background-color: var(--background-color);
   z-index: 1;
 }
 
