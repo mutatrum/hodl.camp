@@ -46,3 +46,22 @@ a:hover {
   border-radius: 15px;
   height: 90vmin;
 }
+
+@media screen and (max-width: 950px) {
+  body {
+    font-size: 15px;
+  }
+ 
+  .cell {
+    padding: 2px;
+  }
+  
+  .status {
+    font-size: 10px;
+  }
+
+  #sats_per_dollar {
+    border-radius: 5px;
+    width: 90vmin;
+  }  
+}

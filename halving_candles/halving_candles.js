@@ -7,11 +7,14 @@ const HEIGHT = 675;
 
 var spinner = "◢◣◤◥";
 var spin = 0;
+var highlight = -1;
 
 var data;
 var candles;
 
 var resizeTimer;
+
+var getHighlight = () => -1;
 
 async function init() {
   var response = await fetch('../data.json');
@@ -30,34 +33,32 @@ async function init() {
 function createCandles() {
   candles = new Array();
 
-  var candle = createCandle(data.bitcoin[0]);
+  var candle = createCandle(data.bitcoin[0], formatDate(getIndexDate(0)));
 
   var firstCandleIndex = data.halvings.findIndex(date => date.localeCompare(data.since) == 1) - 1;
   candles[firstCandleIndex] = candle;
   
   for (var i = 0; i < data.bitcoin.length; i++) {
-    
+    var date = formatDate(getIndexDate(i));
     var price = data.bitcoin[i];
     candle.h = Math.max(candle.h, price);
     candle.l = Math.min(candle.l, price);
     candle.c = price;
-    
-    var index = data.halvings.indexOf(formatDate(getIndexDate(i)));
-
+    var index = data.halvings.indexOf(date);
     if (index != -1) {
-      candle = createCandle(price);
-
+      candle = createCandle(price, date);
       candles[index] = candle;
     }
   }
 }
 
-function createCandle(price) {
+function createCandle(price, date) {
   return {
     o: price,
     h: price,
     l: price,
-    c: price
+    c: price,
+    date: date,
   };
 }
 
@@ -151,10 +152,12 @@ function drawCandles() {
   var minPrice = candles.reduce((min, candle) => Math.min(min, candle ? candle.l : 0), maxPrice);
   var maxRange = Math.log10(maxPrice);
   var minRange = Math.log10(minPrice);
+  maxDigits = Math.ceil(maxRange);
 
   var getX = i => (75 + (i * (width - 150) / candles.length));
-  var scale = (height - 35) / (maxRange - minRange);
-  var getY = price => (height - 25) - (scale * (Math.log10(price) - minRange));
+  var scale = (height - 60) / (maxRange - minRange);
+  var getY = price => (height - 30) - (scale * (Math.log10(price) - minRange));
+  getHighlight = x => Math.floor((x - 75) / ((width - 150) / candles.length));
 
   for (var i = Math.ceil(minRange); i < maxRange; i++) {
     var price = Math.pow(10, i);
@@ -238,6 +241,60 @@ function drawCandle(ctx, getX, getY, i) {
   ctx.lineWidth = 1;
   ctx.strokeStyle = 'black';
   ctx.fillStyle = 'black';
+
+  if (i == highlight) {
+    ctx.textAlign = 'left';
+    ctx.fillText(`  era ${Math.ceil((i + 1) / 4)}`, 85, 35);
+    ctx.fillText(`block ${i * 52500}`, 85, 55);
+    ctx.fillText(` date ${candle.date}`, 85, 75);
+    ctx.fillText(`    o ${formatOHLCprice(candle.o)}`, 85, 115);
+    ctx.fillText(`    h ${formatOHLCprice(candle.h)}`, 85, 135);
+    ctx.fillText(`    l ${formatOHLCprice(candle.l)}`, 85, 155);
+    ctx.fillText(`    c ${formatOHLCprice(candle.c)}`, 85, 175);    
+
+    if (width > 1000) {
+      var oPrice = formatPrice(candle.o);
+      var hPrice = formatPrice(candle.h);
+      var lPrice = formatPrice(candle.l);
+      var cPrice = formatPrice(candle.c);
+      var oY = getY(candle.o);
+      var hY = getY(candle.h);
+      var lY = getY(candle.l);
+      var cY = getY(candle.c);
+  
+      ctx.textAlign = 'center';
+      ctx.fillText(oPrice, x - w, oY + 5);
+      if (i != candles.length - 1) {
+        ctx.fillText(cPrice, x + w, cY + 5);
+      }
+      ctx.fillText(hPrice, x, hY - 10);
+      ctx.fillText(lPrice, x, lY + 20);
+  
+      ctx.textAlign = 'left';
+    }
+  }
+}
+
+function formatOHLCprice(price) {
+  return padPrice(price) + formatPrice(price);
+}
+
+function padPrice(price) {
+  var digits = (price < 10) ? 1 : Math.ceil(Math.log10(price));
+  return ' '.repeat(maxDigits - digits);
+}
+
+function formatPrice(price) {
+  if (price < 0.1) {
+    return price.toFixed(3);
+  }
+  if (price < 1) {
+    return price.toFixed(2);
+  }
+  if (price < 100) {
+    return price.toFixed(1);
+  }
+  return price.toFixed(0);
 }
 
 function drawVerticalGrid(ctx, x) {
@@ -259,10 +316,25 @@ function drawPriceLabel(ctx, getY) {
   
   var y = getY(price);
   ctx.textAlign = 'left';
-  ctx.fillText(Math.round(price), width - 60, y + 5);
+  ctx.fillText(formatPrice(price), width - 60, y + 5);
 
   ctx.beginPath();
   ctx.moveTo(width - 70, y);
   ctx.lineTo(width - 65, y);
   ctx.stroke();
+}
+
+function onMouseMove(e) {
+  var newHighlight = getHighlight(e.offsetX);
+  if (highlight != newHighlight) {
+    highlight = newHighlight;
+    drawCandles();
+  }
+}
+
+function onMouseLeave(e) {
+  if (highlight != -1) {
+    highlight = -1;
+    drawCandles();
+  }
 }
