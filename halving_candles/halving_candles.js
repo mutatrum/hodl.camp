@@ -247,10 +247,10 @@ function drawCandle(ctx, getX, getY, i) {
     ctx.fillText(`  era ${Math.ceil((i + 1) / 4)}`, 85, 35);
     ctx.fillText(`block ${i * 52500}`, 85, 55);
     ctx.fillText(` date ${candle.date}`, 85, 75);
-    ctx.fillText(`    o ${formatOHLCprice(candle.o)}`, 85, 115);
-    ctx.fillText(`    h ${formatOHLCprice(candle.h)}`, 85, 135);
-    ctx.fillText(`    l ${formatOHLCprice(candle.l)}`, 85, 155);
-    ctx.fillText(`    c ${formatOHLCprice(candle.c)}`, 85, 175);    
+    ctx.fillText(` open ${formatOHLCprice(candle.o)}`, 85, 115);
+    ctx.fillText(` high ${formatOHLCprice(candle.h)}`, 85, 135);
+    ctx.fillText(`  low ${formatOHLCprice(candle.l)}`, 85, 155);
+    ctx.fillText(`close ${formatOHLCprice(candle.c)}`, 85, 175);    
 
     if (width > 1000) {
       var oPrice = formatPrice(candle.o);
