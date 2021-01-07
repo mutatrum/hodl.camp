@@ -219,7 +219,8 @@ function update(sats) {
 }
 
 function getBackground(color) {
-  return color.num() ^ 0xFF000000;
+  var rgb = color.rgb();
+  return 0xFF000000 + (rgb[2] << 16) + (rgb[1] << 8) + rgb[0];
 }
 
 function getForeground(color) {
