@@ -8,10 +8,10 @@ const GRID_GAP = 2;
 const DOT = 4;
 const DOT_GAP = 1;
 const BORDER = 5;
-const BLOCK = (DOT * 10) + (DOT_GAP * 9) + GRID_GAP;
-  
+const BLOCK = (DOT * 10) + (DOT_GAP * 9);
+ 
 const BITFINEX = {
-  url: 'wss://api-pub.bitfinex.com/ws/2',
+  url: () => 'wss://api-pub.bitfinex.com/ws/2',
   subscribe: function(symbol) {
     return {
       event: 'subscribe', 
@@ -34,7 +34,7 @@ const BITFINEX = {
   }
 }
 const KRAKEN = {
-  url: 'wss://ws.kraken.com/',
+  url: () =>  'wss://ws.kraken.com/',
   subscribe: function(symbol) {
     return { 
       event: 'subscribe', 
@@ -55,7 +55,7 @@ const KRAKEN = {
   }
 }
 const BINANCE = {
-  url: 'wss://stream.binance.com:9443/ws',
+  url: () =>  'wss://stream.binance.com:9443/ws',
   subscribe: function(symbol) {
     return { 
       method: 'SUBSCRIBE', 
@@ -74,7 +74,7 @@ const BINANCE = {
   }
 }
 const FTX = {
-  url: 'wss://ftx.com/ws/',
+  url: () =>  'wss://ftx.com/ws/',
   subscribe: function(symbol) {
     return {
       op: 'subscribe',
@@ -91,10 +91,50 @@ const FTX = {
     }
   }
 }
+const LUNO = {
+  url: (symbol) => 'wss://ws.luno.com/XBT' + symbol,
+  subscribe: function(symbol) {
+    return;
+  },
+  handle: function(data) {
+    var price;
+    if (data.status) {
+      setStatus(data.status);
+      if (data.asks) {
+        for (var ask of data.asks) {
+          orders[ask.id] = ask.price;
+        }
+      }
+      if (data.bids) {
+        for (var bid of data.bids) {
+          orders[bid.id] = bid.price;
+        }
+      }
+      price = data.bids[0].price;
+    } else {
+      if (data.create_update) {
+        orders[data.create_update.order_id] = data.create_update.price;
+      }
+      if (data.delete_update) {
+        delete orders[data.delete_update.order_id];
+      }
+      if (data.trade_updates) {
+        for (var trade_update of data.trade_updates) {
+          price = orders[trade_update.maker_order_id];
+          console.log(`trade: ${price}`);
+        }
+      }
+    }
+    if (price) {
+      update(1e8 / price);
+    }
+  }
+}
+const orders = {};
 
-const FIAT_SYMBOLS = ['USD', 'EUR', 'GBP', 'JPY', 'AUD', 'CAD', 'CHF', 'NGN', 'RUB', 'TRY', 'ZAR', 'UAH', 'BRL'];
-const FIAT_NAMES = ['🇺🇸 dollar', '🇪🇺 euro', '🇬🇧 pound sterling', '🇯🇵 yen', '🇦🇺 dollar', '🇨🇦 dollar', '🇨🇭 franc', '🇳🇬 naira', '🇷🇺 rubble', '🇹🇷 lira', '🇿🇦 rand', '🇺🇦 hryvnia', '🇧🇷 real'];
-const FIAT_EXCHANGE = [BITFINEX, KRAKEN, KRAKEN, BITFINEX, KRAKEN, KRAKEN, KRAKEN, BINANCE, BINANCE, BINANCE, BINANCE, BINANCE, FTX];
+const FIAT_SYMBOLS = ['USD', 'EUR', 'GBP', 'JPY', 'AUD', 'CAD', 'CHF', 'NGN', 'RUB', 'TRY', 'ZAR', 'UAH', 'BRL', 'SGD', 'IDR', 'MYR', 'UGX', 'ZMW'];
+const FIAT_NAMES = ['🇺🇸 dollar', '🇪🇺 euro', '🇬🇧 pound sterling', '🇯🇵 yen', '🇦🇺 dollar', '🇨🇦 dollar', '🇨🇭 franc', '🇳🇬 naira', '🇷🇺 rubble', '🇹🇷 lira', '🇿🇦 rand', '🇺🇦 hryvnia', '🇧🇷 real', '🇸🇬 dollar', '🇮🇩 rupiah', '🇲🇾 ringgit', '🇺🇬 shilling', '🇿🇲 kwacha'];
+const FIAT_EXCHANGE = [BITFINEX, KRAKEN, KRAKEN, BITFINEX, KRAKEN, KRAKEN, KRAKEN, BINANCE, BINANCE, BINANCE, BINANCE, BINANCE, FTX, LUNO, LUNO, LUNO, LUNO, LUNO];
 
 var color;
 var startColor = chroma.random();
@@ -131,7 +171,7 @@ function init() {
 function connect(exchange, symbol) {
   setStatus('connect');
 
-  const webSocket = new WebSocket(exchange.url);
+  const webSocket = new WebSocket(exchange.url(symbol));
 
   webSocket.onopen = function (event) {
     setStatus('open');
@@ -170,7 +210,8 @@ function update(sats) {
   var foreground = getForeground(color);
 
   document.title = `${sats} sats per ${FIAT_NAMES[fiatIndex]}`;
-  document.getElementById('sats').innerHTML = sats;
+  var precision = Math.max(0, Math.floor(2 - Math.log10(sats)));
+  document.getElementById('sats').innerHTML = `${sats.toFixed(precision)}`;
   
   var canvas = document.getElementById('sats_per_dollar');
   
@@ -188,29 +229,43 @@ function update(sats) {
   var pixels = new Uint32Array(buffer);
   pixels.fill(background);
   
-  var ax = 0, ay = 0, bx = 0, by = 0;
+  if (sats > 10) {
+    var ax = 0, ay = 0, bx = 0, by = 0;
   
-  for (var i = 0; i < sats; i++) {
+    for (var i = 0; i < Math.round(sats); i++) {
+  
+      var x = BORDER + (ax * (DOT + DOT_GAP)) + (bx * (BLOCK + GRID_GAP));
+      var y = BORDER + (ay * (DOT + DOT_GAP)) + (by * (BLOCK + GRID_GAP));
+      
+      dot(pixels, x, y, foreground, width);
+      
+      ax++;
+      if (ax == GRID) {
+        ax = 0;
+        ay++;
+      }
+      
+      if (ay == GRID) {
+        bx++;
+        ay = 0;
+      }
+      
+      if (bx == COLUMNS) {
+        by++;
+        bx = 0;
+      }
+    }
+  } else {
+    var bx = 0;
+  
+    for (var i = 0; i < sats; i++) {
+  
+      var x = BORDER + (bx * (BLOCK + GRID_GAP));
+      var y = BORDER;
 
-    var x = BORDER + (ax * (DOT + DOT_GAP)) + (bx * BLOCK);
-    var y = BORDER + (ay * (DOT + DOT_GAP)) + (by * BLOCK);
-    
-    dot(pixels, x, y, foreground, width);
-    
-    ax++;
-    if (ax == GRID) {
-      ax = 0;
-      ay++;
-    }
-    
-    if (ay == GRID) {
+      block(pixels, x, y, foreground, width, Math.min(sats - i, 1));
+
       bx++;
-      ay = 0;
-    }
-    
-    if (bx == COLUMNS) {
-      by++;
-      bx = 0;
     }
   }
 
@@ -233,6 +288,30 @@ function dot(pixels, x, y, color, width) {
 
   for(var i = 0; i < DOT; i++) {
     pixels.fill(color, p, p + DOT);
+    p += width;
+  }
+}
+
+function block(pixels, x, y, color, width, fraction) {
+  if (fraction < 1) {
+    var p = (y * width) + x;
+    for (var i = 0; i < BLOCK; i++) {
+      if (i % 2 === 0) {
+        pixels[p + i] = color;
+        pixels[p + (i * width)] = color;
+        pixels[p + i + ((BLOCK - 1) * width)] = color;
+        pixels[p + (i * width) + BLOCK - 1] = color;
+      }
+    }
+  }
+
+  var part = fraction > 0.5 ? 1 - fraction : fraction;
+  var size = Math.sqrt(part * 2) * BLOCK;
+  if (fraction > 0.5) size = (BLOCK * 2) - size;
+
+  var p = (y * width) + x;
+  for(var i = 0; i < Math.min(size, BLOCK); i++) {
+    pixels.fill(color, p, p + Math.min(size - i, BLOCK));
     p += width;
   }
 }
