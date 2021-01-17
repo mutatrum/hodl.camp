@@ -165,6 +165,27 @@ class Bitso {
   }
 }
 
+class TideBit {
+  constructor(market) {
+    this.url = 'wss://pusher.tinfo.top/app/2b78567f96a2c0f40368?protocol=7&client=js&version=2.2.0&flash=false';
+    this.handle = (data, webSocket) => {
+      if (data.event == 'update') {
+        var book = JSON.parse(data.data);
+        var price = book.bids[0][0];
+        var sats = 1e8 / price;
+        update(sats);
+        return;
+      }
+      if (data.event == 'trades') return;
+      if (data.event == 'mobile_update') return;
+      setStatus(data.event);
+      if (data.event == 'pusher:connection_established') {
+        webSocket.send(JSON.stringify({event: 'pusher:subscribe', data: {channel: 'market-btchkd-global'}}));
+      }
+    }
+  }
+}
+
 const MARKETS = [
   {symbol: 'USD', name: '🇺🇸 dollar', exchange: Bitfinex},
   {symbol: 'EUR', name: '🇪🇺 euro', exchange: Kraken},
@@ -185,6 +206,7 @@ const MARKETS = [
   {symbol: 'ZMW', name: '🇿🇲 kwacha', exchange: Luno},
   {symbol: 'ARS', name: '🇦🇷 peso', exchange: Bitso},
   {symbol: 'MXN', name: '🇲🇽 peso', exchange: Bitso},
+  {symbol: 'HKD', name: '🇭🇰 dollar', exchange: TideBit},
 ];
 
 var color;
@@ -224,7 +246,7 @@ function connect(exchange) {
   webSocket.onopen = function (event) {
     setStatus('open');
     if (exchange.subscribe) {
-      webSocket.send(JSON.stringify(exchange.subscribe)); 
+      webSocket.send(JSON.stringify(exchange.subscribe));
     }
   };
   
@@ -235,11 +257,12 @@ function connect(exchange) {
   
   webSocket.onerror = function(event) {
     setStatus(`close ${event.code} ${event.reason}`);
+    setTimeout(function() {connect(exchange)}, 5000);
   }
   
   webSocket.onmessage = function(event) {
     var data = JSON.parse(event.data);
-    exchange.handle(data);
+    exchange.handle(data, webSocket);
   };
 }
 
