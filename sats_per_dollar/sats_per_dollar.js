@@ -24,7 +24,7 @@ class Bitfinex {
         if (Array.isArray(message)) {
           var price = message[6];
           var sats = 1e8 / price;
-          update(sats);
+          update(sats, market.name);
         }
       } else {
         setStatus(data.event);
@@ -45,7 +45,7 @@ class Kraken {
       if (Array.isArray(data)) {
         var price = data[1].a[0];
         var sats = 1e8 / price;
-        update(sats);
+        update(sats, market.name);
       } else {
         if (data.status) {
           setStatus(data.status);      
@@ -69,7 +69,7 @@ class Binance {
       } else {
         var price = data.c;
         var sats = 1e8 / price;
-        update(sats);
+        update(sats, market.name);
       }
     }
   }
@@ -91,7 +91,7 @@ class Ftx {
         if (data.data) {
           var price = data.data.last;
           var sats = 1e8 / price;
-          update(sats);
+          update(sats, market.name);
         }
       }
     }
@@ -127,13 +127,12 @@ class Luno {
         if (data.trade_updates) {
           for (var trade_update of data.trade_updates) {
             price = this.orders[trade_update.maker_order_id];
-            console.log(`trade: ${price}`);
           }
         }
       }
       if (price) {
         var sats = 1e8 / price;
-        update(sats);
+        update(sats, market.name);
       }
     }
   }
@@ -158,7 +157,7 @@ class Bitso {
           if (data.type == 'orders') {
             var price = data.payload.bids[0].r;
             var sats = 1e8 / price;
-            update(sats);
+            update(sats, market.name);
           }
         }
       }
@@ -197,7 +196,7 @@ var spinner = "◢◣◤◥";
 var spin = 0;
 
 function init() {
-  var fiat = MARKETS[0];
+  var selectedMarket = MARKETS[0];
   const urlParams = new URLSearchParams(window.location.search);
   var selectedSymbol = urlParams.get('fiat');
 
@@ -207,13 +206,13 @@ function init() {
     fiatList.innerHTML += `<a href="${href}">${market.name}</a><br>`;
 
     if (market.symbol == selectedSymbol) {
-      fiat = market;
+      selectedMarket = market;
     }
   }
 
-  document.getElementById('fiat').innerHTML = fiat.name;
+  document.getElementById('fiat').innerHTML = selectedMarket.name;
   
-  var exchange = new fiat.exchange(fiat);
+  var exchange = new selectedMarket.exchange(selectedMarket);
   connect(exchange);
 }
 
@@ -244,7 +243,7 @@ function connect(exchange) {
   };
 }
 
-function update(sats) {
+function update(sats, name) {
   document.getElementById('spinner').innerHTML = ' ' + spinner[spin];
   spin = (spin + 1) % spinner.length;
 
@@ -259,9 +258,10 @@ function update(sats) {
   var background = getBackground(color);
   var foreground = getForeground(color);
 
-  document.title = `${sats} sats per ${fiat.name}`;
   var precision = Math.max(0, Math.floor(2 - Math.log10(sats)));
-  document.getElementById('sats').innerHTML = `${sats.toFixed(precision)}`;
+  var displaySats = sats.toFixed(precision);
+  document.getElementById('sats').innerHTML = `${displaySats}`;
+  document.title = `${displaySats} sats per ${name}`;
   
   var canvas = document.getElementById('sats_per_dollar');
   
