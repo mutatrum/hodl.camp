@@ -200,7 +200,7 @@ const MARKETS = [
   {symbol: 'UAH', name: '🇺🇦 hryvnia', exchange: Binance},
   {symbol: 'BRL', name: '🇧🇷 real', exchange: Ftx},
   {symbol: 'SGD', name: '🇸🇬 dollar', exchange: Luno},
-  {symbol: 'IDR', name: '🇮🇳 rupiah', exchange: Luno},
+  {symbol: 'IDR', name: '🇮🇩 rupiah', exchange: Luno},
   {symbol: 'MYR', name: '🇲🇾 ringgit', exchange: Luno},
   {symbol: 'UGX', name: '🇺🇬 shilling', exchange: Luno},
   {symbol: 'ZMW', name: '🇿🇲 kwacha', exchange: Luno},
