@@ -9,180 +9,229 @@ const DOT = 4;
 const DOT_GAP = 1;
 const BORDER = 5;
 const BLOCK = (DOT * 10) + (DOT_GAP * 9);
- 
-const BITFINEX = {
-  url: () => 'wss://api-pub.bitfinex.com/ws/2',
-  subscribe: function(symbol) {
-    return {
+
+class Bitfinex {
+  constructor(market) {
+    this.url = 'wss://api-pub.bitfinex.com/ws/2';
+    this.subscribe = {
       event: 'subscribe', 
       channel: 'ticker', 
-      symbol: 'tBTC' + symbol
+      symbol: `tBTC${market.symbol}`
     };
-  },
-  handle: function(data) {
-    if (Array.isArray(data)) {
-      var message = data[1];
-      if (Array.isArray(message)) {
-        var price = message[6];
-        var sats = Math.floor(1e8 / price);
+    this.handle = (data) => {
+      if (Array.isArray(data)) {
+        var message = data[1];
+        if (Array.isArray(message)) {
+          var price = message[6];
+          var sats = 1e8 / price;
+          update(sats);
+        }
+      } else {
+        setStatus(data.event);
+      }
+    }
+  }
+}
+
+class Kraken {
+  constructor(market) {
+    this.url = 'wss://ws.kraken.com/';
+    this.subscribe = { 
+      event: 'subscribe', 
+      subscription: {name: 'ticker'},
+      pair: [`XBT/${market.symbol}`],
+    };
+    this.handle = (data) => {
+      if (Array.isArray(data)) {
+        var price = data[1].a[0];
+        var sats = 1e8 / price;
+        update(sats);
+      } else {
+        if (data.status) {
+          setStatus(data.status);      
+        }
+      }
+    }
+  }
+}
+
+class Binance {
+  constructor(market) {
+    this.url = 'wss://stream.binance.com:9443/ws';
+    this.subscribe = { 
+      method: 'SUBSCRIBE', 
+      params: [`btc${market.symbol.toLowerCase()}@ticker`],
+      id: 1
+    };
+    this.handle = (data) => {
+      if (data.id) {
+        setStatus('subscribed');
+      } else {
+        var price = data.c;
+        var sats = 1e8 / price;
         update(sats);
       }
     }
-    else {
-      setStatus(data.event);
-    }
   }
 }
-const KRAKEN = {
-  url: () =>  'wss://ws.kraken.com/',
-  subscribe: function(symbol) {
-    return { 
-      event: 'subscribe', 
-      subscription: {name: 'ticker'},
-      pair: ['XBT/' + symbol],
-    };
-  },
-  handle: function(data) {
-    if (Array.isArray(data)) {
-      var price = data[1].a[0];
-      var sats = Math.floor(1e8 / price);
-      update(sats);
-    } else {
-      if (data.status) {
-        setStatus(data.status);      
-      }
-    }
-  }
-}
-const BINANCE = {
-  url: () =>  'wss://stream.binance.com:9443/ws',
-  subscribe: function(symbol) {
-    return { 
-      method: 'SUBSCRIBE', 
-      params: ['btc' + symbol.toLowerCase() + '@ticker'],
-      id: 1
-    };
-  },
-  handle: function(data) {
-    if (data.id) {
-      setStatus('subscribed');
-    } else {
-      var price = data.c;
-      var sats = Math.floor(1e8 / price);
-      update(sats);
-    }
-  }
-}
-const FTX = {
-  url: () =>  'wss://ftx.com/ws/',
-  subscribe: function(symbol) {
-    return {
+
+class Ftx {
+  constructor(market) {
+    this.url = 'wss://ftx.com/ws/';
+    this.subscribe = {
       op: 'subscribe',
       channel: 'ticker',
-      market: 'BTC/'+symbol
+      market: `BTC/${market.symbol}`
     };
-  },
-  handle: function(data) {
-    setStatus(data.type);
-    if (data.data) {
-      var price = data.data.last;
-      var sats = Math.floor(1e8 / price);
-      update(sats);
+    this.handle = (data) => {
+      if (data.id) {
+        setStatus('subscribed');
+      } else {
+        setStatus(data.type);
+        if (data.data) {
+          var price = data.data.last;
+          var sats = 1e8 / price;
+          update(sats);
+        }
+      }
     }
   }
 }
-const LUNO = {
-  url: (symbol) => 'wss://ws.luno.com/XBT' + symbol,
-  subscribe: function(symbol) {
-    return;
-  },
-  handle: function(data) {
-    var price;
-    if (data.status) {
-      setStatus(data.status);
-      if (data.asks) {
-        for (var ask of data.asks) {
-          orders[ask.id] = ask.price;
-        }
-      }
-      if (data.bids) {
-        for (var bid of data.bids) {
-          orders[bid.id] = bid.price;
-        }
-      }
-      price = data.bids[0].price;
-    } else {
-      if (data.create_update) {
-        orders[data.create_update.order_id] = data.create_update.price;
-      }
-      if (data.delete_update) {
-        delete orders[data.delete_update.order_id];
-      }
-      if (data.trade_updates) {
-        for (var trade_update of data.trade_updates) {
-          price = orders[trade_update.maker_order_id];
-          console.log(`trade: ${price}`);
-        }
-      }
-    }
-    if (price) {
-      update(1e8 / price);
-    }
-  }
-}
-const orders = {};
 
-const FIAT_SYMBOLS = ['USD', 'EUR', 'GBP', 'JPY', 'AUD', 'CAD', 'CHF', 'NGN', 'RUB', 'TRY', 'ZAR', 'UAH', 'BRL', 'SGD', 'IDR', 'MYR', 'UGX', 'ZMW'];
-const FIAT_NAMES = ['🇺🇸 dollar', '🇪🇺 euro', '🇬🇧 pound sterling', '🇯🇵 yen', '🇦🇺 dollar', '🇨🇦 dollar', '🇨🇭 franc', '🇳🇬 naira', '🇷🇺 rubble', '🇹🇷 lira', '🇿🇦 rand', '🇺🇦 hryvnia', '🇧🇷 real', '🇸🇬 dollar', '🇮🇩 rupiah', '🇲🇾 ringgit', '🇺🇬 shilling', '🇿🇲 kwacha'];
-const FIAT_EXCHANGE = [BITFINEX, KRAKEN, KRAKEN, BITFINEX, KRAKEN, KRAKEN, KRAKEN, BINANCE, BINANCE, BINANCE, BINANCE, BINANCE, FTX, LUNO, LUNO, LUNO, LUNO, LUNO];
+class Luno {
+  constructor(market) {
+    this.url = `wss://ws.luno.com/XBT${market.symbol}`;
+    this.orders = {}
+    this.handle = (data) => {
+      var price;
+      if (data.status) {
+        setStatus(data.status);
+        if (data.asks) {
+          for (var ask of data.asks) {
+            this.orders[ask.id] = ask.price;
+          }
+        }
+        if (data.bids) {
+          for (var bid of data.bids) {
+            this.orders[bid.id] = bid.price;
+          }
+        }
+        price = data.bids[0].price;
+      } else {
+        if (data.create_update) {
+          this.orders[data.create_update.order_id] = data.create_update.price;
+        }
+        if (data.delete_update) {
+          delete this.orders[data.delete_update.order_id];
+        }
+        if (data.trade_updates) {
+          for (var trade_update of data.trade_updates) {
+            price = this.orders[trade_update.maker_order_id];
+            console.log(`trade: ${price}`);
+          }
+        }
+      }
+      if (price) {
+        var sats = 1e8 / price;
+        update(sats);
+      }
+    }
+  }
+}
+
+class Bitso {
+  constructor(market) {
+    this.url = 'wss://ws.bitso.com';
+    this.subscribe = {
+      action: 'subscribe',
+      book: `btc_${market.symbol.toLowerCase()}`,
+      type: 'orders'
+    };
+    this.lastUpdate = 0;
+    this.handle = (data) => {
+      if (data.action) {
+        setStatus(`${data.action}: ${data.response}`);
+      } else {
+        var now = Date.now();
+        if (now - this.lastUpdate > 1000) {
+          this.lastUpdate = now;
+          if (data.type == 'orders') {
+            var price = data.payload.bids[0].r;
+            var sats = 1e8 / price;
+            update(sats);
+          }
+        }
+      }
+    }
+  }
+}
+
+const MARKETS = [
+  {symbol: 'USD', name: '🇺🇸 dollar', exchange: Bitfinex},
+  {symbol: 'EUR', name: '🇪🇺 euro', exchange: Kraken},
+  {symbol: 'GBP', name: '🇬🇧 pound sterling', exchange: Kraken},
+  {symbol: 'JPY', name: '🇯🇵 yen', exchange: Bitfinex},
+  {symbol: 'AUD', name: '🇦🇺 dollar', exchange: Kraken},
+  {symbol: 'CAD', name: '🇨🇦 dollar', exchange: Kraken},
+  {symbol: 'CHF', name: '🇨🇭 franc', exchange: Kraken},
+  {symbol: 'NGN', name: '🇳🇬 naira', exchange: Binance},
+  {symbol: 'RUB', name: '🇹🇷 lira', exchange: Binance},
+  {symbol: 'ZAR', name: '🇿🇦 rand', exchange: Binance},
+  {symbol: 'UAH', name: '🇺🇦 hryvnia', exchange: Binance},
+  {symbol: 'BRL', name: '🇧🇷 real', exchange: Ftx},
+  {symbol: 'SGD', name: '🇸🇬 dollar', exchange: Luno},
+  {symbol: 'IDR', name: '🇮🇩 rupiah', exchange: Luno},
+  {symbol: 'MYR', name: '🇲🇾 ringgit', exchange: Luno},
+  {symbol: 'UGX', name: '🇺🇬 shilling', exchange: Luno},
+  {symbol: 'ZMW', name: '🇿🇲 kwacha', exchange: Luno},
+  {symbol: 'ARS', name: '🇦🇷 peso', exchange: Bitso},
+  {symbol: 'MXN', name: '🇲🇽 peso', exchange: Bitso},
+];
 
 var color;
 var startColor = chroma.random();
 var endColor = chroma.random();
 var colorIndex = 0;
-var fiatIndex = 0;
 
 var spinner = "◢◣◤◥";
 var spin = 0;
 
 function init() {
+  var fiat = MARKETS[0];
   const urlParams = new URLSearchParams(window.location.search);
-  fiatIndex = FIAT_SYMBOLS.indexOf(urlParams.get('fiat'));
-  if (fiatIndex == -1) {
-    fiatIndex = 0;
-  }
-
-  document.getElementById('fiat').innerHTML = FIAT_NAMES[fiatIndex];
+  var selectedSymbol = urlParams.get('fiat');
 
   var fiatList = document.getElementById("fiat_list");
-  for (i = 0; i < FIAT_SYMBOLS.length; i++) {
-    if (fiatIndex != i) {
-      if (i == 0) {
-        fiatList.innerHTML += `<a href=".">${FIAT_NAMES[0]}</a><br>`;
-      } else {
-        fiatList.innerHTML += `<a href="?fiat=${FIAT_SYMBOLS[i]}">${FIAT_NAMES[i]}</a><br>`;
-      }
+  for (var market of MARKETS) {
+    var href = market.symbol == 'USD' ? '.' : `?fiat=${market.symbol}`;
+    fiatList.innerHTML += `<a href="${href}">${market.name}</a><br>`;
+
+    if (market.symbol == selectedSymbol) {
+      fiat = market;
     }
   }
 
-  connect(FIAT_EXCHANGE[fiatIndex], FIAT_SYMBOLS[fiatIndex]);
+  document.getElementById('fiat').innerHTML = fiat.name;
+  
+  var exchange = new fiat.exchange(fiat);
+  connect(exchange);
 }
 
-function connect(exchange, symbol) {
+function connect(exchange) {
   setStatus('connect');
 
-  const webSocket = new WebSocket(exchange.url(symbol));
+  const webSocket = new WebSocket(exchange.url);
 
   webSocket.onopen = function (event) {
     setStatus('open');
-    let msg = JSON.stringify(exchange.subscribe(symbol));
-
-    webSocket.send(msg); 
+    if (exchange.subscribe) {
+      webSocket.send(JSON.stringify(exchange.subscribe)); 
+    }
   };
   
   webSocket.onclose = function(event) {
     setStatus(`close ${event.code} ${event.reason}`);
-    setTimeout(function() {connect(exchange, symbol)}, 5000);
+    setTimeout(function() {connect(exchange)}, 5000);
   }
   
   webSocket.onerror = function(event) {
@@ -192,12 +241,13 @@ function connect(exchange, symbol) {
   webSocket.onmessage = function(event) {
     var data = JSON.parse(event.data);
     exchange.handle(data);
-    document.getElementById('spinner').innerHTML = ' ' + spinner[spin];
-    spin = (spin + 1) % spinner.length;
   };
 }
 
 function update(sats) {
+  document.getElementById('spinner').innerHTML = ' ' + spinner[spin];
+  spin = (spin + 1) % spinner.length;
+
   color = chroma.mix(startColor, endColor, colorIndex / 100, 'lab');
 
   colorIndex = (colorIndex + 1) % 100;
@@ -209,7 +259,7 @@ function update(sats) {
   var background = getBackground(color);
   var foreground = getForeground(color);
 
-  document.title = `${sats} sats per ${FIAT_NAMES[fiatIndex]}`;
+  document.title = `${sats} sats per ${fiat.name}`;
   var precision = Math.max(0, Math.floor(2 - Math.log10(sats)));
   document.getElementById('sats').innerHTML = `${sats.toFixed(precision)}`;
   
