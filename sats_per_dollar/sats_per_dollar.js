@@ -252,7 +252,7 @@ const MARKETS = [
   {symbol: 'CHF', name: '🇨🇭 franc', exchange: Kraken},
   {symbol: 'NGN', name: '🇳🇬 naira', exchange: Binance},
   {symbol: 'RUB', name: '🇹🇷 lira', exchange: Binance},
-  {symbol: 'ZAR', name: '🇿🇦 rand', exchange: Binance},
+  {symbol: 'ZAR', name: '🇿🇦 rand', exchange: Luno},
   {symbol: 'UAH', name: '🇺🇦 hryvnia', exchange: Binance},
   {symbol: 'BRL', name: '🇧🇷 real', exchange: Ftx},
   {symbol: 'SGD', name: '🇸🇬 dollar', exchange: Luno},
