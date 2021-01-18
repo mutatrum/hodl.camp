@@ -55,6 +55,31 @@ class Kraken {
   }
 }
 
+class CoinFloor {
+  constructor(market) {
+    this.url = 'wss://api.coinfloor.co.uk/';
+    this.subscribe = {
+      method: 'WatchTicker',
+      base: 63488,
+      counter: 64032,
+      watch: true
+    };
+    this.handle = (data) => {
+      if (data.notice == 'TickerChanged') {
+        if (data.bid) {
+          var price = data.bid / 100;
+          var sats = 1e8 / price;
+          update(sats, market.name);
+        }
+        return;
+      }
+      if (data.notice) {
+        setStatus(data.notice);
+      }
+    }
+  }
+}
+
 class Binance {
   constructor(market) {
     this.url = 'wss://stream.binance.com:9443/ws';
@@ -178,9 +203,40 @@ class TideBit {
       }
       if (data.event == 'trades') return;
       if (data.event == 'mobile_update') return;
-      setStatus(data.event);
+      var pos = data.event.indexOf(':');
+      if (pos == -1) {
+        setStatus(data.event);
+      } else {
+        setStatus(data.event.substring(pos + 1));
+      }
       if (data.event == 'pusher:connection_established') {
-        webSocket.send(JSON.stringify({event: 'pusher:subscribe', data: {channel: 'market-btchkd-global'}}));
+        webSocket.send(JSON.stringify({event: 'pusher:subscribe', data: {channel: `market-btc${market.symbol.toLowerCase()}-global`}}));
+      }
+    }
+  }
+}
+
+class WazirX {
+  constructor(market) {
+    this.url = 'wss://ws-ap2.pusher.com/app/47bd0a9591a05c2a66db?protocol=7&client=js&version=4.4.0&flash=false';
+    this.handle = (data, webSocket) => {
+      if (data.event == 'update') {
+        var book = JSON.parse(data.data);
+        var price = book.bids[0][0];
+        var sats = 1e8 / price;
+        update(sats);
+        return;
+      }
+      if (data.event == 'trades') return;
+      if (data.event == 'mobile_update') return;
+      var pos = data.event.indexOf(':');
+      if (pos == -1) {
+        setStatus(data.event);
+      } else {
+        setStatus(data.event.substring(pos + 1));
+      }
+      if (data.event == 'pusher:connection_established') {
+        webSocket.send(JSON.stringify({event: 'pusher:subscribe', data: {channel: `market-btc${market.symbol.toLowerCase()}-global`}}));
       }
     }
   }
@@ -189,7 +245,7 @@ class TideBit {
 const MARKETS = [
   {symbol: 'USD', name: '🇺🇸 dollar', exchange: Bitfinex},
   {symbol: 'EUR', name: '🇪🇺 euro', exchange: Kraken},
-  {symbol: 'GBP', name: '🇬🇧 pound sterling', exchange: Kraken},
+  {symbol: 'GBP', name: '🇬🇧 pound sterling', exchange: CoinFloor},
   {symbol: 'JPY', name: '🇯🇵 yen', exchange: Bitfinex},
   {symbol: 'AUD', name: '🇦🇺 dollar', exchange: Kraken},
   {symbol: 'CAD', name: '🇨🇦 dollar', exchange: Kraken},
@@ -207,6 +263,7 @@ const MARKETS = [
   {symbol: 'ARS', name: '🇦🇷 peso', exchange: Bitso},
   {symbol: 'MXN', name: '🇲🇽 peso', exchange: Bitso},
   {symbol: 'HKD', name: '🇭🇰 dollar', exchange: TideBit},
+  {symbol: 'INR', name: '🇮🇳 rupiah', exchange: WazirX},
 ];
 
 var color;
