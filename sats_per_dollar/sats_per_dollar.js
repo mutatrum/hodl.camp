@@ -451,8 +451,42 @@ function getWidth() {
 }
 
 function getHeight(sats) {
-  var rows = Math.ceil(sats / (COLUMNS * 100));
-  return (rows * 10 * DOT) + (rows * 9 * DOT_GAP) + ((rows - 1) * GRID_GAP) + BORDER + BORDER;
+  var result = BORDER + BORDER;
+
+  if (sats < 10) {
+    result += 10 * DOT;
+    result += 9 * DOT_GAP;
+  } else {
+
+    while (sats > COLUMNS * 100) {
+      sats -= COLUMNS * 100;
+  
+      result += 10 * DOT;
+      result += 9 * DOT_GAP;
+      if (sats > 0) {
+        result += GRID_GAP;
+      }
+    }
+  
+    if (sats > GRID * GRID) {
+      result += 10 * DOT;
+      result += 9 * DOT_GAP;
+    } else {
+      while (sats > GRID) {
+        sats -= GRID;
+        result += DOT;
+        if (sats > 0) {
+          result += DOT_GAP;
+        }
+      }
+      if (sats > 0) {
+        result += DOT;
+        result += DOT_GAP;
+      }
+    } 
+  }
+
+  return result;
 }
 
 function setStatus(status) {
