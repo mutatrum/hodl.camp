@@ -281,6 +281,18 @@ class Bitbay {
   }
 }
 
+class Bitkub {
+  constructor(market) {
+    this.url = `wss://api.bitkub.com/websocket-api/market.ticker.${market.symbol.toLowerCase()}_btc`;
+    this.handle = (data) => {
+      setStatus('subscribed');
+      var price = data.highestBid;
+      var sats = 1e8 / price;
+      update(sats, market.name);
+    }
+  }
+}
+
 const MARKETS = [
   {symbol: 'USD', name: '🇺🇸 dollar', exchange: Bitfinex},
   {symbol: 'EUR', name: '🇪🇺 euro', exchange: Kraken},
@@ -306,6 +318,7 @@ const MARKETS = [
   {symbol: 'INR', name: '🇮🇳 rupiah', exchange: WazirX},
   {symbol: 'KRW', name: '🇰🇷 won', exchange: Coinone},
   {symbol: 'PLN', name: '🇵🇱 złoty', exchange: Bitbay},
+  {symbol: 'THB', name: '🇹🇭 baht', exchange: Bitkub},
 ];
 
 var color;
