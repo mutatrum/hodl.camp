@@ -261,6 +261,26 @@ class Coinone {
   }
 }
 
+class Bitbay {
+  constructor(market) {
+    this.url = 'wss://api.bitbay.net/websocket/';
+    this.subscribe = {
+      action: 'subscribe-public',
+      module: 'trading',
+      path: `ticker/BTC-${market.symbol}`
+     };
+    this.handle = (data) => {
+      if (data.action == 'subscribe-public-confirm') {
+        setStatus('subscribed');
+      } else {
+        var price = data.message.highestBid;
+        var sats = 1e8 / price;
+        update(sats, market.name);
+      }
+    }
+  }
+}
+
 const MARKETS = [
   {symbol: 'USD', name: '🇺🇸 dollar', exchange: Bitfinex},
   {symbol: 'EUR', name: '🇪🇺 euro', exchange: Kraken},
@@ -285,6 +305,7 @@ const MARKETS = [
   {symbol: 'HKD', name: '🇭🇰 dollar', exchange: TideBit},
   {symbol: 'INR', name: '🇮🇳 rupiah', exchange: WazirX},
   {symbol: 'KRW', name: '🇰🇷 won', exchange: Coinone},
+  {symbol: 'PLN', name: '🇵🇱 złoty', exchange: Bitbay},
 ];
 
 var color;
