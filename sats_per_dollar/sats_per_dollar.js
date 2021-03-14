@@ -242,6 +242,25 @@ class WazirX {
   }
 }
 
+class Coinone {
+  constructor(market) {
+    this.url = 'wss://wss.coinone.co.kr/ws';
+    this.subscribe = {
+      event: 'subscribe',
+      channel: 'market_price'
+    };
+    this.handle = (data) => {
+      if (data.event) {
+        setStatus('subscribed');
+      } else {
+        var price = data.data[0].price;
+        var sats = 1e8 / price;
+        update(sats, market.name);
+      }
+    }
+  }
+}
+
 const MARKETS = [
   {symbol: 'USD', name: '🇺🇸 dollar', exchange: Bitfinex},
   {symbol: 'EUR', name: '🇪🇺 euro', exchange: Kraken},
@@ -265,6 +284,7 @@ const MARKETS = [
   {symbol: 'MXN', name: '🇲🇽 peso', exchange: Bitso},
   {symbol: 'HKD', name: '🇭🇰 dollar', exchange: TideBit},
   {symbol: 'INR', name: '🇮🇳 rupiah', exchange: WazirX},
+  {symbol: 'KRW', name: '🇰🇷 won', exchange: Coinone},
 ];
 
 var color;
