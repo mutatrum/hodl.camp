@@ -306,7 +306,7 @@ const MARKETS = [
   {symbol: 'TRY', name: '🇹🇷 lira', exchange: Binance},
   {symbol: 'ZAR', name: '🇿🇦 rand', exchange: Luno},
   {symbol: 'UAH', name: '🇺🇦 hryvnia', exchange: Binance},
-  {symbol: 'BRL', name: '🇧🇷 real', exchange: Ftx},
+  {symbol: 'BRZ', name: '🇧🇷 real', exchange: Ftx},
   {symbol: 'SGD', name: '🇸🇬 dollar', exchange: Luno},
   {symbol: 'IDR', name: '🇮🇩 rupiah', exchange: Luno},
   {symbol: 'MYR', name: '🇲🇾 ringgit', exchange: Luno},
