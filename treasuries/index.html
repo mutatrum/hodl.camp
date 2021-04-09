@@ -1,301 +1,66 @@
 <meta charset="utf-8">
+<link rel="stylesheet" href="d3-zoomable-treemap.css">
 
-<style>
-	#chart {
-	  max-width: 100%;
-    height: 100%;
-	  overflow:auto;
-	}
-	text {
-	  pointer-events: none;
-	}
-	.grandparent text {
-	  font-weight: bold;
-	}
-	rect {
-	  stroke: #fff;
-	  stroke-width: 1px;
-	}
-	rect.parent,
-	.grandparent rect {
-	  stroke-width: 3px;
-	}
-	.grandparent:hover rect {
-	  fill: grey;
-	}
-	.children rect.parent,
-	.grandparent rect {
-	  cursor: pointer;
-	}
-	.children rect.child {
-	  opacity: 0;
-	}
-	.children rect.parent {
-	}
-	.children:hover rect.child {
-	  opacity: 1;
-	  stroke-width: 1px;
-	}
-	.children:hover rect.parent {
-	  opacity: 0;
-	}
-	.legend {
-	  margin-bottom:8px !important;
-	}
-	.legend rect {
-	  stroke-width: 0px;
-	}
-	.legend text {
-	  text-anchor: middle;
-	  pointer-events: auto;
-	  font-size: 13px;
-	  font-family: sans-serif;
-	  fill: black;
-	}
-	.form-group {
-	    text-align:left;
-	}
-	.textdiv {
-	    font-family: "Open Sans",Helvetica,Arial,sans-serif;
-	    font-size: 14px;
-	    padding: 7px;
-	    cursor: pointer;
-	    overflow:none;
-	}
-	.textdiv .title {
-	    font-size: 102%;
-	    font-weight: bold;
-	    margin-top: 8px;
-	    font-size:11px !important;
-	}
-	.textdiv p{
-	    line-height: 13px;
-	    margin:0 0 4px !important;
-	    padding:0px;
-	    font-size:10px !important;
-	}
-</style>
+<p id="chart"></p>
 
-    <p id="chart"></p>
+<script src="//d3js.org/d3.v4.min.js"></script>
+<script src="d3-zoomable-treemap.js"></script>
+<script>
 
-    <script src="//d3js.org/d3.v4.min.js"></script>
-    <script>
-        /**
-         * Interactive, zoomable treemap, using D3 v4
-         *
-         * A port to D3 v4 of Jacques Jahnichen's Block, using the same budget data
-         * see: http://bl.ocks.org/JacquesJahnichen/42afd0cde7cbf72ecb81
-         *
-         * Author: Guglielmo Celata
-         * Date: sept 1st 2017
-         **/
-        var el_id = 'chart';
-        var obj = document.getElementById(el_id);
-        var divWidth = obj.offsetWidth;
-        var divHeight = obj.offsetHeight;
-        var margin = {top: 30, right: 0, bottom: 20, left: 0},
-            width = divWidth -25,
-            height = divHeight - margin.top - margin.bottom,
-            formatNumber = d3.format(","),
-            transitioning;
-        // sets x and y scale to determine size of visible boxes
-        var x = d3.scaleLinear()
-            .domain([0, width])
-            .range([0, width]);
-        var y = d3.scaleLinear()
-            .domain([0, height])
-            .range([0, height]);
-        var treemap = d3.treemap()
-                .size([width, height])
-                .paddingInner(0)
-                .round(false);
-        var svg = d3.select('#'+el_id).append("svg")
-            .attr("width", width + margin.left + margin.right)
-            .attr("height", height + margin.bottom + margin.top)
-            .style("margin-left", -margin.left + "px")
-            .style("margin.right", -margin.right + "px")
-            .append("g")
-                .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
-                .style("shape-rendering", "crispEdges");
-        var grandparent = svg.append("g")
-                .attr("class", "grandparent");
-            grandparent.append("rect")
-                .attr("y", -margin.top)
-                .attr("width", width)
-                .attr("height", margin.top)
-                .attr("fill", '#bbbbbb');
-            grandparent.append("text")
-                .attr("x", 6)
-                .attr("y", 6 - margin.top)
-                .attr("dy", ".75em");
-        d3.json("treasuries.json", function(data) {
-            var root = d3.hierarchy(data);
-            console.log(root);
-            treemap(root
-                .sum(function (d) {
-                    return d.value;
-                })
-                .sort(function (a, b) {
-                    return b.height - a.height || b.value - a.value
-                })
-            );
-            display(root);
-            function display(d) {
-                // write text into grandparent
-                // and activate click's handler
-                grandparent
-                    .datum(d.parent)
-                    .on("click", transition)
-                    .select("text")
-                    .text(name(d));
-                // grandparent color
-                grandparent
-                    .datum(d.parent)
-                    .select("rect")
-                    .attr("fill", function () {
-                        return '#bbbbbb'
-                    });
-                var g1 = svg.insert("g", ".grandparent")
-                    .datum(d)
-                    .attr("class", "depth");
-                var g = g1.selectAll("g")
-                    .data(d.children)
-                    .enter().
-                    append("g");
-                // add class and click handler to all g's with children
-                g.filter(function (d) {
-                    return d.children;
-                })
-                    .classed("children", true)
-                    .on("click", transition);
-                g.selectAll(".child")
-                    .data(function (d) {
-                        return d.children || [d];
-                    })
-                    .enter().append("rect")
-                    .attr("class", "child")
-                    .call(rect);
-                // add title to parents
-                g.append("rect")
-                    .attr("class", "parent")
-                    .call(rect)
-                    .append("title")
-                    .text(function (d){
-                        return d.data.name;
-                    });
-                /* Adding a foreign object instead of a text object, allows for text wrapping */
-                g.append("foreignObject")
-                    .call(rect)
-                    .attr("class", "foreignobj")
-                    .append("xhtml:div")
-                    .attr("dy", ".75em")
-                    .html(function (d) {
-                        return '' +
-                            '<p class="title"> ' + d.data.name + '</p>' +
-                            '<p>' + formatNumber(d.value) + '</p>'
-                        ;
-                    })
-                    .attr("class", "textdiv"); //textdiv class allows us to style the text easily with CSS
-                function transition(d) {
-                    if (transitioning || !d) return;
-                    transitioning = true;
-                    var g2 = display(d),
-                        t1 = g1.transition().duration(650),
-                        t2 = g2.transition().duration(650);
-                    // Update the domain only after entering new elements.
-                    x.domain([d.x0, d.x1]);
-                    y.domain([d.y0, d.y1]);
-                    // Enable anti-aliasing during the transition.
-                    svg.style("shape-rendering", null);
-                    // Draw child nodes on top of parent nodes.
-                    svg.selectAll(".depth").sort(function (a, b) {
-                        return a.depth - b.depth;
-                    });
-                    // Fade-in entering text.
-                    g2.selectAll("text").style("fill-opacity", 0);
-                    g2.selectAll("foreignObject div").style("display", "none");
-                    /*added*/
-                    // Transition to the new view.
-                    t1.selectAll("text").call(text).style("fill-opacity", 0);
-                    t2.selectAll("text").call(text).style("fill-opacity", 1);
-                    t1.selectAll("rect").call(rect);
-                    t2.selectAll("rect").call(rect);
-                    /* Foreign object */
-                    t1.selectAll(".textdiv").style("display", "none");
-                    /* added */
-                    t1.selectAll(".foreignobj").call(foreign);
-                    /* added */
-                    t2.selectAll(".textdiv").style("display", "block");
-                    /* added */
-                    t2.selectAll(".foreignobj").call(foreign);
-                    /* added */
-                    // Remove the old node when the transition is finished.
-                    t1.on("end.remove", function(){
-                        this.remove();
-                        transitioning = false;
-                    });
-                }
-                return g;
+    d3.formatDefaultLocale({
+        decimal: ',',
+        thousands: '.',
+        currency: ["₿ ", ""]
+    });
+
+    d3.csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vQHcNgqvu0l1S-aBE12KEooSK9CQlw7LrKA2M9ZToRMw4f5DM31TOvexQOIPu32lf0TLhVSpHJMCxdT/pub?output=csv", function(data) {
+        var list = parseData(data);
+        var root = d3.hierarchy(list);
+        d3ZoomableTreemap(
+            'chart', root,
+            {
+                height: document.body.clientHeight,
+                zoom_out_msg: " - Click here to zoom out",
+                zoom_in_msg: " - Click in squares to zoom in",
+                format_number: d3.format("$.2s")
             }
-            function text(text) {
-                text.attr("x", function (d) {
-                    return x(d.x) + 6;
-                })
-                    .attr("y", function (d) {
-                        return y(d.y) + 6;
-                    });
+        );
+    });
+
+    function parseData(data) {
+        var public = {label: 'Publicly Traded', children: []};
+        var government = {label: 'Sovereign\'s Central Bank', children: []};
+        var private = {label: 'Private Company', children: []};
+        var etf = {label: 'AUM/NAV/ETF/ETC', children: []};
+
+        var isPublic = true;
+        for (var i = 0; i < data.length - 1; i++) {
+
+            var label = data[i]['BitcoinTreasuries.org'];
+            var value = Number(data[i]['Bitcoin'].substring(2).replace(/,/g, ''));
+            var symbol = data[i]['Symbol'];
+
+            var item = {label: label, value: value }
+            var isPrivate = symbol == 'private';
+            var isGovernment = symbol == 'gov';
+
+            if (isPrivate || isGovernment) {
+              isPublic = false;
             }
-            function rect(rect) {
-                rect
-                    .attr("x", function (d) {
-                        return x(d.x0);
-                    })
-                    .attr("y", function (d) {
-                        return y(d.y0);
-                    })
-                    .attr("width", function (d) {
-                        return x(d.x1) - x(d.x0);
-                    })
-                    .attr("height", function (d) {
-                        return y(d.y1) - y(d.y0);
-                    })
-                    .attr("fill", function (d) {
-                        return '#bbbbbb';
-                    });
+            if (isPublic) {
+              public.children.push(item);
+              continue;
             }
-            function foreign(foreign) { /* added */
-                foreign
-                    .attr("x", function (d) {
-                        return x(d.x0);
-                    })
-                    .attr("y", function (d) {
-                        return y(d.y0);
-                    })
-                    .attr("width", function (d) {
-                        return x(d.x1) - x(d.x0);
-                    })
-                    .attr("height", function (d) {
-                        return y(d.y1) - y(d.y0);
-                    });
+            if (isPrivate) {
+              private.children.push(item);
+              continue;
             }
-            function name(d) {
-                return breadcrumbs(d) +
-                    (d.parent
-                    ? " -  Click to zoom out"
-                    : " - Click inside square to zoom in");
+            if (isGovernment) {
+              government.children.push(item);
+              continue;
             }
-            function breadcrumbs(d) {
-                var res = "";
-                var sep = " > ";
-                d.ancestors().reverse().forEach(function(i){
-                    res += i.data.name + sep;
-                });
-                return res
-                    .split(sep)
-                    .filter(function(i){
-                        return i!== "";
-                    })
-                    .join(sep);
-            }
-        });
-    </script>
+            etf.children.push(item);
+        }
+        return {label: 'BitcoinTreasuries.org', children: [public, government, private, etf] };
+    }
+</script>
