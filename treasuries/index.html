@@ -19,7 +19,7 @@
         d3ZoomableTreemap(
             'chart', root,
             {
-                height: document.body.clientHeight,
+                height: document.body.clientHeight - 16,
                 zoom_out_msg: " - Click here to zoom out",
                 zoom_in_msg: " - Click in squares to zoom in",
                 format_number: d3.format("$.2s")
@@ -40,7 +40,7 @@
             var value = Number(data[i]['Bitcoin'].substring(2).replace(/,/g, ''));
             var symbol = data[i]['Symbol'];
 
-            var item = {label: label, value: value }
+            var item = {label: label, value: value, fill_color: getColor(label)}
             var isPrivate = symbol == 'private';
             var isGovernment = symbol == 'gov';
 
@@ -62,5 +62,15 @@
             etf.children.push(item);
         }
         return {label: 'BitcoinTreasuries.org', children: [public, government, private, etf] };
+    }
+
+    function getColor(label) {
+      switch (label) {
+        case 'MicroStrategy inc.': return '#df3741'
+        case 'Tesla, Inc.': return '#e82127'
+        case 'Square inc.' : return '#28c101'
+        case 'Coinbase Global, Inc.': return '#1552ef'
+        default: return null
+      }
     }
 </script>

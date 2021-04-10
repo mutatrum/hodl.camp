@@ -64,7 +64,8 @@ function d3ZoomableTreemap(el_id, data, options) {
 
   var svg = d3.select('#'+el_id).append("svg")
       .attr("width", width)
-      .attr("height", height)
+      .attr("height", height + navigation_height)
+      // .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
       .append("g")
           .style("shape-rendering", "crispEdges");
 
@@ -235,7 +236,7 @@ function d3ZoomableTreemap(el_id, data, options) {
               return y(d.y1) - y(d.y0);
           })
           .attr("fill", function (d) {
-              return fill_color;
+              return d.data.fill_color || fill_color;    
           });
   }
 

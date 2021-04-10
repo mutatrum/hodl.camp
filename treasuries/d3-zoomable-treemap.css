@@ -1,6 +1,6 @@
 #chart {
   max-width: 100%;
-  overflow: auto;
+  overflow: none;
 }
 
 text {
