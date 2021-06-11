@@ -125,7 +125,7 @@ class Ftx {
 
 class Luno {
   constructor(market) {
-    this.url = `wss://ws.luno.com/XBT${market.symbol}`;
+    this.url = `wss://ws.luno.com/ajax/1/stream/XBT${market.symbol}`;
     this.orders = {}
     this.handle = (data) => {
       var price;
@@ -355,6 +355,8 @@ function connect(exchange) {
 
   const webSocket = new WebSocket(exchange.url);
 
+  var timeoutId;
+
   webSocket.onopen = function (event) {
     setStatus('open');
     if (exchange.subscribe) {
@@ -364,12 +366,14 @@ function connect(exchange) {
   
   webSocket.onclose = function(event) {
     setStatus(`close ${event.code} ${event.reason}`);
-    setTimeout(function() {connect(exchange)}, 5000);
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(function() {connect(exchange)}, 5000);
   }
   
   webSocket.onerror = function(event) {
     setStatus(`close ${event.code} ${event.reason}`);
-    setTimeout(function() {connect(exchange)}, 5000);
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(function() {connect(exchange)}, 5000);
   }
   
   webSocket.onmessage = function(event) {
