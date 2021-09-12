@@ -49,7 +49,7 @@ a:hover {
   margin: 25px;
 }
 
-#amount {
+input {
   font-family: 'Droid Sans Mono', monospace;
   font-size: inherit;
   color: white;

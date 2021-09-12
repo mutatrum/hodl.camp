@@ -31,11 +31,12 @@ function updateValues() {
   values.length = 0;
 
   const amount = document.getElementById('amount').value
+  const target = document.getElementById('target').value * 1e8
 
   for (i = 0; i < sats.length; i++) {
     var offset = i;
     var total = 0;
-    while (total < 1e8 && offset > 0) {
+    while (total < target && offset > 0) {
       total += sats[offset] * amount;
       offset--;
     }
