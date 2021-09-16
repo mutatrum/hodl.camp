@@ -1,0 +1,19 @@
+.clickable {
+  cursor: pointer;
+}
+
+span[data-price-formatted]:after {
+  content: attr(data-price-formatted);
+}
+
+span[data-difficulty-formatted]:after {
+  content: attr(data-difficulty-formatted);
+}
+
+td[data-amount]:after {
+  content: attr(data-amount);
+}
+
+td[data-amount^="-"]:after {
+  color: red;
+}
