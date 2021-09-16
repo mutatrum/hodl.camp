@@ -172,7 +172,7 @@ function websocketConnect() {
     if (Array.isArray(data)) {
       var message = data[1]
       if (Array.isArray(message)) {
-        var price = message[6]
+        var price = Math.round(message[6])
         currentPriceSpan.setAttribute('data-price', price)
         currentPriceSpan.setAttribute('data-price-formatted', PARAMETERS.price.format(price))
         if (priceSyncCheckbox.checked) {
