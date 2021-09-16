@@ -13,7 +13,7 @@ async function onLoad() {
   maxDifficultySpan.setAttribute('data-difficulty', difficultyData.max)
   maxDifficultySpan.setAttribute('data-difficulty-formatted', PARAMETERS.difficulty.format(difficultyData.max))
 
-  var minerResponse = await fetch('miner.json')
+  var minerResponse = await fetch('miners.json')
   minerData = await minerResponse.json()
 
   const minerSelect = document.getElementById('miner')
