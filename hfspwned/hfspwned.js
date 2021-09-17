@@ -99,6 +99,22 @@ function onChange() {
       cell.setAttribute('data-amount', PARAMETERS.price.format(result))
     }
   }
+
+  var d = document.getElementById('difficulty').value
+  document.getElementById('network').innerHTML = difficultyToNetworkHashrate(d)
+}
+
+const PREFIX = ['', 'K', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y', 'B']
+
+function difficultyToNetworkHashrate(d) {
+  var network = d * 536870912 / 75
+
+  i = 0;
+  while (network > 1000 && i < 9) {
+    i++
+    network /= 1000
+  }
+  return network.toFixed(1) + ' ' + PREFIX[i] + 'h/s'
 }
 
 function getValue(parameter, x, y) {
