@@ -24,7 +24,7 @@ class Bitfinex {
         if (Array.isArray(message)) {
           var price = message[6];
           var sats = 1e8 / price;
-          update(sats, market.name);
+          update(sats);
         }
       } else {
         setStatus(data.event);
@@ -45,7 +45,7 @@ class Kraken {
       if (Array.isArray(data)) {
         var price = data[1].a[0];
         var sats = 1e8 / price;
-        update(sats, market.name);
+        update(sats);
       } else {
         if (data.status) {
           setStatus(data.status);      
@@ -69,7 +69,7 @@ class CoinFloor {
         if (data.bid) {
           var price = data.bid / 100;
           var sats = 1e8 / price;
-          update(sats, market.name);
+          update(sats);
         }
         return;
       }
@@ -94,7 +94,7 @@ class Binance {
       } else {
         var price = data.c;
         var sats = 1e8 / price;
-        update(sats, market.name);
+        update(sats);
       }
     }
   }
@@ -116,7 +116,7 @@ class Ftx {
         if (data.data) {
           var price = data.data.last;
           var sats = 1e8 / price;
-          update(sats, market.name);
+          update(sats);
         }
       }
     }
@@ -125,7 +125,8 @@ class Ftx {
 
 class Luno {
   constructor(market) {
-    this.url = `wss://ws.luno.com/ajax/1/stream/XBT${market.symbol}`;
+    this.url = `wss://ws.luno.com/api/1/stream/XBT${market.symbol}`;
+    this.subscribe = {},
     this.orders = {}
     this.handle = (data) => {
       var price;
@@ -157,7 +158,7 @@ class Luno {
       }
       if (price) {
         var sats = 1e8 / price;
-        update(sats, market.name);
+        update(sats);
       }
     }
   }
@@ -182,7 +183,7 @@ class Bitso {
           if (data.type == 'orders') {
             var price = data.payload.bids[0].r;
             var sats = 1e8 / price;
-            update(sats, market.name);
+            update(sats);
           }
         }
       }
@@ -255,7 +256,7 @@ class Coinone {
       } else {
         var price = data.data[0].price;
         var sats = 1e8 / price;
-        update(sats, market.name);
+        update(sats);
       }
     }
   }
@@ -275,7 +276,7 @@ class Bitbay {
       } else {
         var price = data.message.highestBid;
         var sats = 1e8 / price;
-        update(sats, market.name);
+        update(sats);
       }
     }
   }
@@ -288,37 +289,37 @@ class Bitkub {
       setStatus('subscribed');
       var price = data.highestBid;
       var sats = 1e8 / price;
-      update(sats, market.name);
+      update(sats);
     }
   }
 }
 
 const MARKETS = [
-  {symbol: 'USD', name: '🇺🇸 dollar', exchange: Bitfinex},
-  {symbol: 'EUR', name: '🇪🇺 euro', exchange: Kraken},
-  {symbol: 'GBP', name: '🇬🇧 pound sterling', exchange: CoinFloor},
-  {symbol: 'JPY', name: '🇯🇵 yen', exchange: Bitfinex},
-  {symbol: 'AUD', name: '🇦🇺 dollar', exchange: Kraken},
-  {symbol: 'CAD', name: '🇨🇦 dollar', exchange: Kraken},
-  {symbol: 'CHF', name: '🇨🇭 franc', exchange: Kraken},
-  {symbol: 'NGN', name: '🇳🇬 naira', exchange: Binance},
-  {symbol: 'RUB', name: '🇷🇺 ruble', exchange: Binance},
-  {symbol: 'TRY', name: '🇹🇷 lira', exchange: Binance},
-  // {symbol: 'ZAR', name: '🇿🇦 rand', exchange: Luno},
-  {symbol: 'UAH', name: '🇺🇦 hryvnia', exchange: Binance},
-  {symbol: 'BRZ', name: '🇧🇷 real', exchange: Ftx},
-  // {symbol: 'SGD', name: '🇸🇬 dollar', exchange: Luno},
-  // {symbol: 'IDR', name: '🇮🇩 rupiah', exchange: Luno},
-  // {symbol: 'MYR', name: '🇲🇾 ringgit', exchange: Luno},
-  // {symbol: 'UGX', name: '🇺🇬 shilling', exchange: Luno},
-  // {symbol: 'ZMW', name: '🇿🇲 kwacha', exchange: Luno},
-  {symbol: 'ARS', name: '🇦🇷 peso', exchange: Bitso},
-  {symbol: 'MXN', name: '🇲🇽 peso', exchange: Bitso},
-  {symbol: 'HKD', name: '🇭🇰 dollar', exchange: TideBit},
-  {symbol: 'INR', name: '🇮🇳 rupiah', exchange: WazirX},
-  {symbol: 'KRW', name: '🇰🇷 won', exchange: Coinone},
-  {symbol: 'PLN', name: '🇵🇱 złoty', exchange: Bitbay},
-  {symbol: 'THB', name: '🇹🇭 baht', exchange: Bitkub},
+  {symbol: 'USD', iso: 'us', flag: '🇺🇸', name: 'dollar', exchange: Bitfinex},
+  {symbol: 'EUR', iso: 'eu', flag: '🇪🇺', name: 'euro', exchange: Kraken},
+  {symbol: 'GBP', iso: 'gb', flag: '🇬🇧', name: 'pound sterling', exchange: CoinFloor},
+  {symbol: 'JPY', iso: 'jp', flag: '🇯🇵', name: 'yen', exchange: Bitfinex},
+  {symbol: 'AUD', iso: 'au', flag: '🇦🇺', name: 'dollar', exchange: Kraken},
+  {symbol: 'CAD', iso: 'ca', flag: '🇨🇦', name: 'dollar', exchange: Kraken},
+  {symbol: 'CHF', iso: 'ch', flag: '🇨🇭', name: 'franc', exchange: Kraken},
+  {symbol: 'NGN', iso: 'ng', flag: '🇳🇬', name: 'naira', exchange: Binance},
+  {symbol: 'RUB', iso: 'ru', flag: '🇷🇺', name: 'ruble', exchange: Binance},
+  {symbol: 'TRY', iso: 'tr', flag: '🇹🇷', name: 'lira', exchange: Binance},
+  {symbol: 'ZAR', iso: 'za', flag: '🇿🇦', name: 'rand', exchange: Luno},
+  {symbol: 'UAH', iso: 'ua', flag: '🇺🇦', name: 'hryvnia', exchange: Binance},
+  {symbol: 'BRZ', iso: 'br', flag: '🇧🇷', name: 'real', exchange: Ftx},
+  {symbol: 'SGD', iso: 'sg', flag: '🇸🇬', name: 'dollar', exchange: Luno},
+  {symbol: 'IDR', iso: 'id', flag: '🇮🇩', name: 'rupiah', exchange: Luno},
+  {symbol: 'MYR', iso: 'my', flag: '🇲🇾', name: 'ringgit', exchange: Luno},
+  {symbol: 'UGX', iso: 'ug', flag: '🇺🇬', name: 'shilling', exchange: Luno},
+  {symbol: 'ZMW', iso: 'zm', flag: '🇿🇲', name: 'kwacha', exchange: Luno},
+  {symbol: 'ARS', iso: 'ar', flag: '🇦🇷', name: 'peso', exchange: Bitso},
+  {symbol: 'MXN', iso: 'mx', flag: '🇲🇽', name: 'peso', exchange: Bitso},
+  {symbol: 'HKD', iso: 'hk', flag: '🇭🇰', name: 'dollar', exchange: TideBit},
+  {symbol: 'INR', iso: 'in', flag: '🇮🇳', name: 'rupiah', exchange: WazirX},
+  {symbol: 'KRW', iso: 'kr', flag: '🇰🇷', name: 'won', exchange: Coinone},
+  {symbol: 'PLN', iso: 'pl', flag: '🇵🇱', name: 'złoty', exchange: Bitbay},
+  {symbol: 'THB', iso: 'th', flag: '🇹🇭', name: 'baht', exchange: Bitkub},
 ];
 
 var color;
@@ -329,25 +330,47 @@ var colorIndex = 0;
 var spinner = "◢◣◤◥";
 var spin = 0;
 
+var selectedMarket;
+
 function init() {
-  var selectedMarket = MARKETS[0];
+  selectedMarket = MARKETS[0];
   const urlParams = new URLSearchParams(window.location.search);
   var selectedSymbol = urlParams.get('fiat');
 
-  var fiatList = document.getElementById("fiat_list");
+  var i = 0
+  var fiatList = document.getElementById("fiat_list_col1");
   for (var market of MARKETS) {
-    var href = market.symbol == 'USD' ? '.' : `?fiat=${market.symbol}`;
-    fiatList.innerHTML += `<a href="${href}">${market.name}</a><br>`;
+    var a = document.createElement('a')
+    a.href = market.symbol == 'USD' ? '.' : `?fiat=${market.symbol}`
+    appendCountry(a, market)
+    fiatList.appendChild(a)
+    fiatList.append(document.createElement('br'))
 
     if (market.symbol == selectedSymbol) {
       selectedMarket = market;
     }
+
+    i++;
+    if (i >= MARKETS.length / 2) {
+      fiatList = document.getElementById("fiat_list_col2");
+    }
   }
 
-  document.getElementById('fiat').innerHTML = selectedMarket.name;
+  appendCountry(document.getElementById('fiat'), selectedMarket)
   
-  var exchange = new selectedMarket.exchange(selectedMarket);
+  var exchange = new selectedMarket.exchange(selectedMarket)
   connect(exchange);
+}
+
+function appendCountry(element, market) {
+  var img = document.createElement('img')
+  img.classList.add('flag')
+  img.src = `https://flagcdn.com/48x36/${market.iso}.webp`
+  img.alt = market.iso.toUpperCase()
+
+  element.appendChild(img)
+  element.append(' ')
+  element.append(market.name)
 }
 
 function connect(exchange) {
@@ -382,7 +405,7 @@ function connect(exchange) {
   };
 }
 
-function update(sats, name) {
+function update(sats) {
   document.getElementById('spinner').innerHTML = ' ' + spinner[spin];
   spin = (spin + 1) % spinner.length;
 
@@ -399,8 +422,8 @@ function update(sats, name) {
 
   var precision = Math.max(0, Math.floor(2 - Math.log10(sats)));
   var displaySats = sats.toFixed(precision);
-  document.getElementById('sats').innerHTML = `${displaySats}`;
-  document.title = `${displaySats} sats per ${name}`;
+  document.getElementById('sats').innerHTML = displaySats;
+  document.title = `${displaySats} sats per ${selectedMarket.flag} ${selectedMarket.name}`;
   
   var canvas = document.getElementById('sats_per_dollar');
   
