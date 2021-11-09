@@ -297,7 +297,7 @@ class Bitkub {
 const MARKETS = [
   {symbol: 'USD', iso: 'us', flag: '🇺🇸', name: 'dollar', exchange: Bitfinex},
   {symbol: 'EUR', iso: 'eu', flag: '🇪🇺', name: 'euro', exchange: Kraken},
-  {symbol: 'GBP', iso: 'gb', flag: '🇬🇧', name: 'pound sterling', exchange: CoinFloor},
+  {symbol: 'GBP', iso: 'gb', flag: '🇬🇧', name: 'pound sterling', exchange: Kraken},
   {symbol: 'JPY', iso: 'jp', flag: '🇯🇵', name: 'yen', exchange: Bitfinex},
   {symbol: 'AUD', iso: 'au', flag: '🇦🇺', name: 'dollar', exchange: Kraken},
   {symbol: 'CAD', iso: 'ca', flag: '🇨🇦', name: 'dollar', exchange: Kraken},
