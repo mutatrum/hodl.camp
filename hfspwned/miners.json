@@ -180,9 +180,9 @@
      "watt":"3068"
   },
   {
-     "name":"Bitmain Antminer S19 XP (150Th)",
-     "hashrate":"150",
-     "watt":"3225"
+     "name":"Bitmain Antminer S19 XP (140Th)",
+     "hashrate":"140",
+     "watt":"3010"
   },
   {
      "name":"Bitmain Antminer T9 (11.5Th)",
