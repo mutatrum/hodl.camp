@@ -350,6 +350,11 @@
     "watt":"200"
   },
   {
+    "name":"GekkoScience Compac F",
+    "hashrate":"0.2",
+    "watt":"5"
+  },
+  {
      "name":"GMO miner B2",
      "hashrate":"24",
      "watt":"1950"
