@@ -1,0 +1,61 @@
+<htlm>
+  <head>
+
+  </head>
+  <body>
+    Binary: 
+    <input onkeyup="onBinary(this.value)">
+    <br>
+    Decimal: <label id="binary1">...</label>
+    <br>
+    Hexadecimal: <label id="binary2">...</label>
+    <hr>
+    
+    Hexadecimal:
+    <input onkeyup="onHex(this.value)">
+    <br>
+    Binary: <label id="hex1">...</label>
+    <br>
+    Decimal: <label id="hex2">...</label>
+    <br>
+    SHA-256: <label id="hex3">...</label>
+  </body>
+
+  <script>
+    function onBinary(input) {
+      var x = parseInt(input, 2);
+      if (isNaN(x)) x = ''
+      document.getElementById('binary1').innerHTML = x; 
+      document.getElementById('binary2').innerHTML = x.toString(16)
+    }
+
+    async function onHex(input) {
+      var x = parseInt(input, 16);
+      if (isNaN(x)) x = '';
+      document.getElementById('hex1').innerHTML = x.toString(2);
+      document.getElementById('hex2').innerHTML = x;
+      document.getElementById('hex3').innerHTML = await hash(input);
+    }
+
+    function hash(string) {
+      return crypto.subtle.digest('SHA-256', hexToBytes(string)).then((hashBuffer) => {
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        const hashHex = hashArray
+          .map((bytes) => bytes.toString(16).padStart(2, '0'))
+          .join('');
+        return hashHex;
+      });
+    }
+
+    function hexToBytes(hex) {
+      if (hex.length % 2 !== 0) {
+        hex = '0' + hex
+      }
+      const bytes = new Uint8Array(hex.length / 2);
+      for (let i = 0; i !== bytes.length; i++) {
+          bytes[i] = parseInt(hex.substr(i * 2, 2), 16);
+      }
+      return bytes;
+    }
+  </script>
+</htlm>
