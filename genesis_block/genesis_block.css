@@ -12,15 +12,15 @@ body {
   font-family: 'AnonymousPro-Regular';
   font-size: 28px;
   color: white;
+  /* height: 100%;
+  width: 100%; */
 }
 
 #center {
-  display: flex;
-  /* justify-content: start; */
-  align-items: center;
-  /* height: calc(100vh - 40px); */
-  flex-direction: column;
-  padding: 20px;
+  display: block;
+  width: 1193px;
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
 .fragment {
@@ -60,8 +60,8 @@ body {
 }
 
 #content {
-  line-height: 30px;
-  width: 1200px;
+  /* line-height: 30px; */
+  /* width: 1200px; */
 }
 
 .cell {
@@ -74,17 +74,16 @@ body {
 }
 
 .right{
-    float:right;
+  float:right;
 }
 
 .left{
-    float:left;
+  float:left;
 }
 
 p {
   text-indent: 40px;
   margin: 0px;
-  
 }
 
 a {
@@ -95,3 +94,16 @@ a {
 a:hover {
   text-decoration: underline;
 }
+
+/* 
+@media screen and (max-width: 950px) {
+  html {
+    transform: scale(0.75);
+  }
+}
+
+@media screen and (max-width: 630px) {
+  html {
+    transform: scale(0.5);
+  }
+} */
