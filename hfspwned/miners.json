@@ -435,10 +435,25 @@
      "watt":"2800"
   },
   {
-     "name":"Innosilicon T3+ 57T",
-     "hashrate":"57",
-     "watt":"3300"
+    "name":"Innosilicon T3+ 57T",
+    "hashrate":"57",
+    "watt":"3300"
+ },
+ {
+    "name":"Intel BMZ1",
+    "hashrate":"40",
+    "watt":"3600"
   },
+  {
+    "name":"Intel BMZ2 (power saving)",
+    "hashrate":"34.5",
+    "watt":"1863"
+  },  
+  {
+    "name":"Intel BMZ2 (performance)",
+    "hashrate":"47.7",
+    "watt":"2848"
+  },  
   {
      "name":"iPollo B1",
      "hashrate":"85",
