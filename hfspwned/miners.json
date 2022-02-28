@@ -445,15 +445,10 @@
     "watt":"3600"
   },
   {
-    "name":"Intel BMZ2 (power saving)",
-    "hashrate":"34.5",
-    "watt":"1863"
-  },  
-  {
-    "name":"Intel BMZ2 (performance)",
-    "hashrate":"47.7",
-    "watt":"2848"
-  },  
+    "name":"Intel BMZ2",
+    "hashrate":"135",
+    "watt":"3510"
+  },
   {
      "name":"iPollo B1",
      "hashrate":"85",
