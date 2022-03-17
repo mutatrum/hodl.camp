@@ -1,562 +1,567 @@
 [
   {
-     "name":"Aisen A1 Pro",
-     "hashrate":"23",
-     "watt":"2200"
+    "name": "Aisen A1 Pro",
+    "hashrate": "23",
+    "watt": "2200"
   },
   {
-     "name":"Bitfily Snow Panther A1",
-     "hashrate":"49",
-     "watt":"5400"
+    "name": "Bitfily Snow Panther A1",
+    "hashrate": "49",
+    "watt": "5400"
   },
   {
-     "name":"Bitfily Snow Panther B1",
-     "hashrate":"16",
-     "watt":"1380"
+    "name": "Bitfily Snow Panther B1",
+    "hashrate": "16",
+    "watt": "1380"
   },
   {
-     "name":"Bitfily Snow Panther B1+",
-     "hashrate":"24.5",
-     "watt":"2100"
+    "name": "Bitfily Snow Panther B1+",
+    "hashrate": "24.5",
+    "watt": "2100"
   },
   {
-     "name":"Bitfury B8",
-     "hashrate":"49",
-     "watt":"6400"
+    "name": "Bitfury B8",
+    "hashrate": "49",
+    "watt": "6400"
   },
   {
-     "name":"Bitfury Tardis",
-     "hashrate":"80",
-     "watt":"6300"
+    "name": "Bitfury Tardis",
+    "hashrate": "80",
+    "watt": "6300"
   },
   {
-     "name":"Bitmain Antminer R4",
-     "hashrate":"8.7",
-     "watt":"845"
+    "name": "Bitmain Antminer R4",
+    "hashrate": "8.7",
+    "watt": "845"
   },
   {
-     "name":"Bitmain Antminer S3",
-     "hashrate":"0.478",
-     "watt":"366"
+    "name": "Bitmain Antminer S3",
+    "hashrate": "0.478",
+    "watt": "366"
   },
   {
-     "name":"Bitmain Antminer S5",
-     "hashrate":"1.155",
-     "watt":"590"
+    "name": "Bitmain Antminer S5",
+    "hashrate": "1.155",
+    "watt": "590"
   },
   {
-     "name":"Bitmain Antminer S7",
-     "hashrate":"4.73",
-     "watt":"1293"
+    "name": "Bitmain Antminer S7",
+    "hashrate": "4.73",
+    "watt": "1293"
   },
   {
-     "name":"Bitmain Antminer S7-LN",
-     "hashrate":"2.7",
-     "watt":"697"
+    "name": "Bitmain Antminer S7-LN",
+    "hashrate": "2.7",
+    "watt": "697"
   },
   {
-     "name":"Bitmain Antminer S9 (11.5Th)",
-     "hashrate":"11.5",
-     "watt":"1127"
+    "name": "Bitmain Antminer S9 (11.5Th)",
+    "hashrate": "11.5",
+    "watt": "1127"
   },
   {
-     "name":"Bitmain Antminer S9 (12.5Th)",
-     "hashrate":"12.5",
-     "watt":"1225"
+    "name": "Bitmain Antminer S9 (12.5Th)",
+    "hashrate": "12.5",
+    "watt": "1225"
   },
   {
-     "name":"Bitmain Antminer S9 (13Th)",
-     "hashrate":"13",
-     "watt":"1300"
+    "name": "Bitmain Antminer S9 (13Th)",
+    "hashrate": "13",
+    "watt": "1300"
   },
   {
-    "name":"Bitmain Antminer S9 (13.5Th)",
-    "hashrate":"13.5",
-    "watt":"1323"
- },
- {
-     "name":"Bitmain Antminer S9 (14Th)",
-     "hashrate":"14",
-     "watt":"1372"
+    "name": "Bitmain Antminer S9 (13.5Th)",
+    "hashrate": "13.5",
+    "watt": "1323"
   },
   {
-     "name":"Bitmain Antminer S9 Hydro (18Th)",
-     "hashrate":"18",
-     "watt":"1728"
+    "name": "Bitmain Antminer S9 (14Th)",
+    "hashrate": "14",
+    "watt": "1372"
   },
   {
-     "name":"Bitmain Antminer S9 SE (16Th)",
-     "hashrate":"16",
-     "watt":"1280"
+    "name": "Bitmain Antminer S9 Hydro (18Th)",
+    "hashrate": "18",
+    "watt": "1728"
   },
   {
-     "name":"Bitmain Antminer S9i (13Th)",
-     "hashrate":"13",
-     "watt":"1280"
+    "name": "Bitmain Antminer S9 SE (16Th)",
+    "hashrate": "16",
+    "watt": "1280"
   },
   {
-     "name":"Bitmain Antminer S9i (14Th)",
-     "hashrate":"14",
-     "watt":"1320"
+    "name": "Bitmain Antminer S9i (13Th)",
+    "hashrate": "13",
+    "watt": "1280"
   },
   {
-     "name":"Bitmain Antminer S9j (14.5Th)",
-     "hashrate":"14.5",
-     "watt":"1350"
+    "name": "Bitmain Antminer S9i (14Th)",
+    "hashrate": "14",
+    "watt": "1320"
   },
   {
-     "name":"Bitmain Antminer S9k (13.5Th)",
-     "hashrate":"13.5",
-     "watt":"1310"
+    "name": "Bitmain Antminer S9j (14.5Th)",
+    "hashrate": "14.5",
+    "watt": "1350"
   },
   {
-     "name":"Bitmain Antminer S11 (20.5Th)",
-     "hashrate":"20.5",
-     "watt":"1530"
+    "name": "Bitmain Antminer S9k (13.5Th)",
+    "hashrate": "13.5",
+    "watt": "1310"
   },
   {
-     "name":"Bitmain Antminer S15 (28Th)",
-     "hashrate":"28",
-     "watt":"1596"
+    "name": "Bitmain Antminer S11 (20.5Th)",
+    "hashrate": "20.5",
+    "watt": "1530"
   },
   {
-     "name":"Bitmain Antminer S17 (53Th)",
-     "hashrate":"53",
-     "watt":"2385"
+    "name": "Bitmain Antminer S15 (28Th)",
+    "hashrate": "28",
+    "watt": "1596"
   },
   {
-     "name":"Bitmain Antminer S17 (56Th)",
-     "hashrate":"56",
-     "watt":"2520"
+    "name": "Bitmain Antminer S17 (53Th)",
+    "hashrate": "53",
+    "watt": "2385"
   },
   {
-     "name":"Bitmain Antminer S17 Pro (50Th)",
-     "hashrate":"50",
-     "watt":"1975"
+    "name": "Bitmain Antminer S17 (56Th)",
+    "hashrate": "56",
+    "watt": "2520"
   },
   {
-     "name":"Bitmain Antminer S17 Pro (53Th)",
-     "hashrate":"53",
-     "watt":"2094"
+    "name": "Bitmain Antminer S17 Pro (50Th)",
+    "hashrate": "50",
+    "watt": "1975"
   },
   {
-     "name":"Bitmain Antminer S17e (64Th)",
-     "hashrate":"64",
-     "watt":"2880"
+    "name": "Bitmain Antminer S17 Pro (53Th)",
+    "hashrate": "53",
+    "watt": "2094"
   },
   {
-     "name":"Bitmain Antminer S17+ (73Th)",
-     "hashrate":"73",
-     "watt":"2920"
+    "name": "Bitmain Antminer S17e (64Th)",
+    "hashrate": "64",
+    "watt": "2880"
   },
   {
-     "name":"Bitmain Antminer S19 (95Th)",
-     "hashrate":"95",
-     "watt":"3250"
+    "name": "Bitmain Antminer S17+ (73Th)",
+    "hashrate": "73",
+    "watt": "2920"
   },
   {
-     "name":"Bitmain Antminer S19 Pro (110Th)",
-     "hashrate":"110",
-     "watt":"3250"
+    "name": "Bitmain Antminer S19 (95Th)",
+    "hashrate": "95",
+    "watt": "3250"
   },
   {
-     "name":"Bitmain Antminer S19j (90Th)",
-     "hashrate":"90",
-     "watt":"3250"
+    "name": "Bitmain Antminer S19 Pro (110Th)",
+    "hashrate": "110",
+    "watt": "3250"
   },
   {
-     "name":"Bitmain Antminer S19j Pro (96Th)",
-     "hashrate":"96",
-     "watt":"2832"
+    "name": "Bitmain Antminer S19 Pro+ Hyd",
+    "hashrate": "198",
+    "watt": "5445"
   },
   {
-     "name":"Bitmain Antminer S19j Pro (100Th)",
-     "hashrate":"100",
-     "watt":"3050"
+    "name": "Bitmain Antminer S19j (90Th)",
+    "hashrate": "90",
+    "watt": "3250"
   },
   {
-     "name":"Bitmain Antminer S19j Pro (104Th)",
-     "hashrate":"104",
-     "watt":"3068"
+    "name": "Bitmain Antminer S19j Pro (96Th)",
+    "hashrate": "96",
+    "watt": "2832"
   },
   {
-     "name":"Bitmain Antminer S19 XP (140Th)",
-     "hashrate":"140",
-     "watt":"3010"
+    "name": "Bitmain Antminer S19j Pro (100Th)",
+    "hashrate": "100",
+    "watt": "3050"
   },
   {
-     "name":"Bitmain Antminer T9 (11.5Th)",
-     "hashrate":"11.5",
-     "watt":"1450"
+    "name": "Bitmain Antminer S19j Pro (104Th)",
+    "hashrate": "104",
+    "watt": "3068"
   },
   {
-     "name":"Bitmain Antminer T9 (12.5Th)",
-     "hashrate":"12.5",
-     "watt":"1576"
+    "name": "Bitmain Antminer S19 XP (140Th)",
+    "hashrate": "140",
+    "watt": "3010"
   },
   {
-     "name":"Bitmain Antminer T9+ (10.5Th)",
-     "hashrate":"10.5",
-     "watt":"1432"
+    "name": "Bitmain Antminer T9 (11.5Th)",
+    "hashrate": "11.5",
+    "watt": "1450"
   },
   {
-     "name":"Bitmain Antminer T15 (23Th)",
-     "hashrate":"23",
-     "watt":"1541"
+    "name": "Bitmain Antminer T9 (12.5Th)",
+    "hashrate": "12.5",
+    "watt": "1576"
   },
   {
-     "name":"Bitmain Antminer T17 (40Th)",
-     "hashrate":"40",
-     "watt":"2200"
+    "name": "Bitmain Antminer T9+ (10.5Th)",
+    "hashrate": "10.5",
+    "watt": "1432"
   },
   {
-     "name":"Bitmain Antminer T17e (53Th)",
-     "hashrate":"53",
-     "watt":"2915"
+    "name": "Bitmain Antminer T15 (23Th)",
+    "hashrate": "23",
+    "watt": "1541"
   },
   {
-     "name":"Bitmain Antminer T17+ (64Th)",
-     "hashrate":"64",
-     "watt":"3200"
+    "name": "Bitmain Antminer T17 (40Th)",
+    "hashrate": "40",
+    "watt": "2200"
   },
   {
-     "name":"Bitmain Antminer T19 (84Th)",
-     "hashrate":"84",
-     "watt":"3150"
+    "name": "Bitmain Antminer T17e (53Th)",
+    "hashrate": "53",
+    "watt": "2915"
   },
   {
-     "name":"Bitmain Antminer V9 (4Th)",
-     "hashrate":"4",
-     "watt":"1027"
+    "name": "Bitmain Antminer T17+ (64Th)",
+    "hashrate": "64",
+    "watt": "3200"
   },
   {
-     "name":"Bolon Miner B11",
-     "hashrate":"70",
-     "watt":"3300"
+    "name": "Bitmain Antminer T19 (84Th)",
+    "hashrate": "84",
+    "watt": "3150"
   },
   {
-     "name":"Canaan AvalonMiner 741",
-     "hashrate":"7.3",
-     "watt":"1150"
+    "name": "Bitmain Antminer V9 (4Th)",
+    "hashrate": "4",
+    "watt": "1027"
   },
   {
-     "name":"Canaan AvalonMiner 821",
-     "hashrate":"11.5",
-     "watt":"1200"
+    "name": "Bolon Miner B11",
+    "hashrate": "70",
+    "watt": "3300"
   },
   {
-     "name":"Canaan AvalonMiner 841",
-     "hashrate":"13.6",
-     "watt":"1290"
+    "name": "Canaan AvalonMiner 741",
+    "hashrate": "7.3",
+    "watt": "1150"
   },
   {
-     "name":"Canaan AvalonMiner 921",
-     "hashrate":"20",
-     "watt":"1700"
+    "name": "Canaan AvalonMiner 821",
+    "hashrate": "11.5",
+    "watt": "1200"
   },
   {
-     "name":"Canaan AvalonMiner 1047",
-     "hashrate":"37",
-     "watt":"2380"
+    "name": "Canaan AvalonMiner 841",
+    "hashrate": "13.6",
+    "watt": "1290"
   },
   {
-     "name":"Canaan AvalonMiner 1066",
-     "hashrate":"50",
-     "watt":"3250"
+    "name": "Canaan AvalonMiner 921",
+    "hashrate": "20",
+    "watt": "1700"
   },
   {
-     "name":"Canaan AvalonMiner 1126 Pro",
-     "hashrate":"68",
-     "watt":"3420"
+    "name": "Canaan AvalonMiner 1047",
+    "hashrate": "37",
+    "watt": "2380"
   },
   {
-     "name":"Canaan AvalonMiner 1146 Pro",
-     "hashrate":"63",
-     "watt":"3276"
+    "name": "Canaan AvalonMiner 1066",
+    "hashrate": "50",
+    "watt": "3250"
   },
   {
-     "name":"Canaan AvalonMiner 1166 Pro",
-     "hashrate":"81",
-     "watt":"3400"
+    "name": "Canaan AvalonMiner 1126 Pro",
+    "hashrate": "68",
+    "watt": "3420"
   },
   {
-     "name":"Canaan AvalonMiner 1246",
-     "hashrate":"90",
-     "watt":"3420"
+    "name": "Canaan AvalonMiner 1146 Pro",
+    "hashrate": "63",
+    "watt": "3276"
   },
   {
-     "name":"Ebang Ebit E9+",
-     "hashrate":"9",
-     "watt":"1300"
+    "name": "Canaan AvalonMiner 1166 Pro",
+    "hashrate": "81",
+    "watt": "3400"
   },
   {
-     "name":"Ebang Ebit E9.2",
-     "hashrate":"12",
-     "watt":"1320"
+    "name": "Canaan AvalonMiner 1246",
+    "hashrate": "90",
+    "watt": "3420"
   },
   {
-     "name":"Ebang Ebit E9.3",
-     "hashrate":"16",
-     "watt":"1760"
+    "name": "Ebang Ebit E9+",
+    "hashrate": "9",
+    "watt": "1300"
   },
   {
-     "name":"Ebang Ebit E9i",
-     "hashrate":"13.5",
-     "watt":"1420"
+    "name": "Ebang Ebit E9.2",
+    "hashrate": "12",
+    "watt": "1320"
   },
   {
-     "name":"Ebang Ebit E10",
-     "hashrate":"18",
-     "watt":"1650"
+    "name": "Ebang Ebit E9.3",
+    "hashrate": "16",
+    "watt": "1760"
   },
   {
-     "name":"Ebang Ebit E11",
-     "hashrate":"30",
-     "watt":"1950"
+    "name": "Ebang Ebit E9i",
+    "hashrate": "13.5",
+    "watt": "1420"
   },
   {
-     "name":"Ebang Ebit E11+",
-     "hashrate":"37",
-     "watt":"2035"
+    "name": "Ebang Ebit E10",
+    "hashrate": "18",
+    "watt": "1650"
   },
   {
-     "name":"Ebang Ebit E11++",
-     "hashrate":"44",
-     "watt":"1980"
+    "name": "Ebang Ebit E11",
+    "hashrate": "30",
+    "watt": "1950"
   },
   {
-     "name":"Ebang Ebit E12",
-     "hashrate":"44",
-     "watt":"2500"
+    "name": "Ebang Ebit E11+",
+    "hashrate": "37",
+    "watt": "2035"
   },
   {
-     "name":"Ebang Ebit E12+",
-     "hashrate":"50",
-     "watt":"2500"
+    "name": "Ebang Ebit E11++",
+    "hashrate": "44",
+    "watt": "1980"
   },
   {
-    "name":"FutureBit Apollo BTC (Eco)",
-    "hashrate":"2",
-    "watt":"120"
+    "name": "Ebang Ebit E12",
+    "hashrate": "44",
+    "watt": "2500"
   },
   {
-    "name":"FutureBit Apollo BTC (Balanced)",
-    "hashrate":"2.5",
-    "watt":"160"
+    "name": "Ebang Ebit E12+",
+    "hashrate": "50",
+    "watt": "2500"
   },
   {
-    "name":"FutureBit Apollo BTC (Turbo)",
-    "hashrate":"3",
-    "watt":"200"
+    "name": "FutureBit Apollo BTC (Eco)",
+    "hashrate": "2",
+    "watt": "120"
   },
   {
-    "name":"GekkoScience Compac F",
-    "hashrate":"0.2",
-    "watt":"5"
+    "name": "FutureBit Apollo BTC (Balanced)",
+    "hashrate": "2.5",
+    "watt": "160"
   },
   {
-     "name":"GMO miner B2",
-     "hashrate":"24",
-     "watt":"1950"
+    "name": "FutureBit Apollo BTC (Turbo)",
+    "hashrate": "3",
+    "watt": "200"
   },
   {
-     "name":"GMO miner B3",
-     "hashrate":"33",
-     "watt":"3417"
+    "name": "GekkoScience Compac F",
+    "hashrate": "0.2",
+    "watt": "5"
   },
   {
-     "name":"Halong Mining DragonMint T1",
-     "hashrate":"16",
-     "watt":"1480"
+    "name": "GMO miner B2",
+    "hashrate": "24",
+    "watt": "1950"
   },
   {
-     "name":"Holic H22",
-     "hashrate":"22",
-     "watt":"1700"
+    "name": "GMO miner B3",
+    "hashrate": "33",
+    "watt": "3417"
   },
   {
-     "name":"Holic H28",
-     "hashrate":"28",
-     "watt":"2100"
+    "name": "Halong Mining DragonMint T1",
+    "hashrate": "16",
+    "watt": "1480"
   },
   {
-     "name":"Innosilicon T2 Terminator",
-     "hashrate":"17.2",
-     "watt":"1570"
+    "name": "Holic H22",
+    "hashrate": "22",
+    "watt": "1700"
   },
   {
-     "name":"Innosilicon T2 Turbo",
-     "hashrate":"24",
-     "watt":"1980"
+    "name": "Holic H28",
+    "hashrate": "28",
+    "watt": "2100"
   },
   {
-     "name":"Innosilicon T2 Turbo 25T",
-     "hashrate":"25",
-     "watt":"2050"
+    "name": "Innosilicon T2 Terminator",
+    "hashrate": "17.2",
+    "watt": "1570"
   },
   {
-     "name":"Innosilicon T2 Turbo 26T",
-     "hashrate":"26",
-     "watt":"2100"
+    "name": "Innosilicon T2 Turbo",
+    "hashrate": "24",
+    "watt": "1980"
   },
   {
-     "name":"Innosilicon T2 Turbo 29T/30T",
-     "hashrate":"30",
-     "watt":"2400"
+    "name": "Innosilicon T2 Turbo 25T",
+    "hashrate": "25",
+    "watt": "2050"
   },
   {
-     "name":"Innosilicon T2 Turbo+ 32T",
-     "hashrate":"32",
-     "watt":"2200"
+    "name": "Innosilicon T2 Turbo 26T",
+    "hashrate": "26",
+    "watt": "2100"
   },
   {
-     "name":"Innosilicon T2 Turbo HF+",
-     "hashrate":"33",
-     "watt":"2600"
+    "name": "Innosilicon T2 Turbo 29T/30T",
+    "hashrate": "30",
+    "watt": "2400"
   },
   {
-     "name":"Innosilicon T3 39T",
-     "hashrate":"39",
-     "watt":"2150"
+    "name": "Innosilicon T2 Turbo+ 32T",
+    "hashrate": "32",
+    "watt": "2200"
   },
   {
-     "name":"Innosilicon T3 43T",
-     "hashrate":"43",
-     "watt":"2100"
+    "name": "Innosilicon T2 Turbo HF+",
+    "hashrate": "33",
+    "watt": "2600"
   },
   {
-     "name":"Innosilicon T3 50T",
-     "hashrate":"50",
-     "watt":"3100"
+    "name": "Innosilicon T3 39T",
+    "hashrate": "39",
+    "watt": "2150"
   },
   {
-     "name":"Innosilicon T3+ 52T",
-     "hashrate":"52",
-     "watt":"2800"
+    "name": "Innosilicon T3 43T",
+    "hashrate": "43",
+    "watt": "2100"
   },
   {
-    "name":"Innosilicon T3+ 57T",
-    "hashrate":"57",
-    "watt":"3300"
- },
- {
-    "name":"Intel BMZ1",
-    "hashrate":"40",
-    "watt":"3600"
+    "name": "Innosilicon T3 50T",
+    "hashrate": "50",
+    "watt": "3100"
   },
   {
-    "name":"Intel BMZ2",
-    "hashrate":"135",
-    "watt":"3510"
+    "name": "Innosilicon T3+ 52T",
+    "hashrate": "52",
+    "watt": "2800"
   },
   {
-     "name":"iPollo B1",
-     "hashrate":"85",
-     "watt":"3400"
+    "name": "Innosilicon T3+ 57T",
+    "hashrate": "57",
+    "watt": "3300"
   },
   {
-     "name":"iPollo B2",
-     "hashrate":"110",
-     "watt":"3250"
+    "name": "Intel BMZ1",
+    "hashrate": "40",
+    "watt": "3600"
   },
   {
-     "name":"MicroBT Whatsminer M3",
-     "hashrate":"12",
-     "watt":"2000"
+    "name": "Intel BMZ2",
+    "hashrate": "135",
+    "watt": "3510"
   },
   {
-     "name":"MicroBT Whatsminer M3X",
-     "hashrate":"12.5",
-     "watt":"2050"
+    "name": "iPollo B1",
+    "hashrate": "85",
+    "watt": "3400"
   },
   {
-     "name":"MicroBT Whatsminer M10",
-     "hashrate":"33",
-     "watt":"2145"
+    "name": "iPollo B2",
+    "hashrate": "110",
+    "watt": "3250"
   },
   {
-     "name":"MicroBT Whatsminer M10S",
-     "hashrate":"55",
-     "watt":"3500"
+    "name": "MicroBT Whatsminer M3",
+    "hashrate": "12",
+    "watt": "2000"
   },
   {
-     "name":"MicroBT Whatsminer M20S",
-     "hashrate":"68",
-     "watt":"3360"
+    "name": "MicroBT Whatsminer M3X",
+    "hashrate": "12.5",
+    "watt": "2050"
   },
   {
-     "name":"MicroBT Whatsminer M21",
-     "hashrate":"31",
-     "watt":"1860"
+    "name": "MicroBT Whatsminer M10",
+    "hashrate": "33",
+    "watt": "2145"
   },
   {
-     "name":"MicroBT Whatsminer M21S",
-     "hashrate":"56",
-     "watt":"3360"
+    "name": "MicroBT Whatsminer M10S",
+    "hashrate": "55",
+    "watt": "3500"
   },
   {
-     "name":"MicroBT Whatsminer M30S",
-     "hashrate":"86",
-     "watt":"3268"
+    "name": "MicroBT Whatsminer M20S",
+    "hashrate": "68",
+    "watt": "3360"
   },
   {
-     "name":"MicroBT Whatsminer M30S+",
-     "hashrate":"100",
-     "watt":"3400"
+    "name": "MicroBT Whatsminer M21",
+    "hashrate": "31",
+    "watt": "1860"
   },
   {
-     "name":"MicroBT Whatsminer M30S++",
-     "hashrate":"112",
-     "watt":"3472"
+    "name": "MicroBT Whatsminer M21S",
+    "hashrate": "56",
+    "watt": "3360"
   },
   {
-     "name":"MicroBT Whatsminer M31S",
-     "hashrate":"76",
-     "watt":"3220"
+    "name": "MicroBT Whatsminer M30S",
+    "hashrate": "86",
+    "watt": "3268"
   },
   {
-     "name":"MicroBT Whatsminer M31S+",
-     "hashrate":"80",
-     "watt":"3360"
+    "name": "MicroBT Whatsminer M30S+",
+    "hashrate": "100",
+    "watt": "3400"
   },
   {
-     "name":"MicroBT Whatsminer M32",
-     "hashrate":"62",
-     "watt":"3348"
+    "name": "MicroBT Whatsminer M30S++",
+    "hashrate": "112",
+    "watt": "3472"
   },
   {
-     "name":"MicroBT Whatsminer M32S",
-     "hashrate":"66",
-     "watt":"3432"
+    "name": "MicroBT Whatsminer M31S",
+    "hashrate": "76",
+    "watt": "3220"
   },
   {
-     "name":"Pantech SX6",
-     "hashrate":"8.5",
-     "watt":"1000"
+    "name": "MicroBT Whatsminer M31S+",
+    "hashrate": "80",
+    "watt": "3360"
   },
   {
-     "name":"Pantech WX6",
-     "hashrate":"34",
-     "watt":"5000"
+    "name": "MicroBT Whatsminer M32",
+    "hashrate": "62",
+    "watt": "3348"
   },
   {
-     "name":"StrongU Hornbill H8",
-     "hashrate":"74",
-     "watt":"3330"
+    "name": "MicroBT Whatsminer M32S",
+    "hashrate": "66",
+    "watt": "3432"
   },
   {
-     "name":"StrongU Hornbill H8 Pro",
-     "hashrate":"84",
-     "watt":"3360"
+    "name": "Pantech SX6",
+    "hashrate": "8.5",
+    "watt": "1000"
   },
   {
-     "name":"StrongU STU-U8",
-     "hashrate":"46",
-     "watt":"2100"
+    "name": "Pantech WX6",
+    "hashrate": "34",
+    "watt": "5000"
   },
   {
-     "name":"StrongU STU-U8 Pro",
-     "hashrate":"60",
-     "watt":"2800"
+    "name": "StrongU Hornbill H8",
+    "hashrate": "74",
+    "watt": "3330"
+  },
+  {
+    "name": "StrongU Hornbill H8 Pro",
+    "hashrate": "84",
+    "watt": "3360"
+  },
+  {
+    "name": "StrongU STU-U8",
+    "hashrate": "46",
+    "watt": "2100"
+  },
+  {
+    "name": "StrongU STU-U8 Pro",
+    "hashrate": "60",
+    "watt": "2800"
   }
 ]
