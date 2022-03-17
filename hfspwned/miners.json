@@ -80,12 +80,12 @@
     "watt": "1372"
   },
   {
-    "name": "Bitmain Antminer S9 Hydro (18Th)",
+    "name": "Bitmain Antminer S9 Hydro",
     "hashrate": "18",
     "watt": "1728"
   },
   {
-    "name": "Bitmain Antminer S9 SE (16Th)",
+    "name": "Bitmain Antminer S9 SE",
     "hashrate": "16",
     "watt": "1280"
   },
@@ -100,22 +100,22 @@
     "watt": "1320"
   },
   {
-    "name": "Bitmain Antminer S9j (14.5Th)",
+    "name": "Bitmain Antminer S9j",
     "hashrate": "14.5",
     "watt": "1350"
   },
   {
-    "name": "Bitmain Antminer S9k (13.5Th)",
+    "name": "Bitmain Antminer S9k",
     "hashrate": "13.5",
     "watt": "1310"
   },
   {
-    "name": "Bitmain Antminer S11 (20.5Th)",
+    "name": "Bitmain Antminer S11",
     "hashrate": "20.5",
     "watt": "1530"
   },
   {
-    "name": "Bitmain Antminer S15 (28Th)",
+    "name": "Bitmain Antminer S15",
     "hashrate": "28",
     "watt": "1596"
   },
@@ -140,22 +140,22 @@
     "watt": "2094"
   },
   {
-    "name": "Bitmain Antminer S17e (64Th)",
+    "name": "Bitmain Antminer S17e",
     "hashrate": "64",
     "watt": "2880"
   },
   {
-    "name": "Bitmain Antminer S17+ (73Th)",
+    "name": "Bitmain Antminer S17+",
     "hashrate": "73",
     "watt": "2920"
   },
   {
-    "name": "Bitmain Antminer S19 (95Th)",
+    "name": "Bitmain Antminer S19",
     "hashrate": "95",
     "watt": "3250"
   },
   {
-    "name": "Bitmain Antminer S19 Pro (110Th)",
+    "name": "Bitmain Antminer S19 Pro",
     "hashrate": "110",
     "watt": "3250"
   },
@@ -165,7 +165,7 @@
     "watt": "5445"
   },
   {
-    "name": "Bitmain Antminer S19j (90Th)",
+    "name": "Bitmain Antminer S19j",
     "hashrate": "90",
     "watt": "3250"
   },
@@ -185,9 +185,14 @@
     "watt": "3068"
   },
   {
-    "name": "Bitmain Antminer S19 XP (140Th)",
+    "name": "Bitmain Antminer S19 XP",
     "hashrate": "140",
     "watt": "3010"
+  },
+  {
+    "name": "Bitcoin  Antminer S19 XP Hyd",
+    "hashrate": "255",
+    "watt": "5304"
   },
   {
     "name": "Bitmain Antminer T9 (11.5Th)",
