@@ -137,7 +137,7 @@
               <label for="subsidy"><b>S</b>ubsidy in bitcoin</label>
             </div>
             <div class="mb-2 form-floating">
-              <input type="number" class="form-control" id="price" value="50000" step="5000" onkeyup="onChange()" oninput="onChange()">
+              <input type="number" class="form-control" id="price" step="5000" onkeyup="onChange()" oninput="onChange()">
               <label for="price"><b>P</b>rice of bitcoin in $</label>
               <span class="form-text clickable" id="current-price" onclick="onPriceClick(event)">
                 Current: 
@@ -161,7 +161,7 @@
               <label for="energy"><b>E</b>nergy cost in $/kWh</label>
             </div>
             <div class="mb-2 form-floating">
-              <input type="number" class="form-control" id="difficulty" value="25000000000000" step="1000000000000" onkeyup="onChange()" oninput="onChange()">
+              <input type="number" class="form-control" id="difficulty" step="1000000000000" onkeyup="onChange()" oninput="onChange()">
               <label for="difficulty"><b>D</b>ifficulty of mining (<span id="network"></span>)</label>
               <span class="form-text clickable" id="current-difficulty" onclick="onDifficultyClick(event)">
                 Current: 

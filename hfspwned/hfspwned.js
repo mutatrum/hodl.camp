@@ -1,9 +1,9 @@
 async function onLoad() {
 
-  websocketConnect()
-
   var difficultyResponse = await fetch('/api/bitcoin/difficulty')
   difficultyData = await difficultyResponse.json()
+
+  document.getElementById('difficulty').value = difficultyData.current
 
   var currentDifficultySpan = document.getElementById('current-difficulty')
   currentDifficultySpan.setAttribute('data-difficulty', difficultyData.current)
@@ -42,7 +42,11 @@ async function onLoad() {
     document.getElementById('price').disabled = true
   }
 
-  onMinerUpdate()
+  var setInitialPrice = document.getElementById('price').value === ''
+
+  if (!setInitialPrice) onMinerUpdate()
+
+  websocketConnect(setInitialPrice)
 
   new bootstrap.Popover(document.querySelector('.popover-dismiss'))
 
@@ -168,7 +172,7 @@ function createLink() {
   return url.toString()
 }
 
-function websocketConnect() {
+function websocketConnect(setInitialPrice) {
 
   const currentPriceSpan = document.getElementById('current-price')
   const priceInput = document.getElementById('price')
@@ -198,9 +202,10 @@ function websocketConnect() {
         var price = Math.round(message[6])
         currentPriceSpan.setAttribute('data-price', price)
         currentPriceSpan.setAttribute('data-price-formatted', PARAMETERS.price.format(price))
-        if (priceSyncCheckbox.checked) {
+        if (priceSyncCheckbox.checked || setInitialPrice) {
           priceInput.value = price
           onChange()
+          initialConnect = false
         }
       }
     }
