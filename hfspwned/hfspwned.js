@@ -2,7 +2,7 @@ async function onLoad() {
 
   websocketConnect()
 
-  var difficultyResponse = await fetch('difficulty.json')
+  var difficultyResponse = await fetch('/api/bitcoin/difficulty')
   difficultyData = await difficultyResponse.json()
 
   var currentDifficultySpan = document.getElementById('current-difficulty')
@@ -96,12 +96,16 @@ function onChange() {
 
       var result = n * (((h * f * s * p * 4383) / (d * 131072 / 18310546875)) - w * e * 1461 / 2000)
 
-      cell.setAttribute('data-amount', PARAMETERS.price.format(result))
+      // cell.setAttribute('data-amount', formatBitcoin(result / p))
+
+      cell.setAttribute('data-amount', formatPrice(result))
     }
   }
 
   var d = document.getElementById('difficulty').value
   document.getElementById('network').innerHTML = difficultyToNetworkHashrate(d)
+
+  document.getElementById('home').href = createLink()
 }
 
 const PREFIX = ['', 'K', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y', 'B']
@@ -139,6 +143,12 @@ function onMinerUpdate() {
 }
 
 function onShareClick(event) {
+  navigator.clipboard.writeText(createLink())
+
+  event.preventDefault()
+}
+
+function createLink() {
   var href = window.location.href
   var url = new URL(href.slice(0, href.indexOf('?')))
   var searchParams = url.searchParams
@@ -155,10 +165,7 @@ function onShareClick(event) {
   if (document.getElementById('price-sync').checked) {
     searchParams.append('price-sync', 'true')
   }
-
-  navigator.clipboard.writeText(url.toString())
-
-  event.preventDefault()
+  return url.toString()
 }
 
 function websocketConnect() {
@@ -218,6 +225,7 @@ function onPriceSyncClick(event) {
   if (element.checked) {
     priceInput.value = document.getElementById('current-price').getAttribute('data-price')
     priceInput.disabled = true
+    onChange()
   } else {
     priceInput.disabled = false
   }
@@ -240,7 +248,7 @@ class Parameter {
 const PARAMETERS = {
   hashrate: new Parameter('hashrate', v => v.toLocaleString() + ' Th/s'),
   fee: new Parameter('fee', v => v.toLocaleString() + '%'),
-  subsidy: new Parameter('subsidy', v => v, subsidyStep),
+  subsidy: new Parameter('subsidy', formatSubsidy, subsidyStep),
   price: new Parameter('price', v => formatPrice(Math.round(v))),
   watt: new Parameter('watt', v => v.toLocaleString() + ' W'),
   energy: new Parameter('energy', formatPrice),
@@ -251,7 +259,15 @@ function formatPrice(v) {
   return (v < 0 ? '-' : '') + '$' + Math.abs(v).toLocaleString()
 }
 
-function subsidyStep(i) {
-  var s = (100 / (1 << i)).toString()
+function formatSubsidy(i) {
+  return '₿ ' + formatBitcoin(i)
+}
+
+function formatBitcoin(i) {
+  var s = i.toString()
   return s.slice(0, (s.indexOf('.')) + 9)
+}
+
+function subsidyStep(i) {
+  return 100 / (1 << i)
 }
