@@ -20,6 +20,9 @@ async function init() {
   var response = await fetch('../data.json');
   data = await response.json();
 
+  var halvingsResponse = await fetch('/api/bitcoin/halvings');
+  data.halvings = await halvingsResponse.json();
+
   createCandles();
   
   webSocketConnect();
@@ -165,7 +168,7 @@ function drawCandles() {
     drawHorizontalGrid(ctx, getY, price);
   }
 
-  data.halvings.forEach((halving, i) => {
+  halvings.forEach((halving, i) => {
     var x = getX(i);
     if (i % 4 == 0) {
       drawVerticalGrid(ctx, x);
