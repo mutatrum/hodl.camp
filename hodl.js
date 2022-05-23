@@ -1,7 +1,7 @@
 const COLORMAPS = ['BrBG', 'PiYG', 'PRGn', 'PuOr', 'RdBu', 'RdGy', 'RdYlBu', 'RdYlGn'];
 const REDS = ['brown', 'pink', 'purple', 'brown', 'red', 'red', 'red', 'red'];
 const GREENS = ['blue', 'green', 'green', 'purple', 'blue', 'grey', 'blue', 'green'];
-const SCALES = ['10', '11', '12.5', '15', '17.5', '20', '25', '33', '50', '67', '75', '80', '90', '100', '110', '125', '150', '175', '200', '250', '300', '400', '500'];
+const SCALES = ['10', '11', '12.5', '15', '17.5', '20', '25', '33', '40', '50', '67', '75', '80', '90', '100', '110', '125', '150', '175', '200', '250', '300', '400', '500'];
 const PAIRS = ['btc-usd', 'btc-xau', 'xau-usd'];
 const PAIR_LABELS = ['BTC/USD', 'BTC/XAU', 'XAU/USD'];
 const ASSET_LABELS = ['bitcoin', 'bitcoin', 'gold'];
