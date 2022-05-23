@@ -22,6 +22,10 @@ var showHelp = false;
 async function onLoad() {
   var response = await fetch('data.json');
   data = await response.json();
+
+  var halvingsResponse = await fetch('/api/bitcoin/halvings');
+  data.halvings = await halvingsResponse.json();
+
   size = data.bitcoin.length - 1;
   init();
 }
