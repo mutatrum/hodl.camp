@@ -168,7 +168,7 @@ function drawCandles() {
     drawHorizontalGrid(ctx, getY, price);
   }
 
-  halvings.forEach((halving, i) => {
+  data.halvings.forEach((halving, i) => {
     var x = getX(i);
     if (i % 4 == 0) {
       drawVerticalGrid(ctx, x);
