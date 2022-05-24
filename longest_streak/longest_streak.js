@@ -5,17 +5,16 @@ async function onLoad() {
 const WIDTH = 1200;
 const HEIGHT = 675;
 
-var data;
+var bitcoinPrices;
 
 async function init() {
-  var response = await fetch('../data.json');
-  data = await response.json();
+  bitcoinPrices = await fetch('/api/bitcoin/prices').then(res => res.json())
 
   createContent();
 }
 
 function createContent() {
-  const size = data.bitcoin.length - 1;
+  const size = bitcoinPrices.prices.length - 1;
   const content = document.getElementById('content');
 
   var hasStreak;
@@ -30,7 +29,7 @@ function createContent() {
     var start = 0;
 
     for (var index = 0; index <= size; index++) {
-      if (data.bitcoin[index] >= price) {
+      if (bitcoinPrices.prices[index] >= price) {
         hasStreak = true;
         if (start == 0) {
           start = index;
@@ -81,7 +80,7 @@ function formatDate(date) {
 }
 
 function getIndexDate(index) {
-  var date = new Date(data.since);
+  var date = new Date(bitcoinPrices.since);
   date.setDate(date.getDate() + index);
   return date;
 }
