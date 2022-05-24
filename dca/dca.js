@@ -3,14 +3,12 @@ var sats = [];
 var chart;
 
 async function onLoad() {
-  var response = await fetch('../data.json');
-  data = await response.json();
+  data = await fetch('/api/bitcoin/prices').then(res => res.json())
 
-  const prices = data.bitcoin;
-  const size = prices.length - 1;
+  const size = data.prices.length - 1;
 
   for (i = 0; i < size; i++) {
-    sats[i] = Math.floor(1e8 / prices[i]);
+    sats[i] = Math.floor(1e8 / data.prices[i]);
   }
 
   initChart();
