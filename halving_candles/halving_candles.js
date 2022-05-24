@@ -9,7 +9,8 @@ var spinner = "◢◣◤◥";
 var spin = 0;
 var highlight = -1;
 
-var data;
+var bitcoinPrices;
+var bitcoinHalvings;
 var candles;
 
 var resizeTimer;
@@ -17,11 +18,8 @@ var resizeTimer;
 var getHighlight = () => -1;
 
 async function init() {
-  var response = await fetch('../data.json');
-  data = await response.json();
-
-  var halvingsResponse = await fetch('/api/bitcoin/halvings');
-  data.halvings = await halvingsResponse.json();
+  bitcoinPrices = await fetch('/api/bitcoin/prices').then(res => res.json())
+  bitcoinHalvings = await fetch('/api/bitcoin/halvings').then(res => res.json())
 
   createCandles();
   
@@ -36,18 +34,18 @@ async function init() {
 function createCandles() {
   candles = new Array();
 
-  var candle = createCandle(data.bitcoin[0], formatDate(getIndexDate(0)));
+  var candle = createCandle(bitcoinPrices.prices[0], formatDate(getIndexDate(0)));
 
-  var firstCandleIndex = data.halvings.findIndex(date => date.localeCompare(data.since) == 1) - 1;
+  var firstCandleIndex = bitcoinHalvings.findIndex(date => date.localeCompare(bitcoinPrices.since) == 1) - 1;
   candles[firstCandleIndex] = candle;
   
-  for (var i = 0; i < data.bitcoin.length; i++) {
+  for (var i = 0; i < bitcoinPrices.prices.length; i++) {
     var date = formatDate(getIndexDate(i));
-    var price = data.bitcoin[i];
+    var price = bitcoinPrices.prices[i];
     candle.h = Math.max(candle.h, price);
     candle.l = Math.min(candle.l, price);
     candle.c = price;
-    var index = data.halvings.indexOf(date);
+    var index = bitcoinHalvings.indexOf(date);
     if (index != -1) {
       candle = createCandle(price, date);
       candles[index] = candle;
@@ -122,7 +120,7 @@ function setStatus(status) {
 }
 
 function getIndexDate(index) {
-  var date = new Date(data.since);
+  var date = new Date(bitcoinPrices.since);
   date.setDate(date.getDate() + index);
   return date;
 }
@@ -168,12 +166,12 @@ function drawCandles() {
     drawHorizontalGrid(ctx, getY, price);
   }
 
-  data.halvings.forEach((halving, i) => {
+  bitcoinHalvings.forEach((halving, i) => {
     var x = getX(i);
     if (i % 4 == 0) {
       drawVerticalGrid(ctx, x);
       if (!small) {
-        drawHalvingLabel(ctx, x, data.halvings[i]);
+        drawHalvingLabel(ctx, x, bitcoinHalvings[i]);
       }
     }
     if (i % 4 == 2) {
