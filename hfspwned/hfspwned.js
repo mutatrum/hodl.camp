@@ -191,7 +191,7 @@ function websocketConnect(setInitialPrice) {
   }
 
   webSocket.onclose = function(event) {
-    setTimeout(webSocketConnect, 1000)
+    setTimeout(() => webSocketConnect(false), 1000)
   }
 
   webSocket.onmessage = function(event) {
