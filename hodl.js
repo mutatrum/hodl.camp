@@ -9,7 +9,9 @@ const DOMAIN = [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.55, 0.625, 0.725, 0.85, 1.0];
 const LINE = 'line.png';
 const DOT = 'dot.png';
 
-var data;
+var bitcoinPrices;
+var goldPrices;
+var halvings;
 var size;
 var buy, sell;
 var mouseX, mouseY;
@@ -20,17 +22,14 @@ var paletteSpanClearTimeout;
 var showHelp = false;
 
 async function onLoad() {
-  var response = await fetch('data.json');
-  data = await response.json();
+  bitcoinPrices = await fetch('/api/bitcoin/prices').then(res => res.json())
+  halvings = await fetch('/api/bitcoin/halvings').then(res => res.json())
 
-  var halvingsResponse = await fetch('/api/bitcoin/halvings');
-  data.halvings = await halvingsResponse.json();
-
-  size = data.bitcoin.length - 1;
+  size = bitcoinPrices.prices.length - 1;
   init();
 }
 
-function init() {
+async function init() {
   var hashParameters = getHashParameters();
   
   if (localStorage.getItem('pair') === null) {
@@ -40,7 +39,7 @@ function init() {
   if (pair != -1) {
     localStorage.pair = pair;
   }
-  setPair();
+  await setPair();
 
   if (localStorage.getItem('palette') === null) {
     localStorage.palette = 7;
@@ -80,7 +79,7 @@ function init() {
   setProperty('--scrollbar-width', `${scrollbarWidth}px`);
 
   setInnerHTML('start-date', formatDate(getIndexDate(0)));
-  setInnerHTML('updated-date', formatDate(getIndexDate(data.bitcoin.length - 1)));
+  setInnerHTML('updated-date', formatDate(getIndexDate(bitcoinPrices.prices.length - 1)));
 
   createLabels();
 
@@ -98,7 +97,10 @@ function init() {
   }
 }
 
-function setPair() {
+async function setPair() {
+  if (!goldPrices && PAIRS[localStorage.pair].indexOf('xau') != -1) {
+    goldPrices = await fetch(`api/gold/prices?since=${bitcoinPrices.since}`).then(res => res.json())
+  }
   getPrice = getPriceFunction();
   formatPrice = formatPriceFunction();
   setInnerHTML('pair', PAIR_LABELS[localStorage.pair]);
@@ -107,9 +109,9 @@ function setPair() {
 
 function getPriceFunction() {
   switch (PAIRS[localStorage.pair]) {
-    case 'btc-usd': return function(index) { return data.bitcoin[index] };
-    case 'btc-xau': return function(index) { return data.bitcoin[index] / data.gold[index] };
-    case 'xau-usd': return function(index) { return data.gold[index] };
+    case 'btc-usd': return function(index) { return bitcoinPrices.prices[index] };
+    case 'btc-xau': return function(index) { return bitcoinPrices.prices[index] / goldPrices.prices[index] };
+    case 'xau-usd': return function(index) { return goldPrices.prices[index] };
   }
 }
 
@@ -183,7 +185,7 @@ function createLabels() {
   var atlPrice = Number.MAX_VALUE;
   var labelsDiv = document.getElementById('labels');
   for (var index = 0; index <= size; index++) {
-    var price = data.bitcoin[index];
+    var price = bitcoinPrices.prices[index];
     if (price > athPrice) {
       ath = index;
       athPrice = price;
@@ -204,7 +206,7 @@ function createLabels() {
       labelsDiv.appendChild(monthDotImg);
     }
 
-    var halvingIndex = data.halvings.indexOf(formatDate(date));
+    var halvingIndex = halvings.indexOf(formatDate(date));
     if (halvingIndex != -1) {
 
       var labelDiv = createGridDiv(index, halvingIndex);
@@ -424,7 +426,7 @@ function getProfit(buy, sell) {
 }
 
 function getIndexDate(index) {
-  var date = new Date(data.since);
+  var date = new Date(bitcoinPrices.since);
   date.setDate(date.getDate() + index);
   return date;
 }
@@ -476,10 +478,10 @@ function plural(n, word) {
   return n + ' ' + word + (n > 1 ? 's' : '');
 }
 
-function onPairClick(event) {
+async function onPairClick(event) {
   var pair = PAIR_LABELS.indexOf(event.target.text);
   localStorage.pair = pair;
-  setPair();
+  await setPair();
 
   var hashParameters = getHashParameters();
   hashParameters.set('pair', PAIRS[pair]);
