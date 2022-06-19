@@ -26,6 +26,30 @@ async function onLoad() {
   halvings = await fetch('/api/bitcoin/halvings').then(res => res.json())
 
   size = bitcoinPrices.prices.length - 1;
+
+  const borderDiv = document.getElementById('border')
+
+  const blocks = Math.floor(size / 1000) + 1
+  for (var y = 0; y < blocks; y++) {
+    for (var x = y; x < blocks; x++) {
+      const canvas = document.createElement("canvas")
+      canvas.classList.add('hodl')
+      canvas.id = `hodl-${x}-${y}`
+      canvas.setAttribute('data-x', x)
+      canvas.setAttribute('data-y', y)
+      canvas.style.setProperty('--x', `${x}`)
+      canvas.style.setProperty('--y', `${y}`)
+      canvas.addEventListener('mousemove', onMouseMove)
+      canvas.addEventListener('mouseleave', onMouseLeave)
+      canvas.addEventListener('touchend', onTouchEnd)
+      canvas.addEventListener('click', onClick)
+      canvas.width = x < blocks - 1 ? 1000 : size - ((blocks - 1) * 1000)
+      canvas.height = y < blocks - 1 ? 1000 : size - ((blocks - 1) * 1000)
+
+      borderDiv.append(canvas)
+    }
+  }
+
   init();
 }
 
@@ -134,48 +158,53 @@ function drawIndex(colorMap) {
 }
 
 function drawHodl(colorMap) {
-  var hodlCanvas = document.getElementById('hodl');
-  hodlCanvas.width = size;
-  hodlCanvas.height = size;
-
-  var hodlContext = hodlCanvas.getContext('2d');
-  drawPixels(hodlContext, colorMap);
-
-  setProperty('--background-color', getColorScale().colors()[5]);
-  setProperty('--display-about', 'block');
-}
-
-function drawPixels(hodlContext, colorMap) {
   var hodlLine = 0;
   var hodlBuy;
   var hodlSell;
 
-  var imageData = hodlContext.createImageData(size, size);
-  var buffer = new ArrayBuffer(imageData.data.length);
-  var pixels = new Uint32Array(buffer);
-  pixels.fill(colorMap[200]);
+  const blocks = Math.floor(size / 1000) + 1
+  for (var blocky = 0; blocky < blocks; blocky++) {
+    for (var blockx = blocky; blockx < blocks; blockx++) {
+      var hodlCanvas = document.getElementById(`hodl-${blockx}-${blocky}`);
+    
+      var hodlContext = hodlCanvas.getContext('2d');
 
-  var y = 0;
-  for (var buydate = 0; buydate <= size; buydate++) {
-    for (var selldate = buydate + 1; selldate <= size; selldate++) {
-      var profit = getProfit(buydate, selldate);
-      var duration = selldate - buydate;
-      if (profit < 0 && hodlLine < duration) {
-        hodlLine = duration;
-        hodlBuy = buydate;
-        hodlSell = selldate;
-      }
-      pixels[y + selldate - 1] = colorMap[getColorIndex(profit)];
+      var imageData = hodlContext.createImageData(hodlCanvas.width, hodlCanvas.height);
+      var buffer = new ArrayBuffer(imageData.data.length);
+      var pixels = new Uint32Array(buffer);
+      pixels.fill(colorMap[200]);
+
+      var offset = 0;
+      for (var y = 0; y < hodlCanvas.height; y++) {
+        for (var x = 0; x < hodlCanvas.width; x++) {
+          var buydate = y + (blocky * 1000)
+          var selldate = x + (blockx * 1000)
+
+          if (buydate < selldate) {
+            var profit = getProfit(buydate, selldate);
+            var duration = selldate - buydate;
+            if (profit < 0 && hodlLine < duration) {
+              hodlLine = duration;
+              hodlBuy = buydate;
+              hodlSell = selldate;
+            }
+            pixels[offset + x] = colorMap[getColorIndex(profit)]
+          }
+        }
+        offset += hodlCanvas.width
+      }   
+
+      imageData.data.set(new Uint8ClampedArray(buffer));
+      hodlContext.putImageData(imageData, 0, 0);    
     }
-    y += size;
   }
-
-  imageData.data.set(new Uint8ClampedArray(buffer));
-  hodlContext.putImageData(imageData, 0, 0);
 
   setProperty('--hodl-line', `${hodlLine}px`);
   setProperty('--hodl-line-length', `${(size - hodlLine) * Math.sqrt(2)}px`);
   setInnerHTML('hodl-line', `hodl line: ${formatDuration(hodlBuy, hodlSell)}`);
+
+  setProperty('--background-color', getColorScale().colors()[5]);
+  setProperty('--display-about', 'block');
 }
 
 function createLabels() {
@@ -293,8 +322,8 @@ function getColorScale() {
 }
 
 function onMouseMove(event) {
-  mouseX = event.offsetX;
-  mouseY = event.offsetY;
+  mouseX = (event.srcElement.getAttribute('data-x') * 1000) + event.offsetX
+  mouseY = (event.srcElement.getAttribute('data-y') * 1000) + event.offsetY
   
   setProperty('--cursor', mouseX >= mouseY ? 'crosshair' : 'default');
 

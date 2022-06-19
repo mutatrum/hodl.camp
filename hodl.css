@@ -46,12 +46,14 @@ body {
   height: calc(var(--size) + 8px);
 }
 
-#hodl {
+.hodl {
   position: absolute;
   display: none;
   image-rendering: pixelated;
   transform: scale(var(--scale));
   transform-origin: top left;
+  top: calc(var(--y) * var(--scale) * 1000px);
+  left: calc(var(--x) * var(--scale) * 1000px);
   display: var(--display-about);
   cursor: var(--cursor);
 }
