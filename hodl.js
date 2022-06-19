@@ -178,7 +178,7 @@ function drawHodl(colorMap) {
       for (var y = 0; y < hodlCanvas.height; y++) {
         for (var x = 0; x < hodlCanvas.width; x++) {
           var buydate = y + (blocky * 1000)
-          var selldate = x + (blockx * 1000)
+          var selldate = x + (blockx * 1000) + 1
 
           if (buydate < selldate) {
             var profit = getProfit(buydate, selldate);
