@@ -8,6 +8,7 @@ const ASSET_LABELS = ['bitcoin', 'bitcoin', 'gold'];
 const DOMAIN = [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.55, 0.625, 0.725, 0.85, 1.0];
 const LINE = 'line.png';
 const DOT = 'dot.png';
+const SEGMENT = 1024;
 
 var bitcoinPrices;
 var goldPrices;
@@ -29,22 +30,22 @@ async function onLoad() {
 
   const borderDiv = document.getElementById('border')
 
-  const blocks = Math.floor(size / 1000) + 1
+  const blocks = Math.floor(size / SEGMENT) + 1
   for (var y = 0; y < blocks; y++) {
     for (var x = y; x < blocks; x++) {
-      const canvas = document.createElement("canvas")
+      const canvas = document.createElement('canvas')
       canvas.classList.add('hodl')
       canvas.id = `hodl-${x}-${y}`
       canvas.setAttribute('data-x', x)
       canvas.setAttribute('data-y', y)
-      canvas.style.setProperty('--x', `${x}`)
-      canvas.style.setProperty('--y', `${y}`)
+      canvas.style.setProperty('--x-offset', `${x * SEGMENT}px`)
+      canvas.style.setProperty('--y-offset', `${y * SEGMENT}px`)
       canvas.addEventListener('mousemove', onMouseMove)
       canvas.addEventListener('mouseleave', onMouseLeave)
       canvas.addEventListener('touchend', onTouchEnd)
       canvas.addEventListener('click', onClick)
-      canvas.width = x < blocks - 1 ? 1000 : size - ((blocks - 1) * 1000)
-      canvas.height = y < blocks - 1 ? 1000 : size - ((blocks - 1) * 1000)
+      canvas.width = x < blocks - 1 ? SEGMENT : size - ((blocks - 1) * SEGMENT)
+      canvas.height = y < blocks - 1 ? SEGMENT : size - ((blocks - 1) * SEGMENT)
 
       borderDiv.append(canvas)
     }
@@ -162,7 +163,7 @@ function drawHodl(colorMap) {
   var hodlBuy;
   var hodlSell;
 
-  const blocks = Math.floor(size / 1000) + 1
+  const blocks = Math.floor(size / SEGMENT) + 1
   for (var blocky = 0; blocky < blocks; blocky++) {
     for (var blockx = blocky; blockx < blocks; blockx++) {
       var hodlCanvas = document.getElementById(`hodl-${blockx}-${blocky}`);
@@ -177,8 +178,8 @@ function drawHodl(colorMap) {
       var offset = 0;
       for (var y = 0; y < hodlCanvas.height; y++) {
         for (var x = 0; x < hodlCanvas.width; x++) {
-          var buydate = y + (blocky * 1000)
-          var selldate = x + (blockx * 1000) + 1
+          var buydate = y + (blocky * SEGMENT)
+          var selldate = x + (blockx * SEGMENT) + 1
 
           if (buydate < selldate) {
             var profit = getProfit(buydate, selldate);
@@ -322,8 +323,8 @@ function getColorScale() {
 }
 
 function onMouseMove(event) {
-  mouseX = (event.srcElement.getAttribute('data-x') * 1000) + event.offsetX
-  mouseY = (event.srcElement.getAttribute('data-y') * 1000) + event.offsetY
+  mouseX = (event.srcElement.getAttribute('data-x') * SEGMENT) + event.offsetX
+  mouseY = (event.srcElement.getAttribute('data-y') * SEGMENT) + event.offsetY
   
   setProperty('--cursor', mouseX >= mouseY ? 'crosshair' : 'default');
 

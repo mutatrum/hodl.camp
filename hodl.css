@@ -52,10 +52,19 @@ body {
   image-rendering: pixelated;
   transform: scale(var(--scale));
   transform-origin: top left;
-  top: calc(var(--y) * var(--scale) * 1000px);
-  left: calc(var(--x) * var(--scale) * 1000px);
+  top: calc(var(--y-offset) * var(--scale));
+  left: calc(var(--x-offset) * var(--scale));
   display: var(--display-about);
   cursor: var(--cursor);
+}
+
+#background-fill {
+  position: abolute;
+  top: 8px;
+  left: 8px;
+  width: var(--size);
+  height: var(--size);
+  background-color: var(--background-color);
 }
 
 #labels {
