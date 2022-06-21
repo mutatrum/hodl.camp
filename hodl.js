@@ -44,8 +44,8 @@ async function onLoad() {
       canvas.addEventListener('mouseleave', onMouseLeave)
       canvas.addEventListener('touchend', onTouchEnd)
       canvas.addEventListener('click', onClick)
-      canvas.width = x < blocks - 1 ? SEGMENT : size - ((blocks - 1) * SEGMENT)
-      canvas.height = y < blocks - 1 ? SEGMENT : size - ((blocks - 1) * SEGMENT)
+      canvas.width = x < blocks - 1 ? SEGMENT + 2 : size - ((blocks - 1) * SEGMENT)
+      canvas.height = y < blocks - 1 ? SEGMENT + 2 : size - ((blocks - 1) * SEGMENT)
 
       borderDiv.append(canvas)
     }
@@ -164,22 +164,24 @@ function drawHodl(colorMap) {
   var hodlSell;
 
   const blocks = Math.floor(size / SEGMENT) + 1
-  for (var blocky = 0; blocky < blocks; blocky++) {
-    for (var blockx = blocky; blockx < blocks; blockx++) {
-      var hodlCanvas = document.getElementById(`hodl-${blockx}-${blocky}`);
+  for (var offsety = 0; offsety < blocks; offsety++) {
+    for (var offsetx = offsety; offsetx < blocks; offsetx++) {
+      var canvas = document.getElementById(`hodl-${offsetx}-${offsety}`);
     
-      var hodlContext = hodlCanvas.getContext('2d');
+      var context = canvas.getContext('2d');
 
-      var imageData = hodlContext.createImageData(hodlCanvas.width, hodlCanvas.height);
+      var width = canvas.width;
+      var height = canvas.height;
+      console.log(`${width}x${height}`)
+      var imageData = context.createImageData(width, height);
       var buffer = new ArrayBuffer(imageData.data.length);
       var pixels = new Uint32Array(buffer);
-      pixels.fill(colorMap[200]);
 
       var offset = 0;
-      for (var y = 0; y < hodlCanvas.height; y++) {
-        for (var x = 0; x < hodlCanvas.width; x++) {
-          var buydate = y + (blocky * SEGMENT)
-          var selldate = x + (blockx * SEGMENT) + 1
+      for (var y = 0; y < height; y++) {
+        for (var x = 0; x < width; x++) {
+          var buydate = y + (offsety * SEGMENT)
+          var selldate = x + (offsetx * SEGMENT) + 1
 
           if (buydate < selldate) {
             var profit = getProfit(buydate, selldate);
@@ -192,11 +194,11 @@ function drawHodl(colorMap) {
             pixels[offset + x] = colorMap[getColorIndex(profit)]
           }
         }
-        offset += hodlCanvas.width
+        offset += width
       }   
 
       imageData.data.set(new Uint8ClampedArray(buffer));
-      hodlContext.putImageData(imageData, 0, 0);    
+      context.putImageData(imageData, 0, 0);    
     }
   }
 
