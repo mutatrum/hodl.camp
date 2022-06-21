@@ -106,7 +106,8 @@ async function init() {
   setInnerHTML('start-date', formatDate(getIndexDate(0)));
   setInnerHTML('updated-date', formatDate(getIndexDate(bitcoinPrices.prices.length - 1)));
 
-  createLabels();
+  createTicks();
+  createATHL();
 
   setScale();
 
@@ -172,7 +173,6 @@ function drawHodl(colorMap) {
 
       var width = canvas.width;
       var height = canvas.height;
-      console.log(`${width}x${height}`)
       var imageData = context.createImageData(width, height);
       var buffer = new ArrayBuffer(imageData.data.length);
       var pixels = new Uint32Array(buffer);
@@ -210,12 +210,51 @@ function drawHodl(colorMap) {
   setProperty('--display-about', 'block');
 }
 
-function createLabels() {
+function createTicks() {
+  var ticksDiv = document.getElementById('ticks');
+  for (var index = 0; index <= size; index++) {
+    var price = bitcoinPrices.prices[index];
+    var date = getIndexDate(index);
+    if (date.getDate() == 1) {
+      if (date.getMonth() == 0) {
+        var yearLabelDiv = createLabelDiv(index, date.getFullYear());
+        ticksDiv.appendChild(yearLabelDiv);
+      }
+
+      var monthDotImg = createDotImg(index, date.getMonth() == 0 ? LINE : DOT);
+      ticksDiv.appendChild(monthDotImg);
+    }
+
+    var halvingIndex = halvings.indexOf(formatDate(date));
+    if (halvingIndex != -1) {
+
+      var labelDiv = createGridDiv(index, halvingIndex);
+      ticksDiv.appendChild(labelDiv);
+
+      if (halvingIndex % 4 == 0) {
+        var halving = ordinal(halvingIndex / 4);
+        var halvingLabelDiv = createLabelDiv(index, `&puncsp;${halving} halving`);
+        ticksDiv.appendChild(halvingLabelDiv);
+
+        var halvingDotImg = createDotImg(index, LINE);
+        ticksDiv.appendChild(halvingDotImg);
+      }
+    }
+  }
+}
+
+function createATHL() {
   var ath = 0;
   var athPrice = 0;
   var atl = 0;
   var atlPrice = Number.MAX_VALUE;
-  var labelsDiv = document.getElementById('labels');
+
+  var athlDiv = document.getElementById('athl');
+  var child = athlDiv.lastElementChild;
+  while (child) {
+    athlDiv.removeChild(child);
+    child = athlDiv.lastElementChild;
+  }
   for (var index = 0; index <= size; index++) {
     var price = bitcoinPrices.prices[index];
     if (price > athPrice) {
@@ -228,48 +267,30 @@ function createLabels() {
       atlPrice = price;
     }
     var date = getIndexDate(index);
-    if (date.getDate() == 1) {
-      if (date.getMonth() == 0) {
-        var yearLabelDiv = createLabelDiv(index, date.getFullYear());
-        labelsDiv.appendChild(yearLabelDiv);
-      }
-
-      var monthDotImg = createDotImg(index, date.getMonth() == 0 ? LINE : DOT);
-      labelsDiv.appendChild(monthDotImg);
-    }
 
     var halvingIndex = halvings.indexOf(formatDate(date));
     if (halvingIndex != -1) {
 
-      var labelDiv = createGridDiv(index, halvingIndex);
-      labelsDiv.appendChild(labelDiv);
-
       if (halvingIndex % 4 == 0) {
-        var halving = ordinal(halvingIndex / 4);
-        var halvingLabelDiv = createLabelDiv(index, `&puncsp;${halving} halving`);
-        labelsDiv.appendChild(halvingLabelDiv);
-
-        var halvingDotImg = createDotImg(index, LINE);
-        labelsDiv.appendChild(halvingDotImg);
-
         var athLabelDiv = createLabelDiv(ath, formatPrice(ath));
         athLabelDiv.classList.add('grid-price');
-        labelsDiv.append(athLabelDiv);
+        athlDiv.append(athLabelDiv);
         athPrice = 0;
 
         var atlLabelDiv = createLabelDiv(atl, formatPrice(atl));
         atlLabelDiv.classList.add('grid-price');
-        labelsDiv.append(atlLabelDiv);
+        athlDiv.append(atlLabelDiv);
         atlPrice = Number.MAX_VALUE;
       }
     }
   }
   var athLabelDiv = createLabelDiv(ath, formatPrice(ath));
   athLabelDiv.classList.add('grid-price');
-  labelsDiv.append(athLabelDiv);
+  athlDiv.append(athLabelDiv);
   var atlLabelDiv = createLabelDiv(atl, formatPrice(atl));
   atlLabelDiv.classList.add('grid-price');
-  labelsDiv.append(atlLabelDiv);
+  athlDiv.append(atlLabelDiv);
+
 }
 
 function createLabelDiv(index, innerHTML) {
@@ -522,6 +543,7 @@ async function onPairClick(event) {
   var colorMap = getColorMap();
   drawHodl(colorMap);
   updateMarker();
+  createATHL();
 
   event.preventDefault();
 }
