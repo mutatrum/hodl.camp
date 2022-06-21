@@ -125,7 +125,7 @@ async function init() {
 
 async function setPair() {
   if (!goldPrices && PAIRS[localStorage.pair].indexOf('xau') != -1) {
-    goldPrices = await fetch(`api/gold/prices?since=${bitcoinPrices.since}`).then(res => res.json())
+    goldPrices = await fetch(`/api/gold/prices?since=${bitcoinPrices.since}`).then(res => res.json())
   }
   getPrice = getPriceFunction();
   formatPrice = formatPriceFunction();
@@ -250,13 +250,11 @@ function createATHL() {
   var atlPrice = Number.MAX_VALUE;
 
   var athlDiv = document.getElementById('athl');
-  var child = athlDiv.lastElementChild;
-  while (child) {
-    athlDiv.removeChild(child);
-    child = athlDiv.lastElementChild;
+  while (athlDiv.firstChild) {
+    athlDiv.removeChild(athlDiv.lastChild);
   }
   for (var index = 0; index <= size; index++) {
-    var price = bitcoinPrices.prices[index];
+    var price = getPrice(index);
     if (price > athPrice) {
       ath = index;
       athPrice = price;
