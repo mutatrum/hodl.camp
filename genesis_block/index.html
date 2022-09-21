@@ -46,7 +46,24 @@
       </div>
       <div class="cell">
         <div class="cell annotation" data-fragment="01000000">
-          Version:
+          Block version 1:<br>
+          <br>
+          Version 1 was introduced in the genesis block (January 2009).<br>
+          <br>
+          Version 2 was introduced in Bitcoin Core 0.7.0 (September 2012) as a soft fork. As described in BIP34, valid
+          version 2 blocks require a block height parameter in the coinbase. Also described in BIP34 are rules for rejecting
+          certain blocks; based on those rules, Bitcoin Core 0.7.0 and later versions began to reject version 2 blocks without
+          the block height in coinbase at block height 224,412 (March 2013) and began to reject new version 1 blocks three weeks
+          later at block height 227,930.<br>
+          <br>
+          Version 3 blocks were introduced in Bitcoin Core 0.10.0 (February 2015) as a soft fork. When the fork reached full
+          enforcement (July 2015), it required strict DER encoding of all ECDSA signatures in new blocks as described in BIP66.
+          Transactions that do not use strict DER encoding had previously been non-standard since Bitcoin Core 0.8.0 (February 2012).<br>
+          <br>
+          Version 4 blocks specified in BIP65 and introduced in Bitcoin Core 0.11.2 (November 2015) as a soft fork became active
+          in December 2015. These blocks now support the new OP_CHECKLOCKTIMEVERIFY opcode described in that BIP.<br>
+          <br>
+          (<a href="https://developer.bitcoin.org/reference/block_chain.html#block-versions">source</a>)
         </div>
         <div class="cell annotation" data-fragment="0000000000000000000000000000000000000000000000000000000000000000">
           Previous block: As there is no previous block, this is all zeros.<br>
@@ -77,11 +94,10 @@
         <div class="cell annotation" data-fragment="1DAC2B7C">
           Nonce: Little-endian order number 0x7C2BAC1D, which equals to 2083236893 in decimal.<br>
           <br>
-          This is the main modifier to get the block hash below to the target number. By leaving all other fields the same
-          the hash 
+          An arbitrary number miners change to modify the header hash in order to produce a hash less than or equal to the target threshold.
         </div>
         <div class="cell annotation" data-fragment="01">
-          Number of transactions: 
+          Number of transactions: 1.
         </div>
         <div class="cell annotation" data-fragment="01000000">
           Version:
@@ -93,7 +109,7 @@
           Previous output:
         </div>
         <div class="cell annotation" data-fragment="4D">
-          Script length: 115 bytes.
+          Script length: 77 bytes.
         </div>
         <div class="cell annotation" data-fragment="04">
           Scriptsig PUSH the next 4 bytes
