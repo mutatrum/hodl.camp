@@ -97,19 +97,22 @@
           An arbitrary number miners change to modify the header hash in order to produce a hash less than or equal to the target threshold.
         </div>
         <div class="cell annotation" data-fragment="01">
-          Number of transactions: 1.
+          Number of transactions (1)
         </div>
         <div class="cell annotation" data-fragment="01000000">
-          Version:
+          Transaction version
         </div>
         <div class="cell annotation" data-fragment="01">
-          Input:
+          Input number (1)
         </div>
-        <div class="cell annotation" data-fragment="0000000000000000000000000000000000000000000000000000000000000000FFFFFFFF">
-          Previous output:
+        <div class="cell annotation" data-fragment="0000000000000000000000000000000000000000000000000000000000000000">
+          Previous output field. As there is no previous output, this is all zero.
+        </div>
+        <div class="cell annotation" data-fragment="FFFFFFFF">
+          vout
         </div>
         <div class="cell annotation" data-fragment="4D">
-          Script length: 77 bytes.
+          Script length: 77 bytes
         </div>
         <div class="cell annotation" data-fragment="04">
           Scriptsig PUSH the next 4 bytes
@@ -231,19 +234,27 @@
           transaction (the mining subsidy), this limit is not applicable.  
         </div>
         <div class="cell annotation" data-fragment="43">
-          pk_script length
+          pk_script length.
         </div>
-        <div class="cell annotation" data-fragment="4104678AFDB0FE5548271967F1A67130B7105CD6A828E03909A67962E0EA1F61DEB649F6BC3F4CEF38C4F35504E51EC112DE5C384DF7BA">
-          pk_script 
-        </div>
-        <div class="cell annotation" data-fragment="0B8D578A4C702B6BF11D5F">
-          pk_script pubkey 0x5F1DF16B2B704C8A578D0B
+        <div class="cell annotation" data-fragment="41">
+          opcode: pushself
+        </div> 
+        <div class="cell annotation" data-fragment="04678AFDB0FE5548271967F1A67130B7105CD6A828E03909A67962E0EA1F61DEB649F6BC3F4CEF38C4F35504E51EC112DE5C384DF7BA0B8D578A4C702B6BF11D5F">
+          This is the output in the form of a raw uncompressed public key.
+
+          To get to an actual address this data has to be hashed, first with SHA256 and then with RIPEMD160. This results in a hash160 of:
+
+          62e907b15cbf27d5425399ebf6f0fb50ebb88f18
+
+          By encoding this to Base68, the following address is found:
+          
+          <a href="https://mempool.space/address/1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa">1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa</a>
         </div>
         <div class="cell annotation" data-fragment="AC">
           pk_script OP_CHECKSIG
         </div>
         <div class="cell annotation" data-fragment="00000000">
-          lock time
+          lock time (0)
         </div>
       </div>
     </div>
