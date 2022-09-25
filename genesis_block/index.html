@@ -46,7 +46,7 @@
       </div>
       <div class="cell">
         <div class="cell annotation" data-fragment="01000000">
-          Block version 1:<br>
+          Block version 1.<br>
           <br>
           Version 1 was introduced in the genesis block (January 2009).<br>
           <br>
@@ -71,7 +71,7 @@
           For the next block, this is calculated by taking the block header, eg. the first 80 bytes of this block and
           performing a SHA-256 hash twice. This results in
           <blockquote>0x6fe28c0ab6f1b372c1a6a246ae63f74f931e8365e15a089c68d6190000000000</blockquote>
-          which is found in the next block.<br>
+          which can be found in the previous block field of the next block. This makes it a chain of blocks.<br>
           <br>
           The double hash is a protection against length extension attack.
         </div>
@@ -80,7 +80,7 @@
           pairwise hashing of transaction IDs until you end up with a single hash.<br>
           <br>
           The benefit of having a merkle tree is that you don't need all the transaction IDs to prove a single
-          transaction 
+          transaction.
         </div>
         <div class="cell annotation" data-fragment="29AB5F49">
           Timestamp: Little-endian order unix timestamp of 2009-01-03T18:15:05 UTC.<br>
@@ -94,7 +94,9 @@
         <div class="cell annotation" data-fragment="1DAC2B7C">
           Nonce: Little-endian order number 0x7C2BAC1D, which equals to 2083236893 in decimal.<br>
           <br>
-          An arbitrary number miners change to modify the header hash in order to produce a hash less than or equal to the target threshold.
+          An arbitrary number miners change to modify the header hash in order to produce a hash less than or equal to the target threshold.<br>
+          <br>
+          This is the last part of the 80-byte header.
         </div>
         <div class="cell annotation" data-fragment="01">
           Number of transactions (1)
@@ -246,7 +248,7 @@
           <blockquote>
           62e907b15cbf27d5425399ebf6f0fb50ebb88f18
           </blockquote>
-          By encoding this to Base68, the following address is found:<br>
+          By encoding this to Base58, the following address is found:<br>
           <blockquote>
             <a href="https://mempool.space/address/1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa">1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa</a>
           </blockquote>
