@@ -242,16 +242,37 @@
           opcode: pushself
         </div> 
         <div class="cell annotation" data-fragment="04678AFDB0FE5548271967F1A67130B7105CD6A828E03909A67962E0EA1F61DEB649F6BC3F4CEF38C4F35504E51EC112DE5C384DF7BA0B8D578A4C702B6BF11D5F">
-          This is the output in the form of a raw uncompressed public key.<br>
+          The output script Pubkey.<br>
           <br>
-          To get to an actual address this data has to be hashed, first with SHA256 and then with RIPEMD160. This results in a hash160 of:<br>
+          This is the raw uncompressed public key P2PK (Pay to Pubkey) for the 50 BTC block subsidy. 
+          This is not an actual bitcoin address in the form of a P2PKH 1* address, as the initial version of Bitcoin didn't have addresses yet.<br>
+          <br>
+          However, a P2PKH bitcoin address can be constructed, by hashing the public key data. First with SHA-256:
           <blockquote>
-          62e907b15cbf27d5425399ebf6f0fb50ebb88f18
+            0x261c1eb21fc4708c6acbe1cfc6d4565652e9e768b620782898936b93000a6c02
           </blockquote>
-          By encoding this to Base58, the following address is found:<br>
+          Then by RIPEDM-160:
+          <blockquote>
+            0x62e907b15cbf27d5425399ebf6f0fb50ebb88f18
+          </blockquote>
+          The next step is to prefix it with a version byte, in this case 0x00 for a mainnet address:
+          <blockquote>
+            0x<b>00</b>62e907b15cbf27d5425399ebf6f0fb50ebb88f18
+          </blockquote>
+          A bitcoin address has a checksum. First the RIPEDM-160 with version is hashed twice with SHA-256:
+          <blockquote>
+            0xc29b7d937e3049e279391e62fdf00c12def7444013ddf6215808d10e9f2d5996
+          </blockquote>
+          And the first four bytes of that hash are added to the RIPEDM-160 with version:
+          <blockquote>
+            0x0062e907b15cbf27d5425399ebf6f0fb50ebb88f18<b>c29b7d93</b>
+          </blockquote>
+          As a final step, this is encoded in Base58, which yields the following address:
           <blockquote>
             <a href="https://mempool.space/address/1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa">1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa</a>
           </blockquote>
+          The actual 50 BTC of the coinbase are unspendable, as this transaction is never added to the unspent transactions when bitcoin starts up.
+          People have been donating generously to this address, and other amounts received on this address could be spent, if the genesis block private key is not lost.
         </div>
         <div class="cell annotation" data-fragment="AC">
           pk_script OP_CHECKSIG
