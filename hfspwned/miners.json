@@ -5,6 +5,11 @@
     "watt": "2200"
   },
   {
+    "name": "bitaxeUltra",
+    "hashrate": "0.527",
+    "watt": "10.54"
+  },  
+  {
     "name": "Bitfily Snow Panther A1",
     "hashrate": "49",
     "watt": "5400"
