@@ -24,7 +24,7 @@ var showHelp = false;
 
 async function onLoad() {
   bitcoinPrices = await fetch('/api/bitcoin/prices').then(res => res.json())
-  halvings = await fetch('/api/bitcoin/halvings').then(res => res.json())
+  halvings = await fetch('/api/bitcoin/halving_candles').then(res => res.json())
 
   size = bitcoinPrices.prices.length - 1;
 

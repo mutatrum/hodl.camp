@@ -19,7 +19,7 @@ var getHighlight = () => -1;
 
 async function init() {
   bitcoinPrices = await fetch('/api/bitcoin/prices').then(res => res.json())
-  bitcoinHalvings = await fetch('/api/bitcoin/halvings').then(res => res.json())
+  bitcoinHalvings = await fetch('/api/bitcoin/halving_candles').then(res => res.json())
 
   createCandles();
   
