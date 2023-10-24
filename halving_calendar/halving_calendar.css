@@ -10,7 +10,7 @@ body {
   background-color: black;
   margin: 0;
   font-family: 'AnonymousPro-Regular';
-  font-size: min(1.8vw, 1.8vh);
+  font-size: min(2vw, 1.8vh);
   font-weight: 600;
   color: white;
 }
@@ -64,10 +64,10 @@ a:hover {
 }
 
 td, th {
-  padding-top: 3px;
-  padding-bottom: 3px;
-  padding-left: 20px;
-  padding-right: 20px;
+  padding-top: 0.1em;
+  padding-bottom: 0.1em;
+  padding-left: 1em;
+  padding-right: 1em;
 }
 
 th.text-start {
