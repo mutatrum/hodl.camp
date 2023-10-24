@@ -1,0 +1,87 @@
+@font-face {
+  font-family: 'AnonymousPro-Regular';
+  src: url('AnonymousPro-Regular.woff2') format('woff2'),
+      url('AnonymousPro-Regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+  background-color: black;
+  margin: 0;
+  font-family: 'AnonymousPro-Regular';
+  font-size: min(1.8vw, 1.8vh);
+  font-weight: 600;
+  color: white;
+}
+
+#center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  flex-direction: column;
+}
+
+.cell {
+  padding: 5px;
+  width: 90vw;
+}
+
+.status {
+  font-size: 15px;
+  text-align: right;
+  opacity: 0.5;
+}
+
+.right{
+    float:right;
+}
+
+.left{
+    float:left;
+}
+
+a {
+  text-decoration: none;
+  color: white;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+#longest_streak {
+  border-radius: 15px;
+  height: 90vw;
+}
+
+.lb {
+  display: inline;
+}
+.lb::after {
+  content: '\a0\a0';
+}
+
+td, th {
+  padding-top: 3px;
+  padding-bottom: 3px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+th.text-start {
+  text-align: start
+}
+td.text-end {
+  text-align: end
+}
+
+@media screen and (max-width: 1000px) {
+  .lb {
+    display: block;
+  }
+  .lb::after {
+    content: '';
+  }
+}
