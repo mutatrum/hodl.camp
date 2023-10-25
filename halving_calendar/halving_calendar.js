@@ -21,26 +21,28 @@ function createContent() {
   var supply = 0n
 
   while (reward > 0) {
+    supply += reward * 210_000n / 10_000n
+    percentage = supply * 1_000_000n / 21_000_000n
+
     const row = tbody.insertRow(-1)
 
     const cell1 = row.insertCell(-1)
-    const cell2 = row.insertCell(-1)
-    const cell3 = row.insertCell(-1)
-    const cell4 = row.insertCell(-1)
-    const cell5 = row.insertCell(-1)
-
-    cell2.classList.add("text-end");
-    cell3.classList.add("text-end");
-    cell4.classList.add("text-end");
-    cell5.classList.add("text-end");
-
-    supply += reward * 210_000n / 10_000n
-    percentage = supply * 1_000_000n / 21_000_000n
-    
     cell1.innerHTML = getDate(era)
+
+    const cell2 = row.insertCell(-1)
+    cell2.classList.add("text-end");
     cell2.innerHTML = era + '&thinsp;&nbsp;'
+
+    const cell3 = row.insertCell(-1)
+    cell3.classList.add("text-end");
     cell3.innerHTML = formatBigInt(reward, 8)
+
+    const cell4 = row.insertCell(-1)
+    cell4.classList.add("text-end");
     cell4.innerHTML = formatBigInt(supply, 4)
+
+    const cell5 = row.insertCell(-1)
+    cell5.classList.add("text-end");
     cell5.innerHTML = formatBigInt(percentage, 8) + ' %'
 
     reward >>= 1n
@@ -59,20 +61,20 @@ const ZEROES = /^0*$/
 
 function formatBigInt(value, digits) {
   var text = value.toString()
-  while (text.length <= digits) text = '0' + text
-  var i = text.substring(0, text.length - digits)
-  var f = text.substring(text.length - digits)
-  if (ZEROES.test(f)) return i + '&nbsp;'.repeat(digits + 1)
-
-  var p = ''
-  while (f[f.length - 1] == '0') {
-    f = f.substring(0, f.length - 1)
-    p += '&nbsp;'
-  }
-
-  return i + '.' + f + p;
+  const leadingZeroes = digits - text.length + 1
+  if (leadingZeroes > 0) text = '0'.repeat(leadingZeroes) + text
   
+  var trailingZeroes = 0
+  while (text[text.length - trailingZeroes - 1] == '0' && trailingZeroes < digits) trailingZeroes++
+  
+  const integer = text.substring(0, text.length - digits)
+  const separator = trailingZeroes == digits ? '&nbsp;' : '.'
+  const fraction = text.substring(text.length - digits, text.length - trailingZeroes)
+  const padding = '&nbsp;'.repeat(trailingZeroes)
+
+  return integer + separator + fraction + padding
 }
+
 function formatDays(longest) {
   return longest + ' day' + (longest == 1 ? '' : 's');
 }
