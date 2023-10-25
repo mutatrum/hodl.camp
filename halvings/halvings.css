@@ -63,18 +63,26 @@ a:hover {
   content: '\a0\a0';
 }
 
+table {
+  border-collapse: collapse;
+}
+
 td, th {
   padding-top: 0.1em;
   padding-bottom: 0.1em;
   padding-left: 1em;
   padding-right: 1em;
+  border: 0px;
 }
 
 th.text-start {
-  text-align: start
+  text-align: start;
 }
 td.text-end {
-  text-align: end
+  text-align: end;
+}
+tbody > tr:hover {
+  background-color: rgb(64, 64, 64);
 }
 
 @media screen and (max-width: 1000px) {

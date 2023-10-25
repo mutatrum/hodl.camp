@@ -15,14 +15,15 @@ async function init() {
 
 function createContent() {
   const tbody = document.getElementById('tbody');
-  var reward = 50n * 100_000_000n
-  var era = 1
+  var reward = 100n * 100_000_000n
+  var era = 0
   var year = 2008
   var supply = 0n
+  var percentage = 0n
 
-  while (reward > 0) {
-    supply += reward * 210_000n / 10_000n
-    percentage = supply * 1_000_000n / 21_000_000n
+  do {
+    reward >>= 1n
+    era++
 
     const row = tbody.insertRow(-1)
 
@@ -45,10 +46,11 @@ function createContent() {
     cell5.classList.add("text-end");
     cell5.innerHTML = formatBigInt(percentage, 8) + ' %'
 
-    reward >>= 1n
-    era++
+    supply += reward * 210_000n / 10_000n
+    percentage = supply * 1_000_000n / 21_000_000n
     year += 4
-  }
+
+  } while (reward > 0)
 }
 
 function getDate(era) {
