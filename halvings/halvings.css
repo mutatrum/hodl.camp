@@ -68,15 +68,19 @@ table {
 }
 
 td, th {
-  padding-top: 0.1em;
-  padding-bottom: 0.1em;
-  padding-left: 1em;
-  padding-right: 1em;
+  padding: 0.1em 1em 0.1em 1em;
   border: 0px;
+}
+
+th.narrow {
+  padding: 0.1em 0 0.1em 0;
 }
 
 th.text-start {
   text-align: start;
+}
+td.text-center {
+  text-align: center;
 }
 td.text-end {
   text-align: end;

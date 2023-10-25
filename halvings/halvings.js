@@ -31,8 +31,8 @@ function createContent() {
     cell1.innerHTML = getDate(era)
 
     const cell2 = row.insertCell(-1)
-    cell2.classList.add("text-end");
-    cell2.innerHTML = era + '&thinsp;&nbsp;'
+    cell2.classList.add("text-center");
+    cell2.innerHTML = (era < 10 ? '&nbsp;' : '') + era
 
     const cell3 = row.insertCell(-1)
     cell3.classList.add("text-end");
