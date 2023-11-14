@@ -200,6 +200,11 @@
     "watt": "5304"
   },
   {
+    "name": "Bitmain Antminer S21 (200Th)",
+    "hashrate": "200",
+    "watt": "3500"
+  },
+  {
     "name": "Bitmain Antminer T9 (11.5Th)",
     "hashrate": "11.5",
     "watt": "1450"
