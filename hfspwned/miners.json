@@ -370,6 +370,16 @@
     "watt": "200"
   },
   {
+    "name": "FutureBit Apollo II (Eco)",
+    "hashrate": "6",
+    "watt": "175"
+  },
+  {
+    "name": "FutureBit Apollo II (Turbo)",
+    "hashrate": "10",
+    "watt": "375"
+  },
+  {
     "name": "GekkoScience Compac F",
     "hashrate": "0.2",
     "watt": "5"
