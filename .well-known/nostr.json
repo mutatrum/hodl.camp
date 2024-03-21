@@ -1,0 +1,12 @@
+{
+  "names": {
+    "mutatrum": "bdbe1bdbc9b25a8d89d8fdaf0be1a0dcd837bac9691f597892903a5fdd86e27f",
+    "ligess": "bbdbf0b2eb4afb151a5d83ef90f6ad04577bba784d2cd2d647e69a9e212213bf",
+    "sats_per_dollar": "875705398bd7f1786799ddd2f3fe07ffe92e35ab21a936d80810e8c169e6bfc0",
+    "sats_per_euro": "875702c0c577508aa9e4d4e117ca083eb4c5b5486e2d1310f59ba2dd34899ca8",
+    "sats_per_aud": "8757018160583146bbb198a919716ced04143112348da67f3df5e97d8e95f5f9",
+    "sats_per_ruble": "875703875de60f883d0de4f4a6544a72832b3211fdfba6f2a91299a0467eb84c",
+    "sats_per_zloty": "875707cc561b3aa8222752592ccc9725d641c4628fbcfa5c4795c5d3f6fcd0ad",
+    "sats_per_try": "87570fcf0dcab7fe4f5f128c73bad78a2bcdb8188a62c37d0e31341d1d9a3b69"
+  }
+}
