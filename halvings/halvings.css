@@ -10,7 +10,7 @@ body {
   background-color: black;
   margin: 0;
   font-family: 'AnonymousPro-Regular';
-  font-size: min(2.6vw, 2.05vh);
+  font-size: min(2.4vw, 2.05vh);
   font-weight: 600;
   color: white;
 }
