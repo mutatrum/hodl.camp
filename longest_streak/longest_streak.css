@@ -2,7 +2,7 @@ body {
   background-color: black;
   margin: 0;
   font-family: 'Droid Sans Mono', monospace;
-  font-size: min(3vw, 1vh);
+  font-size: min(1.6vw, 0.85vh);
   color: white;
 }
 
@@ -52,13 +52,4 @@ a:hover {
 }
 .lb::after {
   content: '\a0\a0';
-}
-
-@media screen and (max-width: 1000px) {
-  .lb {
-    display: block;
-  }
-  .lb::after {
-    content: '';
-  }
 }
