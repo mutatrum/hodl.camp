@@ -310,6 +310,11 @@
     "watt": "3420"
   },
   {
+    "name": "Canaan Avalon Nano 3",
+    "hashrate": "4",
+    "watt": "140"
+  },
+  {
     "name": "Ebang Ebit E9+",
     "hashrate": "9",
     "watt": "1300"
