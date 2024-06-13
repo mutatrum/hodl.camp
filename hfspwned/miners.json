@@ -260,6 +260,11 @@
     "watt": "3300"
   },
   {
+    "name": "Braiins BMM 100 Mini",
+    "hashrate": "1",
+    "watt": "40"
+  },
+  {
     "name": "Canaan AvalonMiner 741",
     "hashrate": "7.3",
     "watt": "1150"
