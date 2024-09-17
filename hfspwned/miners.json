@@ -15,6 +15,11 @@
     "watt": "18.7"
   },  
   {
+    "name": "Bitaxe Gamma",
+    "hashrate": "1.2",
+    "watt": "15"
+  },  
+  {
     "name": "Bitfily Snow Panther A1",
     "hashrate": "49",
     "watt": "5400"
