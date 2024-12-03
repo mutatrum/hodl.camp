@@ -2,7 +2,7 @@ body {
   background-color: black;
   margin: 0;
   font-family: 'Droid Sans Mono', monospace;
-  font-size: min(1.6vw, 0.8vh);
+  font-size: min(1.6vw, 0.7vh);
   color: white;
 }
 
