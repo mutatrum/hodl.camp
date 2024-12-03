@@ -1,8 +1,14 @@
+:root {
+  --lines: 10;
+  --font-size-vh: calc(100vh / ((var(--lines) + 8) * 1.3));
+  --font-size-vw: 1.6vw;
+}
+
 body {
   background-color: black;
   margin: 0;
   font-family: 'Droid Sans Mono', monospace;
-  font-size: min(1.6vw, 0.7vh);
+  font-size: min(var(--font-size-vh), var(--font-size-vw));
   color: white;
 }
 

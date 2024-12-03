@@ -69,6 +69,9 @@ function createContent() {
     }
   }
   while (hasStreak);
+
+  const root = document.documentElement;
+  root.style.setProperty('--lines', price/1000);
 }
 
 function formatDays(longest) {
